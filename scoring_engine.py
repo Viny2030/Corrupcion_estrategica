@@ -24,10 +24,14 @@ from typing import Optional
 
 
 class VinculoExterno(str, Enum):
-    EXOGENO_DIRECTO = "exogeno_directo"       # score 3
-    PROXY_HIBRIDO = "proxy_hibrido"           # score 2
-    ENDOGENO_ALINEADO = "endogeno_alineado"   # score 1
-    MIMETICO = "mimetico"                     # score 1
+    EXOGENO_DIRECTO = "exogeno_directo"       # score 3 — "clearly within scope" (libro, p.15)
+    PROXY_HIBRIDO = "proxy_hibrido"           # score 2 — "may qualify" si hay inducción+abuso
+    ENDOGENO_ALINEADO = "endogeno_alineado"   # score 1 — "analytically relevant, but not
+                                               #   automatically strategic corruption"
+    MIMETICO = "mimetico"                     # score 0 — el libro es explícito: "outside the
+                                               #   scope of strategic corruption... better
+                                               #   understood as domestic state capture" (p.15).
+                                               #   NO es un vínculo débil, es una exclusión.
     SIN_VINCULO = "sin_vinculo"               # score 0
 
 
@@ -35,7 +39,7 @@ VINCULO_SCORE = {
     VinculoExterno.EXOGENO_DIRECTO: 3,
     VinculoExterno.PROXY_HIBRIDO: 2,
     VinculoExterno.ENDOGENO_ALINEADO: 1,
-    VinculoExterno.MIMETICO: 1,
+    VinculoExterno.MIMETICO: 0,
     VinculoExterno.SIN_VINCULO: 0,
 }
 

@@ -14,8 +14,29 @@ CREATE TYPE tipo_vinculo_externo AS ENUM (
     'exogeno_directo',      -- instrucción/financiamiento directo del estado origen
     'proxy_hibrido',        -- redes corporativas/oligarcas/fundaciones en terceros países
     'endogeno_alineado',    -- élites locales que alinean decisiones sin orden explícita
-    'mimetico',             -- copia local de marcos regulatorios importados
+    'mimetico',             -- copia local de marcos regulatorios importados — el libro (p.15)
+                            -- lo clasifica "outside the scope of strategic corruption", NO
+                            -- como vínculo débil (ver score_vinculo_externo más abajo)
     'sin_vinculo'
+);
+
+-- Los 10 mecanismos con nombre propio del libro (Tablas 4 y 5, cap. 1).
+-- Layer I = mecanismo directo de corrupción; Layer II = entorno habilitante.
+CREATE TYPE mecanismo_libro AS ENUM (
+    -- Layer I — mecanismos directos
+    'layer1_political_bribery_elite_inducement',
+    'layer1_legislative_manipulation',
+    'layer1_procurement_manipulation',
+    'layer1_revolving_doors',
+    'layer1_dependency_arrangements',
+    -- Layer II — entorno habilitante
+    'layer2_media_narrative_capture',
+    'layer2_infrastructure_investments',
+    'layer2_soft_power_projects',
+    'layer2_lawfare_strategic_litigation',
+    'layer2_external_loans_grants',
+    -- vector sin mecanismo materializado todavía (pasos 1-2 del proceso de 9 pasos)
+    'vigilar_sin_mecanismo_confirmado'
 );
 
 CREATE TYPE clasificacion_final AS ENUM (
@@ -38,6 +59,8 @@ CREATE TABLE vectores_influencia_extranjera (
     pais_origen             TEXT NOT NULL,                 -- China, Rusia, EEUU, etc.
     contraparte_argentina   TEXT,                          -- NA-SA, provincia, universidad, organismo
     mecanismo               TEXT NOT NULL,                 -- descripción corta del mecanismo
+    mecanismo_libro         mecanismo_libro NOT NULL,      -- mecanismo con nombre propio (Tablas 4/5 del libro)
+    mecanismo_libro_secundario mecanismo_libro,             -- opcional, cuando el caso combina Layer I + Layer II
     regimen_legal           TEXT,                          -- RIGI1, SuperRIGI, tratado bilateral, decreto, ninguno
     capa                    capa_mecanismo NOT NULL,
 
@@ -52,7 +75,7 @@ CREATE TABLE vectores_influencia_extranjera (
             WHEN 'exogeno_directo' THEN 3
             WHEN 'proxy_hibrido' THEN 2
             WHEN 'endogeno_alineado' THEN 1
-            WHEN 'mimetico' THEN 1
+            WHEN 'mimetico' THEN 0  -- corregido: el libro lo excluye del alcance, no es "débil"
             ELSE 0
         END
     ) STORED,
