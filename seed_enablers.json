@@ -8,6 +8,42 @@
       "nivel_confianza": "confirmado",
       "fuente_verificacion": "https://www.eldiarioar.com/politica/denuncian-penalmente-secretario-mineria-presunto-conflicto-intereses-ley-glaciares_1_13125406.html",
       "notas": "Clientes reportados por la denuncia: Glencore, Rio Tinto, AngloGold Ashanti, Vale, Newmont. Ninguno es SOE china/rusa; se registra por ser el nodo profesional del funcionario que hoy integra el Comité Evaluador RIGI que sí falla sobre litio chino (Zijin/Ganfeng)."
+    },
+    {
+      "nombre": "Beccar Varela",
+      "tipo": "estudio_juridico",
+      "personas_clave": "Roberto A. Fortunati (socio), Pedro Silvestri (senior associate), María Inés Cappelletti, Andrés Schreiber",
+      "descripcion_rol": "Asesoría legal local (Buenos Aires) a ICBC China en la compra del 20% restante de ICBC Argentina en manos de Standard Bank (cierre 29-jun-2026, USD 180,7M)",
+      "nivel_confianza": "confirmado",
+      "fuente_verificacion": "https://beccarvarela.com/en/novedades/icbc-china-adquiere-participacion-de-standard-bank-en-icbc-argentina/",
+      "notas": "Coasesoró junto con Clifford Chance (Beijing) como counsel internacional del comprador. Vínculo directo y verificado con el vector banca-icbc-argentina -- primer enabler confirmado ligado a un actor chino del padrón, no solo a un funcionario."
+    },
+    {
+      "nombre": "Clifford Chance (oficina Beijing)",
+      "tipo": "estudio_juridico",
+      "personas_clave": null,
+      "descripcion_rol": "Asesoría legal internacional a ICBC China en la misma operación (contraparte china del deal team)",
+      "nivel_confianza": "confirmado",
+      "fuente_verificacion": "https://lexlatin.com/noticias/icbc-consolida-su-presencia-en-argentina",
+      "notas": "Mismo caso que Beccar Varela -- reportado por múltiples fuentes (LexLatin, Abogados.com.ar, AUNO Abogados)."
+    },
+    {
+      "nombre": "Bruchou, Fernández Madero & Lombardi",
+      "tipo": "estudio_juridico",
+      "personas_clave": "Estanislao Olmos (socio), Florencia Angelico, Juan José Romano Blanco",
+      "descripcion_rol": "Asesoría legal local a Standard Bank (vendedor) en la venta de su 20% de ICBC Argentina",
+      "nivel_confianza": "confirmado",
+      "fuente_verificacion": "https://bruchoufunes.com/en/icbc-china-acquires-standard-banks-stake-in-icbc-argentina/",
+      "notas": "Asesora al vendedor (Standard Bank), no al actor chino del padrón -- se registra por completar el cuadro de la operación, no como enabler de ICBC."
+    },
+    {
+      "nombre": "Huawei Tech Investment Co Ltd (sucursal Argentina) -- apoderado",
+      "tipo": "otro",
+      "personas_clave": "Chen Shiqing (representante designado, ciudadano chino)",
+      "descripcion_rol": "Representante legal de la sucursal argentina de Huawei Tech Investment Co Ltd, según resolución BORA",
+      "nivel_confianza": "reportado",
+      "fuente_verificacion": "https://www.boletinoficial.gob.ar/pdf/linkQR/amhsSmJjRHJKQUIreFpJZ1U0d1UwZz09",
+      "notas": "Designación registrada en el Boletín Oficial con vigencia 18-jun-2019 a 17-jun-2021 -- venció. No se pudo confirmar el apoderado actual (2026) vía búsqueda de prensa; requiere consulta directa a IGJ. Se deja registrado como precedente de que estas designaciones sí se publican en BORA y son buscables."
     }
   ],
   "funcionario_antecedente_privado": [
@@ -26,9 +62,14 @@
   ],
   "pendientes_de_verificar": [
     {
-      "item": "Representación legal de Zijin/Liex, Ganfeng, Huawei, ICBC, COFCO en Argentina",
-      "estado": "Sin resultado en búsqueda de prensa especializada (jul-2026). La representación legal de estas empresas no se declara públicamente salvo en litigios o en registros societarios de IGJ, que requieren consulta directa al organismo (no vía búsqueda web).",
-      "proximo_paso": "Consultar IGJ (Inspección General de Justicia) por razón social de cada empresa del padrón para identificar apoderados/directores declarados, que suelen coincidir con estudios jurídicos representantes."
+      "item": "Representación legal de Zijin/Liex, Ganfeng y COFCO en Argentina",
+      "estado": "Sin resultado en búsqueda de prensa especializada (jul-2026), incluso buscando específicamente la presentación RIGI de Ganfeng (proyecto Mariana, rechazado jul-2025, y Pozuelos-Pastos Grandes, en curso). ICBC sí se resolvió esta corrida (ver Beccar Varela / Clifford Chance arriba) -- el patrón que funcionó fue buscar la operación societaria concreta (M&A) en vez del nombre de la empresa sola, porque los estudios se publicitan a sí mismos cuando cierran un deal, no cuando presentan un trámite regulatorio como RIGI.",
+      "proximo_paso": "Para Ganfeng/Zijin: buscar si alguna presentación RIGI o comunicado de bolsa (Zijin cotiza en Shanghai/Hong Kong) nombra al estudio actuante. Para COFCO: consultar IGJ por la razón social exacta (COFCO International Argentina S.A., CUIT 33-50673744-9)."
+    },
+    {
+      "item": "Apoderado actual de Huawei Tech Investment Co Ltd (sucursal Argentina)",
+      "estado": "Se encontró un registro BORA de 2019 (Chen Shiqing) con vigencia vencida en 2021 -- ver entrada 'reportado' arriba. No se confirmó quién es el apoderado vigente a 2026.",
+      "proximo_paso": "Buscar en BORA resoluciones posteriores a 2021 sobre 'Huawei Tech Investment Co Ltd' o consultar IGJ directamente."
     },
     {
       "item": "Auditoras de estados contables de las empresas del padrón",

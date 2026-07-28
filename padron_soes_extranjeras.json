@@ -101,5 +101,38 @@
     "sector": "petróleo y gas",
     "verificado": true,
     "fuente": "ambito.com, enernews.com. Sinopec vendió sus activos a CGC (familia Eurnekian, capital argentino) en 2026 al vencer la concesión — caso de salida/divestment, no de expansión. Útil como línea de base para medir si la desinversión chino es tendencia en otros sectores."
+  },
+  {
+    "razon_social": "CHINA GEZHOUBA GROUP COMPANY (vía UTE con ENARSA)",
+    "cuit": null,
+    "matriz": "China Gezhouba Group Company, subsidiaria de China Energy Engineering Corporation (SOE, SASAC)",
+    "pais_origen": "China",
+    "tipo_vinculo": "contratista principal en UTE con ENARSA para represas Néstor Kirchner y Jorge Cepernic — mismo patrón que CNNC/NA-SA: opera vía contrato interestatal/UTE, no tiene VPU propio identificado",
+    "provincia": "Santa Cruz",
+    "sector": "energía / hidroeléctrica",
+    "verificado": false,
+    "fuente": "argentina.gob.ar, lanacion.com.ar, cronista.com. No aplica matching CUIT directo — verificar si la UTE (Gezhouba + Eling Energía + Hidrocuyo) tiene inscripción propia en IGJ."
+  },
+  {
+    "razon_social": "CMEC (China Machinery Engineering Corporation)",
+    "cuit": null,
+    "matriz": "China Machinery Engineering Corporation, SOE bajo SASAC",
+    "pais_origen": "China",
+    "tipo_vinculo": "proveedor de crédito y contratista de la modernización del Belgrano Cargas (~USD 2.470M acumulados); opera vía convenio de crédito con el Estado, no vía VPU",
+    "provincia": "Nacional (traza multiprovincial)",
+    "sector": "transporte / ferrocarriles",
+    "verificado": false,
+    "fuente": "enelsubte.com, railjournal.com, argentina.gob.ar. Pendiente: verificar si CMEC tiene sucursal inscripta en IGJ (patrón distinto al de Huawei, que sí tiene CUIT propio)."
+  },
+  {
+    "razon_social": "POWERCHINA ARGENTINA (vía contrato con JEMSE)",
+    "cuit": null,
+    "matriz": "Power Construction Corporation of China (PowerChina), SOE bajo SASAC",
+    "pais_origen": "China",
+    "tipo_vinculo": "constructor del parque solar Cauchari junto con Shanghai Electric Power Construction; financiamiento vía Eximbank China (85% del capital)",
+    "provincia": "Jujuy",
+    "sector": "energía / renovables",
+    "verificado": false,
+    "fuente": "powerchina.com.ar (sitio propio en Argentina, sugiere entidad local inscripta — pendiente confirmar CUIT vía IGJ)."
   }
 ]

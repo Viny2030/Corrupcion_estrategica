@@ -33,7 +33,7 @@ documentada, con fuente citada en `notas`.
   Incluye los ENUMs `capa_mecanismo`, `tipo_vinculo_externo`, `mecanismo_libro` (los 10
   mecanismos con nombre propio del libro, Tablas 4 y 5), `clasificacion_final`,
   `nivel_alerta`.
-- **`seed_vectores.json`** — los 13 vectores investigados y clasificados hasta ahora,
+- **`seed_vectores.json`** — los 16 vectores investigados y clasificados hasta ahora,
   cada uno con sector, actor extranjero, país de origen, mecanismo (texto libre +
   `mecanismo_libro` normalizado), régimen legal, los 4 scores del classification test,
   notas con las fuentes que sostienen cada score, y `activo` (uno cerrado: Sinopec
@@ -151,7 +151,7 @@ por `vectores_api/`, se conserva como artefacto histórico.
 | I | Revolving doors | (sin vector confirmado — ver `puertas_giratorias_hallazgos.md`) |
 | I | Dependency arrangements | — |
 | II | Media / narrative capture | `medios-china-daily-china-watch` |
-| II | Infrastructure investments | `atucha-iii-cnnc`, `litio-tolillar-rosatom-uranium-one`, `agro-cofco-terminal-timbues`, `petroleo-sinopec-golfo-san-jorge-cerrado` (cerrado) |
+| II | Infrastructure investments | `atucha-iii-cnnc`, `litio-tolillar-rosatom-uranium-one`, `agro-cofco-terminal-timbues`, `petroleo-sinopec-golfo-san-jorge-cerrado` (cerrado), `represas-santa-cruz-gezhouba`, `belgrano-cargas-cmec`, `solar-cauchari-jujuy-powerchina` |
 | II | Soft power projects | `institutos-confucio-uba-unlp-unc-mendoza` |
 | II | Lawfare / strategic litigation | — |
 | II | External loans / grants | `swap-bcra-pboc-tesoro-eeuu`, `banca-icbc-argentina` |
