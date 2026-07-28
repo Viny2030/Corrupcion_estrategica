@@ -1,0 +1,143 @@
+<svg viewBox="0 0 960 1010" xmlns="http://www.w3.org/2000/svg" role="img">
+  <title>Arquitectura del módulo Vectores de Influencia Estatal Extranjera</title>
+  <desc>Diagrama de flujo de 8 capas: fuentes de datos, ingesta, padrón y matcher CUIT, tabla madre, motor de scoring, clasificación en 4 categorías, capa de API, y consumo por el IRI, los 9 monitores y la tarea semanal programada.</desc>
+
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#6b7280"/>
+    </marker>
+  </defs>
+
+  <rect x="0" y="0" width="960" height="1010" fill="#0f1115"/>
+
+  <line x1="480" y1="98" x2="480" y2="158" stroke="#6b7280" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <line x1="480" y1="218" x2="480" y2="278" stroke="#6b7280" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <line x1="480" y1="338" x2="480" y2="398" stroke="#6b7280" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <line x1="480" y1="470" x2="480" y2="530" stroke="#6b7280" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <line x1="480" y1="602" x2="480" y2="662" stroke="#6b7280" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <line x1="480" y1="726" x2="480" y2="798" stroke="#6b7280" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <line x1="480" y1="854" x2="480" y2="916" stroke="#6b7280" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+  <text x="480" y="14" text-anchor="middle" font-size="11" letter-spacing="1" fill="#9ca3af" font-family="sans-serif">1 · FUENTES DE DATOS</text>
+  <g font-family="sans-serif" font-size="12">
+    <g transform="translate(73,22)">
+      <rect width="190" height="58" rx="8" fill="#1a1d23" stroke="#2a2e37"/>
+      <text x="95" y="26" text-anchor="middle" font-weight="600" fill="#e5e7eb">BORA</text>
+      <text x="95" y="42" text-anchor="middle" font-size="10.5" fill="#9ca3af">Boletín Oficial</text>
+    </g>
+    <g transform="translate(281,22)">
+      <rect width="190" height="58" rx="8" fill="#1a1d23" stroke="#2a2e37"/>
+      <text x="95" y="26" text-anchor="middle" font-weight="600" fill="#e5e7eb">RIGI / ARCA</text>
+      <text x="95" y="42" text-anchor="middle" font-size="10.5" fill="#9ca3af">VPU aprobados</text>
+    </g>
+    <g transform="translate(489,22)">
+      <rect width="190" height="58" rx="8" fill="#1a1d23" stroke="#2a2e37"/>
+      <text x="95" y="26" text-anchor="middle" font-weight="600" fill="#e5e7eb">BCRA</text>
+      <text x="95" y="42" text-anchor="middle" font-size="10.5" fill="#9ca3af">Comunicados swap</text>
+    </g>
+    <g transform="translate(697,22)">
+      <rect width="190" height="58" rx="8" fill="#1a1d23" stroke="#2a2e37"/>
+      <text x="95" y="26" text-anchor="middle" font-weight="600" fill="#e5e7eb">Congreso + Prensa</text>
+      <text x="95" y="42" text-anchor="middle" font-size="10.5" fill="#9ca3af">Discurso público</text>
+    </g>
+  </g>
+
+  <text x="480" y="134" text-anchor="middle" font-size="11" letter-spacing="1" fill="#9ca3af" font-family="sans-serif">2 · INGESTA</text>
+  <g font-family="sans-serif">
+    <g transform="translate(130,142)">
+      <rect width="330" height="58" rx="8" fill="#1a1d23" stroke="#2a2e37"/>
+      <text x="165" y="26" text-anchor="middle" font-weight="600" font-family="monospace" font-size="12" fill="#e5e7eb">ingestion_fuentes_reales.py</text>
+      <text x="165" y="42" text-anchor="middle" font-size="10.5" fill="#9ca3af">BORA confirmado · RIGI/BCRA pendiente</text>
+    </g>
+    <g transform="translate(500,142)">
+      <rect width="330" height="58" rx="8" fill="#1a1d23" stroke="#2a2e37"/>
+      <text x="165" y="26" text-anchor="middle" font-weight="600" font-family="monospace" font-size="12" fill="#e5e7eb">narrative_analysis_module.py</text>
+      <text x="165" y="42" text-anchor="middle" font-size="10.5" fill="#9ca3af">talking points · framing · SLAPP</text>
+    </g>
+  </g>
+
+  <text x="480" y="254" text-anchor="middle" font-size="11" letter-spacing="1" fill="#9ca3af" font-family="sans-serif">3 · PADRÓN Y MATCHER</text>
+  <g font-family="sans-serif">
+    <g transform="translate(130,262)">
+      <rect width="330" height="58" rx="8" fill="#1a1d23" stroke="#2a2e37"/>
+      <text x="165" y="26" text-anchor="middle" font-weight="600" font-family="monospace" font-size="12" fill="#e5e7eb">padron_soes_extranjeras.json</text>
+      <text x="165" y="42" text-anchor="middle" font-size="10.5" fill="#9ca3af">7 empresas · CUIT verificado</text>
+    </g>
+    <g transform="translate(500,262)">
+      <rect width="330" height="58" rx="8" fill="#1a1d23" stroke="#2a2e37"/>
+      <text x="165" y="26" text-anchor="middle" font-weight="600" font-family="monospace" font-size="12" fill="#e5e7eb">matcher_cuit_rigi.py</text>
+      <text x="165" y="42" text-anchor="middle" font-size="10.5" fill="#9ca3af">CUIT exacto + similitud de nombre</text>
+    </g>
+  </g>
+
+  <text x="480" y="374" text-anchor="middle" font-size="11" letter-spacing="1" fill="#9ca3af" font-family="sans-serif">4 · TABLA MADRE</text>
+  <g transform="translate(200,382)" font-family="sans-serif">
+    <rect width="560" height="70" rx="8" fill="#20242c" stroke="#3a3f4b"/>
+    <text x="280" y="27" text-anchor="middle" font-weight="700" font-size="13.5" fill="#e5e7eb">vectores_influencia_extranjera</text>
+    <text x="280" y="43" text-anchor="middle" font-size="10.5" fill="#9ca3af">+ vector_evidencia + vector_actualizaciones (historial semanal)</text>
+    <text x="280" y="59" text-anchor="middle" font-size="10.5" font-family="monospace" fill="#7dd3fc">schema_vectores_influencia.sql · 10 vectores cargados</text>
+  </g>
+
+  <text x="480" y="506" text-anchor="middle" font-size="11" letter-spacing="1" fill="#9ca3af" font-family="sans-serif">5 · MOTOR DE SCORING</text>
+  <g transform="translate(200,514)" font-family="sans-serif">
+    <rect width="560" height="70" rx="8" fill="#20242c" stroke="#3a3f4b"/>
+    <text x="280" y="27" text-anchor="middle" font-weight="700" font-family="monospace" font-size="13" fill="#e5e7eb">scoring_engine.py</text>
+    <text x="280" y="43" text-anchor="middle" font-size="11" fill="#9ca3af">Classification test — 4 elementos (framework NEST)</text>
+    <text x="280" y="59" text-anchor="middle" font-size="10.5" fill="#9ca3af">inducción · abuso de autoridad · efecto estratégico · vínculo externo</text>
+  </g>
+
+  <text x="480" y="646" text-anchor="middle" font-size="11" letter-spacing="1" fill="#9ca3af" font-family="sans-serif">6 · CLASIFICACIÓN</text>
+  <g font-family="sans-serif" font-size="12">
+    <g transform="translate(73,654)">
+      <rect width="190" height="64" rx="8" fill="#1a1d23" stroke="#7dd3fc" stroke-width="2"/>
+      <text x="95" y="26" text-anchor="middle" font-weight="700" fill="#e5e7eb">Confirmado</text>
+      <text x="95" y="44" text-anchor="middle" font-size="10.5" font-weight="600" fill="#7dd3fc">CRÍTICO</text>
+    </g>
+    <g transform="translate(281,654)">
+      <rect width="190" height="64" rx="8" fill="#1a1d23" stroke="#3a3f4b" stroke-width="1.5"/>
+      <text x="95" y="20" text-anchor="middle" font-weight="700" font-size="11.5" fill="#e5e7eb">Entorno / Dependencia</text>
+      <text x="95" y="34" text-anchor="middle" font-weight="700" font-size="11.5" fill="#e5e7eb">fuerte</text>
+      <text x="95" y="50" text-anchor="middle" font-size="10.5" font-weight="600" fill="#9ca3af">ALTO</text>
+    </g>
+    <g transform="translate(489,654)">
+      <rect width="190" height="64" rx="8" fill="#1a1d23" stroke="#2a2e37"/>
+      <text x="95" y="26" text-anchor="middle" font-weight="700" fill="#e5e7eb">Zona gris</text>
+      <text x="95" y="44" text-anchor="middle" font-size="10.5" font-weight="600" fill="#9ca3af">MEDIO</text>
+    </g>
+    <g transform="translate(697,654)">
+      <rect width="190" height="64" rx="8" fill="#1a1d23" stroke="#2a2e37"/>
+      <text x="95" y="26" text-anchor="middle" font-weight="700" fill="#e5e7eb">Fuera de alcance</text>
+      <text x="95" y="44" text-anchor="middle" font-size="10.5" font-weight="600" fill="#9ca3af">VIGILAR</text>
+    </g>
+  </g>
+  <text x="480" y="738" text-anchor="middle" font-size="10.5" fill="#9ca3af" font-family="sans-serif">Nivel de alerta CRÍTICO → VIGILAR, mismo criterio que ya usa Monitor DDJJ</text>
+
+  <text x="480" y="794" text-anchor="middle" font-size="11" letter-spacing="1" fill="#9ca3af" font-family="sans-serif">7 · API</text>
+  <g transform="translate(260,802)" font-family="sans-serif">
+    <rect width="440" height="56" rx="8" fill="#1a1d23" stroke="#3a3f4b"/>
+    <text x="220" y="24" text-anchor="middle" font-weight="700" font-family="monospace" font-size="13" fill="#e5e7eb">api_endpoints.py</text>
+    <text x="220" y="41" text-anchor="middle" font-size="10.5" font-family="monospace" fill="#9ca3af">/api/vectores · /api/alertas?plataforma=X</text>
+  </g>
+
+  <text x="480" y="912" text-anchor="middle" font-size="11" letter-spacing="1" fill="#9ca3af" font-family="sans-serif">8 · CONSUMO</text>
+  <g font-family="sans-serif" font-size="12">
+    <g transform="translate(60,920)">
+      <rect width="260" height="66" rx="8" fill="#1a1d23" stroke="#2a2e37"/>
+      <text x="130" y="26" text-anchor="middle" font-weight="700" fill="#e5e7eb">IRI</text>
+      <text x="130" y="42" text-anchor="middle" font-size="10.5" fill="#9ca3af">Dimensión R_Internacional</text>
+      <text x="130" y="56" text-anchor="middle" font-size="10" fill="#9ca3af">(gancho ya existente)</text>
+    </g>
+    <g transform="translate(350,920)">
+      <rect width="260" height="66" rx="8" fill="#1a1d23" stroke="#2a2e37"/>
+      <text x="130" y="26" text-anchor="middle" font-weight="700" font-size="11.5" fill="#e5e7eb">9 monitores del ecosistema</text>
+      <text x="130" y="42" text-anchor="middle" font-size="10" fill="#9ca3af">Legislativo · Contratos · DDJJ</text>
+      <text x="130" y="56" text-anchor="middle" font-size="10" fill="#9ca3af">MEACI y el resto</text>
+    </g>
+    <g transform="translate(640,920)">
+      <rect width="260" height="66" rx="8" fill="#1a1d23" stroke="#2a2e37"/>
+      <text x="130" y="26" text-anchor="middle" font-weight="700" font-size="11.5" fill="#e5e7eb">Tarea semanal programada</text>
+      <text x="130" y="42" text-anchor="middle" font-size="10" fill="#9ca3af">Lunes 8:00 — WebSearch</text>
+      <text x="130" y="56" text-anchor="middle" font-size="10" fill="#9ca3af">+ clasificación automática</text>
+    </g>
+  </g>
+</svg>
