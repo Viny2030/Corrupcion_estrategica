@@ -88,5 +88,50 @@
     "vinculo_externo": "exogeno_directo",
     "notas": "Efecto es legitimación reputacional/narrativa, no institucional/regulatorio. Se vuelve corrupción estratégica solo si se liga a trato preferencial o canales de acceso para inteligencia extranjera (sin indicio de eso hoy).",
     "fuentes": []
+  },
+  {
+    "slug": "defensa-armamento-rusia-china",
+    "sector": "defensa / armamento",
+    "actor_extranjero": "Rosoboronexport (oferta MiG-35/Yak-130), sin contraparte china confirmada",
+    "pais_origen": "Rusia / China",
+    "contraparte_argentina": "Fuerzas Armadas Argentinas",
+    "mecanismo": "Rosoboronexport activo en la región (LAAD 2025) y con ofertas históricas a Argentina, pero las adquisiciones en curso (armamento portátil 2025-2027) se orientan a proveedores occidentales/israelíes",
+    "regimen_legal": null,
+    "score_induccion": 0,
+    "score_abuso_autoridad": 0,
+    "score_efecto_estrategico": 0,
+    "vinculo_externo": "sin_vinculo",
+    "notas": "Sin caso concreto materializado a jul-2026. Vector a vigilar: Rusia corteja activamente a la región, China no tiene oferta de armamento formal conocida a Argentina. Excluye la disputa por el radar en Tierra del Fuego con Reino Unido, que es un caso distinto (no involucra actor estatal extranjero rival en el sentido NEST).",
+    "fuentes": []
+  },
+  {
+    "slug": "hidrovia-parana-paraguay-dragado",
+    "sector": "puertos / infraestructura logística",
+    "actor_extranjero": "Jan de Nul (Bélgica), DEME (Bélgica) — sin operador estatal chino o ruso en la licitación",
+    "pais_origen": "Bélgica",
+    "contraparte_argentina": "ANPYN (Agencia Nacional de Puertos y Navegabilidad)",
+    "mecanismo": "Licitación pública nacional e internacional para dragado y mantenimiento; preadjudicada a Jan de Nul, operador histórico desde 1995",
+    "regimen_legal": "Concesión de obra pública por peaje",
+    "score_induccion": 0,
+    "score_abuso_autoridad": 0,
+    "score_efecto_estrategico": 0,
+    "vinculo_externo": "sin_vinculo",
+    "notas": "Sector crítico (80% de exportaciones) pero sin actor estatal extranjero rival involucrado en el proceso 2026: ambos oferentes son privados belgas, aliados occidentales. Se mantiene como vector a vigilar por la relevancia estratégica del corredor, no por evidencia actual de riesgo.",
+    "fuentes": []
+  },
+  {
+    "slug": "medios-china-daily-china-watch",
+    "sector": "medios / narrativa",
+    "actor_extranjero": "China Daily (medio estatal PCCh)",
+    "pais_origen": "China",
+    "contraparte_argentina": "Grupo América (El Cronista, La Capital de Rosario)",
+    "mecanismo": "Suplemento pago 'China Watch' insertado quincenalmente desde 2016 en El Cronista y La Capital",
+    "regimen_legal": null,
+    "score_induccion": 0,
+    "score_abuso_autoridad": 0,
+    "score_efecto_estrategico": 1,
+    "vinculo_externo": "exogeno_directo",
+    "notas": "Primer caso concreto de Narrative Analysis Module con evidencia documentada en Argentina (mecanismo calcado del patrón global de inserciones de China Daily descrito por Freedom House). Acuerdo comercial declarado, no encubierto. Efecto limitado a legitimación narrativa; sin indicios de trato preferencial regulatorio a cambio.",
+    "fuentes": []
   }
 ]
