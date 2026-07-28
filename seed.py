@@ -39,6 +39,23 @@ def cargar_seed(db: Session, forzar: bool = False) -> int:
             raw["score_efecto_estrategico"], vinculo,
         )
 
+        # mecanismo_libro: si el valor del seed no matchea ninguno de los 10
+        # mecanismos con nombre propio (ej. texto libre tipo "vigilar
+        # (potencial layer1_X)"), cae a vigilar_sin_mecanismo_confirmado en
+        # vez de romper el insert — pero el seed ya debería traer valores
+        # limpios; este fallback es defensivo, no la fuente de verdad.
+        try:
+            mecanismo_libro = models.MecanismoLibro(raw["mecanismo_libro"])
+        except ValueError:
+            mecanismo_libro = models.MecanismoLibro.vigilar_sin_mecanismo_confirmado
+
+        mecanismo_libro_secundario = None
+        if raw.get("mecanismo_libro_secundario"):
+            try:
+                mecanismo_libro_secundario = models.MecanismoLibro(raw["mecanismo_libro_secundario"])
+            except ValueError:
+                mecanismo_libro_secundario = None
+
         # capa: se infiere heurísticamente si no viene en el seed —
         # Layer I si hay indicio de inducción/abuso, Layer II si no.
         capa = (
@@ -54,6 +71,8 @@ def cargar_seed(db: Session, forzar: bool = False) -> int:
             pais_origen=raw["pais_origen"],
             contraparte_argentina=raw.get("contraparte_argentina"),
             mecanismo=raw["mecanismo"],
+            mecanismo_libro=mecanismo_libro,
+            mecanismo_libro_secundario=mecanismo_libro_secundario,
             regimen_legal=raw.get("regimen_legal"),
             capa=capa,
             score_induccion=raw["score_induccion"],
@@ -64,6 +83,7 @@ def cargar_seed(db: Session, forzar: bool = False) -> int:
             nivel_alerta=resultado.nivel_alerta,
             detalle_clasificacion=resultado.detalle,
             notas=raw.get("notas", ""),
+            activo=raw.get("activo", True),
         )
         db.add(vector)
         insertados += 1

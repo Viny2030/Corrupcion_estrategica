@@ -5,7 +5,7 @@ from typing import Optional
 
 from pydantic import BaseModel, ConfigDict, Field
 
-from models import CapaMecanismo, Clasificacion, NivelAlerta, VinculoExterno
+from models import CapaMecanismo, Clasificacion, MecanismoLibro, NivelAlerta, VinculoExterno
 
 
 class VectorCreate(BaseModel):
@@ -14,6 +14,8 @@ class VectorCreate(BaseModel):
     actor_extranjero: str
     pais_origen: str
     mecanismo: str
+    mecanismo_libro: MecanismoLibro
+    mecanismo_libro_secundario: Optional[MecanismoLibro] = None
     contraparte_argentina: Optional[str] = None
     regimen_legal: Optional[str] = None
     capa: CapaMecanismo
@@ -43,6 +45,8 @@ class VectorOut(BaseModel):
     pais_origen: str
     contraparte_argentina: Optional[str]
     mecanismo: str
+    mecanismo_libro: MecanismoLibro
+    mecanismo_libro_secundario: Optional[MecanismoLibro]
     regimen_legal: Optional[str]
     capa: CapaMecanismo
     score_induccion: int

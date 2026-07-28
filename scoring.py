@@ -15,7 +15,10 @@ VINCULO_SCORE = {
     VinculoExterno.exogeno_directo: 3,
     VinculoExterno.proxy_hibrido: 2,
     VinculoExterno.endogeno_alineado: 1,
-    VinculoExterno.mimetico: 1,
+    # mimetico: el libro (p.15) lo clasifica explícitamente "outside the
+    # scope of strategic corruption" — no es un vínculo débil, es una
+    # exclusión categórica (mejor entendido como state capture doméstico).
+    VinculoExterno.mimetico: 0,
     VinculoExterno.sin_vinculo: 0,
 }
 

@@ -28,8 +28,26 @@ class VinculoExterno(str, enum.Enum):
     exogeno_directo = "exogeno_directo"
     proxy_hibrido = "proxy_hibrido"
     endogeno_alineado = "endogeno_alineado"
-    mimetico = "mimetico"
+    mimetico = "mimetico"  # el libro (p.15) lo excluye del alcance — ver scoring.py
     sin_vinculo = "sin_vinculo"
+
+
+class MecanismoLibro(str, enum.Enum):
+    """Los 10 mecanismos con nombre propio del libro (Tablas 4 y 5, cap. 1)."""
+    # Layer I — mecanismos directos
+    layer1_political_bribery_elite_inducement = "layer1_political_bribery_elite_inducement"
+    layer1_legislative_manipulation = "layer1_legislative_manipulation"
+    layer1_procurement_manipulation = "layer1_procurement_manipulation"
+    layer1_revolving_doors = "layer1_revolving_doors"
+    layer1_dependency_arrangements = "layer1_dependency_arrangements"
+    # Layer II — entorno habilitante
+    layer2_media_narrative_capture = "layer2_media_narrative_capture"
+    layer2_infrastructure_investments = "layer2_infrastructure_investments"
+    layer2_soft_power_projects = "layer2_soft_power_projects"
+    layer2_lawfare_strategic_litigation = "layer2_lawfare_strategic_litigation"
+    layer2_external_loans_grants = "layer2_external_loans_grants"
+    # sin mecanismo materializado todavía
+    vigilar_sin_mecanismo_confirmado = "vigilar_sin_mecanismo_confirmado"
 
 
 class Clasificacion(str, enum.Enum):
@@ -57,6 +75,8 @@ class VectorInfluencia(Base):
     pais_origen = Column(String, nullable=False)
     contraparte_argentina = Column(String, nullable=True)
     mecanismo = Column(Text, nullable=False)
+    mecanismo_libro = Column(Enum(MecanismoLibro), nullable=False)
+    mecanismo_libro_secundario = Column(Enum(MecanismoLibro), nullable=True)
     regimen_legal = Column(String, nullable=True)
     capa = Column(Enum(CapaMecanismo), nullable=False)
 
