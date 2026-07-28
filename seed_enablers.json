@@ -1,0 +1,39 @@
+{
+  "enablers_ecosistema": [
+    {
+      "nombre": "Marval O'Farrell Mairal",
+      "tipo": "estudio_juridico",
+      "personas_clave": "Luis Lucero (socio hasta 2024, luego secretario de Minería de la Nación)",
+      "descripcion_rol": "Asesoría legal a mineras internacionales (M&A, activos mineros)",
+      "nivel_confianza": "confirmado",
+      "fuente_verificacion": "https://www.eldiarioar.com/politica/denuncian-penalmente-secretario-mineria-presunto-conflicto-intereses-ley-glaciares_1_13125406.html",
+      "notas": "Clientes reportados por la denuncia: Glencore, Rio Tinto, AngloGold Ashanti, Vale, Newmont. Ninguno es SOE china/rusa; se registra por ser el nodo profesional del funcionario que hoy integra el Comité Evaluador RIGI que sí falla sobre litio chino (Zijin/Ganfeng)."
+    }
+  ],
+  "funcionario_antecedente_privado": [
+    {
+      "funcionario": "Luis Lucero",
+      "cargo_publico": "Secretario de Minería de la Nación (desde abril 2024)",
+      "entidad_privada_previa": "Marval O'Farrell Mairal",
+      "clientes_relevantes": "Glencore, Rio Tinto, AngloGold Ashanti, Vale, Newmont",
+      "nodo_decisorio": "Comité Evaluador de Proyectos RIGI / Secretaría de Minería",
+      "vinculo_con_padron_soes": false,
+      "excusacion_formal": true,
+      "excusacion_efectiva": null,
+      "fuente_verificacion": "https://www.eldiarioar.com/politica/denuncian-penalmente-secretario-mineria-presunto-conflicto-intereses-ley-glaciares_1_13125406.html",
+      "notas": "Excusado de expedientes de Glencore Pachón, Minera Alumbrera/Agua Rica (MARA). Denuncia penal (abr-2026) sostiene que la excusación no cubrió su intervención en la reforma general de la Ley de Glaciares. Sin vínculo verificado a Zijin/Ganfeng -- se registra como nodo a vigilar, no como caso confirmado, porque vinculo_con_padron_soes=false."
+    }
+  ],
+  "pendientes_de_verificar": [
+    {
+      "item": "Representación legal de Zijin/Liex, Ganfeng, Huawei, ICBC, COFCO en Argentina",
+      "estado": "Sin resultado en búsqueda de prensa especializada (jul-2026). La representación legal de estas empresas no se declara públicamente salvo en litigios o en registros societarios de IGJ, que requieren consulta directa al organismo (no vía búsqueda web).",
+      "proximo_paso": "Consultar IGJ (Inspección General de Justicia) por razón social de cada empresa del padrón para identificar apoderados/directores declarados, que suelen coincidir con estudios jurídicos representantes."
+    },
+    {
+      "item": "Auditoras de estados contables de las empresas del padrón",
+      "estado": "No investigado esta corrida.",
+      "proximo_paso": "Balances depositados en IGJ o AFIP suelen identificar auditora externa; requiere acceso a expediente societario."
+    }
+  ]
+}
