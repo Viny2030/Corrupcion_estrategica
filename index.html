@@ -66,6 +66,25 @@
   .pend{color:var(--muted);font-size:12.5px;line-height:1.6;padding:10px 0;border-top:1px dashed var(--border);margin-top:10px}
   footer{color:var(--muted);font-size:12px;padding:20px 28px 40px;border-top:1px solid var(--border);margin-top:30px;line-height:1.7}
   a{color:var(--accent)}
+
+  .tabs{display:flex;gap:4px;padding:0 28px;border-bottom:1px solid var(--border);background:var(--panel)}
+  .tab-btn{background:none;border:none;color:var(--muted);padding:12px 16px;font-size:13.5px;cursor:pointer;border-bottom:2px solid transparent;font-family:inherit}
+  .tab-btn:hover{color:var(--text)}
+  .tab-btn.active{color:var(--text);border-bottom-color:var(--accent)}
+  .tabcontent{display:none}
+  .tabcontent.active{display:block}
+  .manual{padding:24px 28px 60px;max-width:900px;margin:0 auto;line-height:1.65}
+  .manual h2{font-size:17px;margin:30px 0 8px}
+  .manual h2:first-child{margin-top:6px}
+  .manual p{margin:0 0 10px;font-size:13.5px}
+  .manual ul{margin:0 0 10px;padding-left:20px;font-size:13.5px}
+  .manual li{margin-bottom:6px}
+  .manual .legend-row{display:flex;align-items:center;gap:10px;margin-bottom:6px;font-size:13px}
+  .manual .legend-row .badge{min-width:70px;text-align:center}
+  .manual table{width:100%;border-collapse:collapse;margin:10px 0 18px;font-size:13px}
+  .manual table th, .manual table td{text-align:left;padding:6px 10px;border-bottom:1px solid var(--border)}
+  .manual table th{color:var(--muted);font-weight:600}
+  .manual .callout{background:var(--panel);border:1px solid var(--border);border-left:3px solid var(--accent);border-radius:0 6px 6px 0;padding:12px 14px;margin:14px 0;font-size:13px}
 </style>
 </head>
 <body>
@@ -78,6 +97,12 @@
   </div>
 </header>
 
+<nav class="tabs">
+  <button class="tab-btn active" data-tab="panel">Panel</button>
+  <button class="tab-btn" data-tab="manual">Manual de uso</button>
+</nav>
+
+<div id="tab-panel" class="tabcontent active">
 <main>
   <div class="kpis" id="kpis"></div>
 
@@ -122,6 +147,71 @@
 <footer>
   Archivos fuente de este panel: <code>seed_vectores.json</code>, <code>seed_enablers.json</code>. Lógica de clasificación replicada de <code>vectores_api/scoring.py</code>. Ver <code>README.md</code> para el resto del módulo (schema SQL, API FastAPI, matcher CUIT, scrapers, narrative module).
 </footer>
+</div>
+
+<div id="tab-manual" class="tabcontent">
+<div class="manual">
+
+  <h2>Qué es esto</h2>
+  <p>Esta plataforma junta los casos detectados donde un estado extranjero — hoy, China y Rusia — usa inversión, financiamiento o infraestructura como palanca sobre una decisión pública argentina. Cada caso se llama <strong>vector</strong>. A cada vector se le aplica una rúbrica fija (el "classification test" del framework NEST) para que la prioridad de seguimiento no dependa de una impresión subjetiva sino de evidencia puntuada.</p>
+  <p>No es una herramienta de acusación: es un sistema de triage, para saber qué mirar primero.</p>
+
+  <h2>Cómo leer la pestaña Panel</h2>
+  <p>Arriba hay seis números (KPIs): cuántos vectores están activos y cuántos caen en cada nivel de alerta. Debajo, la tabla lista todos los vectores; hacé click en cualquier fila para ver el detalle completo (scores, mecanismo, notas y fuentes).</p>
+
+  <h2>Los cuatro niveles de clasificación</h2>
+  <p>Cada vector se clasifica automáticamente según cuatro puntajes (0 a 3): inducción, abuso de autoridad, efecto estratégico y vínculo con el estado extranjero. La combinación de esos cuatro números determina la clasificación:</p>
+  <table>
+    <tr><th>Clasificación</th><th>Qué significa</th></tr>
+    <tr><td><span class="badge c-confirmado">Confirmado</span></td><td>Los cuatro elementos están presentes con fuerza moderada o mayor. Es el caso más grave: hay indicio de inducción, abuso de autoridad, efecto estratégico y vínculo externo simultáneamente.</td></tr>
+    <tr><td><span class="badge c-entorno_dependencia_fuerte">Entorno de dependencia fuerte</span></td><td>El efecto estratégico y el vínculo externo son claros, pero todavía no hay evidencia de inducción o abuso de autoridad. Es dependencia estructural, no necesariamente corrupción.</td></tr>
+    <tr><td><span class="badge c-zona_gris">Zona gris</span></td><td>Hay alineamiento legal o político con un actor externo, pero sin evidencia de incentivo transaccional ni abuso de autoridad. Amerita seguimiento, no alarma.</td></tr>
+    <tr><td><span class="badge c-fuera_de_alcance">Fuera de alcance</span></td><td>No hay dimensión geopolítica sostenida ni vínculo relevante con un actor externo. Se mantiene en la base como referencia, no como caso activo.</td></tr>
+  </table>
+
+  <h2>Los cinco niveles de alerta</h2>
+  <p>Es una segunda capa, más operativa, que traduce la clasificación en urgencia de revisión:</p>
+  <div class="legend-row"><span class="badge b-CRITICO">CRITICO</span> caso confirmado — máxima prioridad.</div>
+  <div class="legend-row"><span class="badge b-ALTO">ALTO</span> entorno de dependencia fuerte, con efecto o vínculo en su punto máximo.</div>
+  <div class="legend-row"><span class="badge b-MEDIO">MEDIO</span> entorno de dependencia moderado, o zona gris con ambos factores presentes.</div>
+  <div class="legend-row"><span class="badge b-BAJO">BAJO</span> zona gris débil — un solo factor presente.</div>
+  <div class="legend-row"><span class="badge b-VIGILAR">VIGILAR</span> fuera de alcance por ahora, pero con un mecanismo potencial identificado — se revisa en cada corrida.</div>
+
+  <h2>Cómo filtrar y buscar</h2>
+  <ul>
+    <li><strong>Buscar:</strong> escribí cualquier palabra (actor, sector, país, nombre del vector) y la tabla se filtra en el momento.</li>
+    <li><strong>Sector / Clasificación / Alerta:</strong> tres desplegables para acotar la lista a lo que te interesa revisar.</li>
+    <li><strong>Solo activos / Incluir cerrados:</strong> por default no se muestran los vectores cerrados (como el caso Sinopec, que fue una desinversión). Cambiá el filtro si necesitás verlos.</li>
+  </ul>
+
+  <h2>Sección Ecosistema de enablers</h2>
+  <p>Lista estudios jurídicos, auditoras y bancos vinculados a las empresas del padrón. Cada entrada tiene un nivel de confianza porque, a diferencia de los vectores, la representación legal de una empresa casi nunca es pública:</p>
+  <ul>
+    <li><span class="conf conf-confirmado" style="display:inline-block">confirmado</span> — hay una fuente pública directa (nota periodística con el dato, expediente judicial, registro societario).</li>
+    <li><span class="conf conf-reportado" style="display:inline-block">reportado</span> — lo dice un tercero (prensa, informe), sin documento primario a la vista.</li>
+    <li><span class="conf conf-inferido" style="display:inline-block">inferido</span> — coincidencia de sector o tiempo, sin vínculo declarado. Se trata como hipótesis, no como hallazgo.</li>
+  </ul>
+  <p>Abajo de esa lista aparecen los "pendientes de verificar": lo que se buscó y no se encontró, con el próximo paso sugerido para cerrarlo (típicamente, consultar directamente el registro societario en IGJ).</p>
+
+  <h2>Sección Marco legal-institucional</h2>
+  <p>Resume si Argentina tiene las herramientas legales para contener este tipo de influencia: adhesión a los tratados internacionales de anticorrupción (sí, están todos) y un mecanismo de filtro de inversión extranjera por seguridad nacional (no existe todavía, más allá de un proyecto de ley acotado a tierras rurales en debate). El detalle completo, con las fuentes, está en <code>anexo_marco_legal_argentina.md</code>.</p>
+
+  <div class="callout">
+    <strong>Sobre los datos:</strong> este panel lee un archivo fijo (<code>seed_vectores.json</code>) y calcula la clasificación en el momento, en tu navegador — no hay una base de datos corriendo detrás todavía. Cuando se conecte a la base de datos real, esta pantalla no cambia de uso: se sigue leyendo, filtrando y haciendo click igual, solo que los números se actualizan solos con cada corrida semanal en vez de quedar fijos en la fecha en que se generó este archivo.
+  </div>
+
+  <h2>Glosario rápido</h2>
+  <table>
+    <tr><td><strong>Vector</strong></td><td>Un caso concreto de posible influencia estatal extranjera sobre una decisión argentina.</td></tr>
+    <tr><td><strong>RIGI</strong></td><td>Régimen de Incentivo para Grandes Inversiones (Ley 27.742) — el esquema que agiliza la entrada de inversiones extranjeras grandes en Argentina.</td></tr>
+    <tr><td><strong>VPU</strong></td><td>Vehículo de Proyecto Único — la sociedad que se inscribe para acogerse al RIGI.</td></tr>
+    <tr><td><strong>SOE</strong></td><td>State-Owned Enterprise — empresa de propiedad o control estatal (ej. CNNC, COFCO, ICBC).</td></tr>
+    <tr><td><strong>Mecanismo Layer I / Layer II</strong></td><td>Clasificación del libro NEST: Layer I son mecanismos directos de corrupción (soborno, manipulación legislativa o de licitaciones, puertas giratorias); Layer II es el entorno habilitante (infraestructura, soft power, medios, deuda).</td></tr>
+    <tr><td><strong>Puerta giratoria</strong></td><td>Un funcionario que pasa del sector privado al público (o viceversa) y decide sobre asuntos vinculados a sus antiguos clientes o empleadores.</td></tr>
+  </table>
+
+</div>
+</div>
 
 <script>
 const VECTORES = [
@@ -298,6 +388,16 @@ document.getElementById("enablers").innerHTML = ENABLERS.map(e=>`
 document.getElementById("pendientes").innerHTML = "<strong>Pendientes de verificar:</strong><br>" + PENDIENTES.map(p=>
   `• ${p.item} — <span class="muted">${p.estado} ${p.proximo_paso}</span>`
 ).join("<br>");
+
+// --- pestañas ---
+document.querySelectorAll(".tab-btn").forEach(btn=>{
+  btn.addEventListener("click", ()=>{
+    document.querySelectorAll(".tab-btn").forEach(b=>b.classList.remove("active"));
+    document.querySelectorAll(".tabcontent").forEach(c=>c.classList.remove("active"));
+    btn.classList.add("active");
+    document.getElementById("tab-"+btn.dataset.tab).classList.add("active");
+  });
+});
 </script>
 </body>
 </html>
