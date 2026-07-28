@@ -133,5 +133,20 @@
     "vinculo_externo": "exogeno_directo",
     "notas": "Primer caso concreto de Narrative Analysis Module con evidencia documentada en Argentina (mecanismo calcado del patrón global de inserciones de China Daily descrito por Freedom House). Acuerdo comercial declarado, no encubierto. Efecto limitado a legitimación narrativa; sin indicios de trato preferencial regulatorio a cambio.",
     "fuentes": []
+  },
+  {
+    "slug": "litio-tolillar-rosatom-uranium-one",
+    "sector": "litio/minería",
+    "actor_extranjero": "Uranium One Holding N.V. (subsidiaria de Rosatom)",
+    "pais_origen": "Rusia",
+    "contraparte_argentina": "Alpha Lithium Argentina S.A. (hoy subsidiaria de Tecpetrol/Techint)",
+    "mecanismo": "Rosatom, vía Uranium One, tomó en 2021 un 15% de Alpha One Lithium B.V. (dueña de Alpha Lithium Argentina, proyecto Tolillar) con opción a subir a 50% por USD 185M",
+    "regimen_legal": null,
+    "score_induccion": 0,
+    "score_abuso_autoridad": 0,
+    "score_efecto_estrategico": 1,
+    "vinculo_externo": "exogeno_directo",
+    "notas": "Vector 'dormido': Alpha Lithium Corp (matriz canadiense) fue adquirida en 2023 por Tecpetrol, y no está confirmado si Uranium One retuvo el stake/la opción de compra tras esa operación. Es la contraparte rusa al vector chino de litio/RIGI — mismo mecanismo (Layer II, acceso a litio como 'strategic asset'), actor distinto. Prioridad de la corrida semanal: confirmar estado societario actual de Uranium One en el proyecto.",
+    "fuentes": []
   }
 ]

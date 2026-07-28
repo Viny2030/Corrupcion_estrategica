@@ -1,0 +1,71 @@
+[
+  {
+    "razon_social": "GANFENG LITIO ARGENTINA S.A.",
+    "cuit": "30-71642060-0",
+    "matriz": "Ganfeng Lithium Co., Ltd.",
+    "pais_origen": "China",
+    "tipo_vinculo": "empresa privada alineada con política industrial estatal (litio, sector estratégico designado)",
+    "provincia": "Salta",
+    "sector": "litio/minería",
+    "socio_relevante": "Ganfeng Lithium Netherlands CO., B.V. (CUIT 30-71632625-6)",
+    "verificado": true,
+    "fuente": "cuitonline.com / dateas.com"
+  },
+  {
+    "razon_social": "LIEX S.A.",
+    "cuit": "30-71513288-1",
+    "matriz": "Zijin Mining Group Co., Ltd.",
+    "pais_origen": "China",
+    "tipo_vinculo": "matriz con accionista de control estatal (Minxi Xinghang State-owned Assets Investment, Fujian)",
+    "provincia": "Catamarca",
+    "sector": "litio/minería",
+    "proyecto": "Tres Quebradas (Fiambalá)",
+    "verificado": true,
+    "fuente": "dateas.com"
+  },
+  {
+    "razon_social": "HUAWEI S.A.",
+    "cuit": "30-71132726-2",
+    "matriz": "Huawei Technologies Co., Ltd.",
+    "pais_origen": "China",
+    "tipo_vinculo": "vínculos estrechos con el partido-estado chino (señalado por Freedom House / CSIS)",
+    "provincia": "CABA",
+    "sector": "telecomunicaciones",
+    "verificado": true,
+    "fuente": "cuitonline.com (constituida 2009-10-27). Nota: existe también HUAWEI TECH INVESTMENT CO LTD, CUIT 30-70768991-5, entidad de inversión separada — verificar cuál factura contra el Estado en cada licitación."
+  },
+  {
+    "razon_social": "CNNC (China National Nuclear Corporation) - vía NA-SA",
+    "cuit": null,
+    "matriz": "China National Nuclear Corporation",
+    "pais_origen": "China",
+    "tipo_vinculo": "empresa estatal china, contraparte de acuerdo interestatal (no tiene VPU/CUIT propio en Argentina, opera vía convenio con NA-SA)",
+    "provincia": "Buenos Aires (Atucha)",
+    "sector": "nuclear",
+    "verificado": false,
+    "fuente": "no aplica matching CUIT — mecanismo distinto (acuerdo interestatal, no VPU)"
+  },
+  {
+    "razon_social": "ASCENTIO TECHNOLOGIES S.A.",
+    "cuit": "30-71074258-4",
+    "matriz": "Emposat / Beijing Aerospace Yuxing Technology (vinculada a Fuerza Aeroespacial del EPL, según investigación del Congreso de EEUU, feb-2026)",
+    "pais_origen": "Argentina (socio local) / China (socio tecnológico)",
+    "tipo_vinculo": "joint venture argentino-china, estación terrena Río Gallegos (4-6 antenas banda X/C, TT&C)",
+    "provincia": "Santa Cruz",
+    "sector": "espacio / doble uso",
+    "verificado": true,
+    "fuente": "cuitonline.com. Nota: CUIT es de la contraparte argentina (Ascentio), no de Emposat — sirve para trackear licitaciones/contratos estatales donde Ascentio es parte, no para matching directo con la empresa china."
+  },
+  {
+    "razon_social": "ALPHA LITHIUM ARGENTINA S.A.",
+    "cuit": "30-71714260-4",
+    "matriz": "Uranium One Holding N.V. (subsidiaria de Rosatom, Rusia) — vía Alpha One Lithium B.V.",
+    "pais_origen": "Rusia",
+    "tipo_vinculo": "participación minoritaria con opción a control (Rosatom/Uranium One tomó 15% de Alpha One Lithium B.V. en 2021 con opción a 50%; proyecto Tolillar, Salta)",
+    "provincia": "Salta",
+    "sector": "litio/minería",
+    "proyecto": "Tolillar",
+    "verificado": true,
+    "fuente": "cuitonline.com, pv-magazine-latam, mining-technology.com. ALERTA DE ESTADO: Alpha Lithium Corp (matriz canadiense) fue adquirida en 2023 por Tecpetrol (Techint, Argentina) — hay que verificar si Uranium One retuvo su stake/opción tras esa adquisición o si quedó diluido/extinguido. Vector 'dormido' a confirmar en la corrida semanal."
+  }
+]
