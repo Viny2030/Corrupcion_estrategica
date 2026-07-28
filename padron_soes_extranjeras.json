@@ -67,5 +67,39 @@
     "proyecto": "Tolillar",
     "verificado": true,
     "fuente": "cuitonline.com, pv-magazine-latam, mining-technology.com. ALERTA DE ESTADO: Alpha Lithium Corp (matriz canadiense) fue adquirida en 2023 por Tecpetrol (Techint, Argentina) — hay que verificar si Uranium One retuvo su stake/opción tras esa adquisición o si quedó diluido/extinguido. Vector 'dormido' a confirmar en la corrida semanal."
+  },
+  {
+    "razon_social": "INDUSTRIAL AND COMMERCIAL BANK OF CHINA (ARGENTINA) S.A.U.",
+    "cuit": "30-70944784-6",
+    "matriz": "Industrial and Commercial Bank of China Ltd. (uno de los 'Big Four' bancos estatales chinos)",
+    "pais_origen": "China",
+    "tipo_vinculo": "subsidiaria 100% china desde jun-2026 (ICBC compró el 20% restante en manos de Standard Bank London)",
+    "provincia": "CABA",
+    "sector": "financiero / banca",
+    "verificado": true,
+    "fuente": "cuitonline.com, mercado.com.ar, moodyslocal.com.ar. 4,8% de participación en el sistema financiero, financiamiento de comercio bilateral en RMB, prefinanciación de exportaciones creció 234,6% interanual."
+  },
+  {
+    "razon_social": "COFCO INTERNATIONAL ARGENTINA S.A.",
+    "cuit": "33-50673744-9",
+    "matriz": "COFCO Group (empresa estatal china, bajo supervisión de SASAC)",
+    "pais_origen": "China",
+    "tipo_vinculo": "empresa estatal china de propiedad directa, operador de infraestructura portuaria estratégica",
+    "provincia": "Santa Fe (Villa Martelli para sede administrativa)",
+    "sector": "agro / granos / puertos",
+    "proyecto": "Terminal portuaria Timbúes (800.000 tn de almacenaje, 1.200 camiones/día)",
+    "verificado": true,
+    "fuente": "cuitonline.com, globalports.com.ar, cofcointernational.com. Primer embarque directo de trigo/maíz argentino a China en +15 años (dic-2025/feb-2026)."
+  },
+  {
+    "razon_social": "SINOPEC ARGENTINA (histórico, cerrado)",
+    "cuit": null,
+    "matriz": "China Petroleum & Chemical Corporation (Sinopec)",
+    "pais_origen": "China",
+    "tipo_vinculo": "ex-operador de yacimientos en Cuenca del Golfo San Jorge (Santa Cruz/Chubut) y Cuyana (Mendoza), 2010-2026",
+    "provincia": "Santa Cruz / Chubut / Mendoza",
+    "sector": "petróleo y gas",
+    "verificado": true,
+    "fuente": "ambito.com, enernews.com. Sinopec vendió sus activos a CGC (familia Eurnekian, capital argentino) en 2026 al vencer la concesión — caso de salida/divestment, no de expansión. Útil como línea de base para medir si la desinversión chino es tendencia en otros sectores."
   }
 ]

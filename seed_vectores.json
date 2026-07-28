@@ -148,5 +148,51 @@
     "vinculo_externo": "exogeno_directo",
     "notas": "Vector 'dormido': Alpha Lithium Corp (matriz canadiense) fue adquirida en 2023 por Tecpetrol, y no está confirmado si Uranium One retuvo el stake/la opción de compra tras esa operación. Es la contraparte rusa al vector chino de litio/RIGI — mismo mecanismo (Layer II, acceso a litio como 'strategic asset'), actor distinto. Prioridad de la corrida semanal: confirmar estado societario actual de Uranium One en el proyecto.",
     "fuentes": []
+  },
+  {
+    "slug": "banca-icbc-argentina",
+    "sector": "financiero / banca",
+    "actor_extranjero": "ICBC (Industrial and Commercial Bank of China)",
+    "pais_origen": "China",
+    "contraparte_argentina": "ICBC Argentina S.A.U. (ex Standard Bank Argentina)",
+    "mecanismo": "ICBC compró en jun-2026 el 20% restante en manos de Standard Bank London y quedó dueño 100%; financiamiento de comercio bilateral en RMB, prefinanciación de exportaciones +234,6% interanual, 4,8% del sistema financiero",
+    "regimen_legal": null,
+    "score_induccion": 0,
+    "score_abuso_autoridad": 0,
+    "score_efecto_estrategico": 2,
+    "vinculo_externo": "exogeno_directo",
+    "notas": "Canal financiero formal y en expansión rápida, no es un caso de corrupción sino de infraestructura de dependencia financiera bilateral (RMB) — mismo tipo de mecanismo que el swap BCRA-PBOC pero vía banca comercial en vez de banca central. Vale la pena trackear el market share como indicador de profundidad de dependencia.",
+    "fuentes": []
+  },
+  {
+    "slug": "agro-cofco-terminal-timbues",
+    "sector": "agro / granos / puertos",
+    "actor_extranjero": "COFCO International (COFCO Group, SOE china bajo SASAC)",
+    "pais_origen": "China",
+    "contraparte_argentina": "COFCO International Argentina S.A.",
+    "mecanismo": "Empresa estatal china opera directamente la terminal portuaria de Timbúes (800.000 tn de almacenaje), primer embarque directo de trigo/maíz argentino a China en +15 años (dic-2025/feb-2026)",
+    "regimen_legal": null,
+    "score_induccion": 0,
+    "score_abuso_autoridad": 0,
+    "score_efecto_estrategico": 2,
+    "vinculo_externo": "exogeno_directo",
+    "notas": "Control directo (no vía proxy corporativo) de infraestructura de exportación de alimentos, un 'strategic asset' en los términos del framework NEST — analogía funcional con capturas de infraestructura portuaria en otros países (Sri Lanka/Hambantota es el caso de referencia del libro, aunque la escala y el mecanismo acá son distintos: aquí es propiedad operativa directa vía inversión, no deuda impaga).",
+    "fuentes": []
+  },
+  {
+    "slug": "petroleo-sinopec-golfo-san-jorge-cerrado",
+    "sector": "petróleo y gas",
+    "actor_extranjero": "Sinopec (China Petroleum & Chemical Corporation)",
+    "pais_origen": "China",
+    "contraparte_argentina": "CGC (Compañía General de Combustibles, familia Eurnekian)",
+    "mecanismo": "Sinopec operó yacimientos en la Cuenca del Golfo San Jorge (Santa Cruz/Chubut) y Cuyana (Mendoza) desde su compra a Occidental Petroleum en 2010; vendió todo a CGC (capital argentino) en 2026 al vencer la concesión",
+    "regimen_legal": null,
+    "score_induccion": 0,
+    "score_abuso_autoridad": 0,
+    "score_efecto_estrategico": 0,
+    "vinculo_externo": "sin_vinculo",
+    "notas": "VECTOR CERRADO (activo=false): caso de salida/divestment, no de expansión — China se retiró del upstream de petróleo y gas en Argentina en 2026. Se mantiene en la tabla como línea de base histórica: útil para comparar contra los vectores activos (litio, nuclear, espacio) y ver si la desinversión petrolera es parte de una reasignación de la exposición china hacia otros sectores estratégicos en vez de una retirada general.",
+    "activo": false,
+    "fuentes": []
   }
 ]
