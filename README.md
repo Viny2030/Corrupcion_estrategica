@@ -39,14 +39,21 @@ documentada, con fuente citada en `notas`.
   notas con las fuentes que sostienen cada score, y `activo` (uno cerrado: Sinopec
   Golfo San Jorge, divestment 2026).
 - **`padron_soes_extranjeras.json`** — registro de empresas estatales/vinculadas a
-  estados extranjeros con CUIT verificado (Ganfeng, Zijin/Liex, Huawei, CNNC vía NA-SA,
-  Ascentio/Emposat, Alpha Lithium/Uranium One-Rosatom, ICBC Argentina, COFCO, Sinopec
-  histórico).
+  estados extranjeros. Con CUIT verificado: Ganfeng, Zijin/Liex, Huawei, Ascentio/Emposat,
+  Alpha Lithium/Uranium One-Rosatom, ICBC Argentina, COFCO. Sin CUIT propio (operan vía
+  contrato/UTE interestatal, no vía VPU con entidad local): CNNC (Atucha III), China
+  Gezhouba (represas Santa Cruz), CMEC (Belgrano Cargas), PowerChina (solar Cauchari) —
+  el mismo patrón de "no aplica matching CUIT directo" que ya tenía CNNC. Sinopec queda
+  como entrada histórica (cerrada, divestment 2026).
 - **`schema_enablers_ecosistema.sql`** + **`seed_enablers.json`** — extensión para el
   "enabling ecosystem" del libro (abogados, auditoras, bancos, academia, medios). Usa
   un campo `nivel_confianza` (confirmado/reportado/inferido/descartado) porque, a
   diferencia de los vectores, la representación legal de estas empresas casi nunca es
-  pública — solo hay un caso confirmado hasta ahora (ver más abajo).
+  pública. Hoy tiene 4 entradas confirmadas (Marval O'Farrell Mairal / Luis Lucero;
+  Beccar Varela y Clifford Chance como asesores de ICBC en la compra a Standard Bank;
+  Bruchou Fernández Madero & Lombardi como asesor del vendedor) y 1 reportada (apoderado
+  de Huawei, registro BORA vencido en 2021). Zijin, Ganfeng y COFCO siguen sin
+  representación legal identificada — ver `pendientes_de_verificar` en el JSON.
 
 ### 2. Motor de clasificación
 
@@ -56,7 +63,7 @@ documentada, con fuente citada en `notas`.
   y el mapeo de `vinculo_externo` a score, incluida la corrección de `mimetico` → 0
   (el libro lo excluye explícitamente del alcance de strategic corruption, p.15 — no es
   un vínculo débil, es una exclusión categórica). Corrible standalone:
-  `python scoring_engine.py` imprime la clasificación de los 13 vectores del seed.
+  `python scoring_engine.py` imprime la clasificación de los 16 vectores del seed.
 - **`vectores_api/scoring.py`** — mismo motor, reimplementado sin imports cruzados para
   que el paquete `vectores_api/` sea autocontenido.
 
@@ -119,11 +126,27 @@ antes de levantar. El esquema es el mismo que `schema_vectores_influencia.sql`.
 `api_endpoints.py` (raíz) es el skeleton original con dict en memoria — quedó superado
 por `vectores_api/`, se conserva como artefacto histórico.
 
-### 6. Diagrama
+### 6. Diagrama y panel
 
 - **`arquitectura_modulo_vectores_influencia.svg`** — flujo de 8 capas: Fuentes →
   Ingesta → Padrón/Matcher → Tabla madre → Motor de Scoring → Clasificación → API →
   Consumo (los 9 monitores + IRI).
+- **`index.html`** — panel visual, autocontenido (abrí el archivo directo en el
+  navegador, no necesita servidor). Tiene dos pestañas:
+  - **Panel**: KPIs por nivel de alerta, tabla filtrable (sector/clasificación/alerta/
+    búsqueda libre), detalle de cada vector al hacer click, sección de enablers y
+    resumen del marco legal.
+  - **Manual de uso**: explica qué es la plataforma, la diferencia entre "mecanismo"
+    (categoría fija asignada a mano) y "clasificación" (calculada sola de los 4
+    scores) con ejemplos reales de la base, los 4 niveles de clasificación y 5 de
+    alerta, cómo filtrar, el glosario (RIGI, VPU, SOE, Layer I/II, puerta giratoria), y
+    una sección de marco legal de la publicación (Ley 27.275, Ley 25.326, doctrina
+    Campillay, doctrina de la real malicia — no es asesoramiento legal, es para que lo
+    revise un abogado antes de publicar el panel fuera de este entorno).
+  - Hoy lee `seed_vectores.json`/`seed_enablers.json` embebidos como array JS y calcula
+    la clasificación en el navegador (misma lógica que `vectores_api/scoring.py`, ver
+    banner amarillo dentro del panel). Para datos vivos: reemplazar el array `VECTORES`
+    por un `fetch('/api/vectores')` una vez que `vectores_api/` esté corriendo.
 
 ### 7. Marco legal-institucional e investigaciones puntuales
 
@@ -159,12 +182,19 @@ por `vectores_api/`, se conserva como artefacto histórico.
 ## Estado y próximos pasos
 
 Todo el código de este pase es correcto por trazado manual (revisión línea por línea de
-la lógica de scoring, del matcher y de los endpoints) — el sandbox de ejecución estuvo
-indisponible durante todo el desarrollo por falta de espacio en disco, así que nada se
-corrió de punta a punta con un intérprete real. Antes de producción: correr
-`pytest`/`uvicorn` de verdad, resolver los TODOs de `ingestion_fuentes_reales.py`
-(endpoint RIGI vía devtools, índice de comunicados BCRA), y completar la verificación
-de enablers vía IGJ (pendiente, ver `seed_enablers.json`).
+la lógica de scoring, del matcher y de los endpoints) — el sandbox de ejecución sigue
+indisponible por falta de espacio en disco (se reintentó varias veces a lo largo del
+desarrollo), así que nada se corrió de punta a punta con un intérprete real. Antes de
+producción: correr `pytest`/`uvicorn` de verdad.
 
-Pendiente de decisión de Vicente: conectar el scheduled task semanal (ya configurado
-para correr los lunes 8am) a estos scrapers reales en vez de al placeholder.
+Pendientes concretos, en orden de lo más al menos bloqueado:
+- **Scrapers de `ingestion_fuentes_reales.py`** (endpoint RIGI vía devtools, índice de
+  comunicados BCRA): bloqueado — requiere la extensión Claude in Chrome conectada para
+  inspeccionar el Network tab; no hay ningún navegador conectado a esta cuenta hoy.
+- **Enablers vía IGJ**: parcialmente resuelto. Se confirmó representación legal para el
+  vector ICBC (Beccar Varela / Clifford Chance). Sigue pendiente para Zijin, Ganfeng,
+  COFCO y el apoderado actual de Huawei — ver `pendientes_de_verificar` en
+  `seed_enablers.json` para el detalle de qué se buscó y qué falta.
+- **Scheduled task semanal** (ya configurado para correr los lunes 8am): sigue apuntando
+  al placeholder, pendiente de decisión de Vicente para conectarlo a los scrapers reales
+  una vez que estén resueltos.
