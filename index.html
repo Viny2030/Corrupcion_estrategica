@@ -159,6 +159,22 @@
   <h2>Cómo leer la pestaña Panel</h2>
   <p>Arriba hay seis números (KPIs): cuántos vectores están activos y cuántos caen en cada nivel de alerta. Debajo, la tabla lista todos los vectores; hacé click en cualquier fila para ver el detalle completo (scores, mecanismo, notas y fuentes).</p>
 
+  <h2>Mecanismo vs. Clasificación: son dos preguntas distintas</h2>
+  <p>Es la parte que más se presta a confusión, así que va aparte antes de explicar cada una:</p>
+  <ul>
+    <li><strong>Mecanismo</strong> contesta "¿por qué canal actúa la influencia?". Es una de las 10 categorías con nombre propio del libro NEST (manipulación legislativa, inversión en infraestructura, puertas giratorias, etc. — ver glosario). <em>Se carga a mano</em> al analizar el caso, leyendo la evidencia. El sistema no lo calcula ni lo infiere.</li>
+    <li><strong>Clasificación</strong> contesta "¿qué tan grave es lo que está probado hasta ahora?". <em>Sale sola</em>, automáticamente, de cuatro puntajes (inducción, abuso de autoridad, efecto estratégico, vínculo externo) — no depende de qué mecanismo sea.</li>
+  </ul>
+  <p>Por eso el mecanismo no determina la clasificación, ni al revés. Dos vectores con el mismo mecanismo pueden terminar en clasificaciones distintas, y dos con mecanismos distintos pueden terminar en la misma. Ejemplos reales de esta base:</p>
+  <table>
+    <tr><th>Vector</th><th>Mecanismo</th><th>Clasificación</th></tr>
+    <tr><td>atucha-iii-cnnc</td><td>Infraestructura (Layer II)</td><td><span class="badge c-entorno_dependencia_fuerte">Entorno de dependencia fuerte</span></td></tr>
+    <tr><td>litio-tolillar-rosatom-uranium-one</td><td>Infraestructura (Layer II) — <em>mismo</em> mecanismo</td><td><span class="badge c-zona_gris">Zona gris</span> — <em>distinta</em> clasificación</td></tr>
+    <tr><td>litio-rigi-zijin-ganfeng</td><td>Manipulación legislativa (Layer I)</td><td><span class="badge c-entorno_dependencia_fuerte">Entorno de dependencia fuerte</span></td></tr>
+    <tr><td>banca-icbc-argentina</td><td>Préstamos externos (Layer II) — <em>distinto</em> mecanismo</td><td><span class="badge c-entorno_dependencia_fuerte">Entorno de dependencia fuerte</span> — <em>misma</em> clasificación</td></tr>
+  </table>
+  <p>En la tabla del Panel: la columna "Mecanismo (libro)" es la etiqueta fija que alguien asignó al cargar el vector. Las columnas "Clasificación" y "Alerta" son las que recalcula el sistema solo, cada vez que cambia alguno de los cuatro puntajes.</p>
+
   <h2>Los cuatro niveles de clasificación</h2>
   <p>Cada vector se clasifica automáticamente según cuatro puntajes (0 a 3): inducción, abuso de autoridad, efecto estratégico y vínculo con el estado extranjero. La combinación de esos cuatro números determina la clasificación:</p>
   <table>
