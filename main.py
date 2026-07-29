@@ -11,14 +11,17 @@ Docs interactivas: http://127.0.0.1:8000/docs
 Para apuntar a Postgres en vez de SQLite local:
     export DATABASE_URL=postgresql://usuario:pass@host:5432/mapa_transparencia
 """
-from fastapi.responses import FileResponse
+from pathlib import Path
 from contextlib import asynccontextmanager
 
 from fastapi import FastAPI
+from fastapi.responses import FileResponse
 
 from database import Base, SessionLocal, engine
 from routers import alertas, vectores
 from seed import cargar_seed
+
+STATIC_DIR = Path(__file__).parent / "static"
 
 
 @asynccontextmanager
@@ -48,10 +51,12 @@ app = FastAPI(
 app.include_router(vectores.router)
 app.include_router(alertas.router)
 
+
 @app.get("/", tags=["health"])
 def root():
     return {"status": "ok", "modulo": "vectores-influencia-estatal-extranjera"}
-    
+
+
 @app.get("/dashboard", tags=["dashboard"])
 def dashboard():
-    return FileResponse("static/index.html")
+    return FileResponse(STATIC_DIR / "index.html")
