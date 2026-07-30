@@ -14,6 +14,7 @@
     "score_efecto_estrategico": 3,
     "vinculo_externo": "exogeno_directo",
     "notas": "Canal institucional formal. Términos de financiamiento no del todo públicos.",
+    "interpretacion_nest": "Efecto estratégico máximo (3) por dependencia tecnológica a 8 años en un activo nuclear crítico, con vínculo externo directo (Estado chino vía CNNC). Cero inducción y cero abuso de poder conferido: es un canal formal, no un caso de soborno o manipulación de un funcionario. Por eso clasifica como 'entorno de dependencia fuerte' y no 'confirmado': hay dependencia estructural sobre un activo estratégico, pero no evidencia de que se haya obtenido corrompiendo el proceso de decisión.",
     "fuentes": []
   },
   {
@@ -31,6 +32,7 @@
     "score_efecto_estrategico": 2,
     "vinculo_externo": "proxy_hibrido",
     "notas": "Alineación temporal entre cambio legislativo y beneficio a actor identificable (proxy exacto del framework, mecanismo II del libro: 'temporal alignment between private inducements and legislative amendments'). Empresas privadas alineadas con política industrial estatal china, no controladas directamente. ACTUALIZACIÓN (investigación puertas giratorias, jul-2026): el Comité Evaluador RIGI rechazó en jul-2025 el ingreso de Ganfeng (proyecto Mariana, Salta) por incumplir mínimos de inversión, mientras Galán Lithium -australiana, sin relación societaria pese al nombre similar a Ganfeng- fue aprobada; Zijin sí accedió a incentivos RIGI para su proyecto de litio (Infobae, jul-2026). El cuadro no es de favoritismo sistemático a China: mixto por caso. Además, el secretario de Minería Luis Lucero -con cartera que integra decisiones sobre RIGI minero y Ley de Glaciares- fue excusado formalmente de expedientes de Glencore/Rio Tinto/AngloGold Ashanti/Vale/Newmont por su paso previo como abogado en Marval O'Farrell Mairal, y una denuncia penal de abogados ambientalistas (abr-2026) sostiene que esa excusación no fue efectiva. No hay vínculo documentado de Lucero con Zijin/Ganfeng, pero su asiento en el Comité Evaluador que sí falla sobre litio chino lo vuelve un nodo a vigilar bajo el mecanismo IV del libro (revolving doors).",
+    "interpretacion_nest": "El abuso de poder conferido puntúa 1 (no 0) por la alineación temporal entre la eliminación del piso de contenido local en el Súper RIGI y la apertura de litio/uranio como sectores elegibles — un indicio, no una prueba. Vínculo 'proxy híbrido' (no directo) porque son empresas privadas alineadas con la política industrial china, no el Estado operando directamente. La combinación da 'entorno de dependencia fuerte' con alerta MEDIA: una señal a seguir, no un caso cerrado.",
     "fuentes": []
   },
   {
@@ -48,6 +50,7 @@
     "score_efecto_estrategico": 3,
     "vinculo_externo": "exogeno_directo",
     "notas": "CLTC/Emposat ligadas a la Fuerza Aeroespacial del EPL. San Juan: caso de respuesta exitosa (Estado bloqueó proyecto análogo por riesgo de doble uso). El no tramitar como tratado calza directo con el indicador 3 del mecanismo II del libro: 'suppression of oversight provisions'.",
+    "interpretacion_nest": "Abuso de autoridad en 2 — el más alto entre los vectores no confirmados — porque el Acuerdo de Neuquén nunca se tramitó como tratado con debate legislativo pleno: evitar ese control es, en términos del libro, 'supresión de mecanismos de supervisión'. Efecto estratégico máximo (3) por la cesión operativa de 50 años sin inspección propia. Sin inducción documentada, por eso queda en 'entorno de dependencia fuerte' y no en 'confirmado' — pero es de los patrones más cercanos a manipulación institucional deliberada del dataset.",
     "fuentes": []
   },
   {
@@ -64,6 +67,7 @@
     "score_efecto_estrategico": 0,
     "vinculo_externo": "sin_vinculo",
     "notas": "Ningún elemento materializado todavía. Vector a vigilar (paso 1-2 del proceso de 9 pasos del libro: reconocimiento de elementos, selección de indicadores preliminares), no un caso a clasificar. Mecanismo potencial si madura: layer1_procurement_manipulation, si la licitación se cierra sin competencia real.",
+    "interpretacion_nest": "Los cuatro puntajes están en cero porque ningún elemento se materializó todavía: no hay licitación cerrada, trato preferencial ni vínculo formalizado. Clasifica 'fuera de alcance' / VIGILAR — el proceso NEST de 9 pasos está en la etapa 1-2 (reconocimiento de elementos). Se revisa en cada corrida por si la licitación se cierra sin competencia real.",
     "fuentes": []
   },
   {
@@ -80,6 +84,7 @@
     "score_efecto_estrategico": 1,
     "vinculo_externo": "exogeno_directo",
     "notas": "No es un caso de corrupción estratégica; es la métrica de manual de Dependency Metrics en tiempo real, y encaja exacto en el enabler V del libro ('concessional loans from a single foreign source forming high sectoral exposure'). Vale la pena trackear la sustitución de fuente, no una reducción real de dependencia.",
+    "interpretacion_nest": "Vínculo externo directo (3) por ser un canal formal entre bancos centrales, pero efecto estratégico bajo (1) porque el swap con China se redujo drásticamente y fue sustituido por uno con EEUU — el patrón opuesto a una dependencia creciente. Sin inducción ni abuso de poder conferido. 'Zona gris' / MEDIA: alineamiento con un actor externo sin incentivo transaccional documentado — métrica de dependencia soberana, no corrupción estratégica en sentido estricto.",
     "fuentes": []
   },
   {
@@ -96,6 +101,7 @@
     "score_efecto_estrategico": 1,
     "vinculo_externo": "exogeno_directo",
     "notas": "Efecto es legitimación reputacional/narrativa, no institucional/regulatorio. Coincide con el enabler III del libro casi punto por punto ('funding of academic chairs... without transparent reporting'). Se vuelve corrupción estratégica solo si se liga a trato preferencial o canales de acceso para inteligencia extranjera (sin indicio de eso hoy).",
+    "interpretacion_nest": "Vínculo externo directo (financiamiento estatal chino declarado) pero efecto estratégico bajo (1): el impacto es legitimación narrativa/reputacional, no una decisión regulatoria capturada. Cero inducción, cero abuso de poder conferido — vector transparente, no encubierto. 'Zona gris' / MEDIA: seguimiento, no alarma, salvo que aparezca trato preferencial ligado al financiamiento.",
     "fuentes": []
   },
   {
@@ -112,6 +118,7 @@
     "score_efecto_estrategico": 0,
     "vinculo_externo": "sin_vinculo",
     "notas": "Sin caso concreto materializado a jul-2026. Vector a vigilar: Rusia corteja activamente a la región, China no tiene oferta de armamento formal conocida a Argentina. Excluye la disputa por el radar en Tierra del Fuego con Reino Unido, que es un caso distinto (no involucra actor estatal extranjero rival en el sentido NEST). Mecanismo potencial si madura: layer1_political_bribery_elite_inducement.",
+    "interpretacion_nest": "Los cuatro puntajes en cero porque no hay adquisición concreta materializada con un actor estatal ruso o chino — las compras en curso van a proveedores occidentales/israelíes. 'Fuera de alcance' / VIGILAR: el vector existe para trackear la oferta activa de Rosoboronexport en la región, no porque haya un caso hoy.",
     "fuentes": []
   },
   {
@@ -128,6 +135,7 @@
     "score_efecto_estrategico": 0,
     "vinculo_externo": "sin_vinculo",
     "notas": "Sector crítico (80% de exportaciones) pero sin actor estatal extranjero rival involucrado en el proceso 2026: ambos oferentes son privados belgas, aliados occidentales. Se mantiene como vector a vigilar por la relevancia estratégica del corredor, no por evidencia actual de riesgo. Mecanismo potencial si aparece actor estatal rival: layer1_procurement_manipulation.",
+    "interpretacion_nest": "Sector crítico (80% de las exportaciones) pero sin actor estatal extranjero rival en la licitación 2026 — ambos oferentes son privados belgas. Los cuatro puntajes en cero reflejan eso. Se mantiene 'a vigilar' por la relevancia estratégica del corredor, no por evidencia de riesgo actual.",
     "fuentes": []
   },
   {
@@ -144,6 +152,7 @@
     "score_efecto_estrategico": 1,
     "vinculo_externo": "exogeno_directo",
     "notas": "Primer caso concreto de Narrative Analysis Module con evidencia documentada en Argentina (mecanismo calcado del patrón global de inserciones de China Daily descrito por Freedom House). Acuerdo comercial declarado, no encubierto. Efecto limitado a legitimación narrativa; sin indicios de trato preferencial regulatorio a cambio.",
+    "interpretacion_nest": "Vínculo externo directo (medio estatal chino) pero efecto estratégico bajo (1): acuerdo comercial declarado y público, no una operación encubierta. Cero inducción, cero abuso de poder conferido. 'Zona gris' / MEDIA: el mecanismo de captura narrativa está documentado y es real, pero sin evidencia de que compre trato regulatorio preferencial.",
     "fuentes": []
   },
   {
@@ -160,6 +169,7 @@
     "score_efecto_estrategico": 1,
     "vinculo_externo": "exogeno_directo",
     "notas": "Vector 'dormido': Alpha Lithium Corp (matriz canadiense) fue adquirida en 2023 por Tecpetrol, y no está confirmado si Uranium One retuvo el stake/la opción de compra tras esa operación. Es la contraparte rusa al vector chino de litio/RIGI — mismo mecanismo (Layer II, acceso a litio como 'strategic asset'), actor distinto. Prioridad de la corrida semanal: confirmar estado societario actual de Uranium One en el proyecto.",
+    "interpretacion_nest": "Mismo patrón que Confucio y China Daily: vínculo externo directo (3) pero efecto estratégico bajo (1) porque es un vector 'dormido' — no está confirmado si Rosatom retuvo su participación tras la venta a Tecpetrol. 'Zona gris' / MEDIA hasta confirmar el estado societario actual; si Rosatom ejerce la opción de compra del 50%, el efecto estratégico subiría y pasaría a 'entorno de dependencia fuerte'.",
     "fuentes": []
   },
   {
@@ -176,6 +186,7 @@
     "score_efecto_estrategico": 2,
     "vinculo_externo": "exogeno_directo",
     "notas": "Canal financiero formal y en expansión rápida, no es un caso de corrupción sino de infraestructura de dependencia financiera bilateral (RMB) — mismo tipo de mecanismo que el swap BCRA-PBOC pero vía banca comercial en vez de banca central. Vale la pena trackear el market share como indicador de profundidad de dependencia.",
+    "interpretacion_nest": "Efecto estratégico 2 (control total de un banco con 4,8% del sistema financiero, en expansión) y vínculo externo directo (ICBC es 100% estatal chino). Cero inducción y cero abuso de poder conferido: adquisición formal y pública, no captura regulatoria. 'Entorno de dependencia fuerte' / ALTA porque la escala y la dirección creciente del vínculo son las que definen el nivel de alerta, no una corrupción probada.",
     "fuentes": []
   },
   {
@@ -192,6 +203,7 @@
     "score_efecto_estrategico": 2,
     "vinculo_externo": "exogeno_directo",
     "notas": "Control directo (no vía proxy corporativo) de infraestructura de exportación de alimentos, un 'strategic asset' en los términos del framework NEST — analogía funcional con capturas de infraestructura portuaria en otros países (Sri Lanka/Hambantota es el caso de referencia del libro, aunque la escala y el mecanismo acá son distintos: aquí es propiedad operativa directa vía inversión, no deuda impaga).",
+    "interpretacion_nest": "Efecto estratégico 2 (control operativo directo, no solo inversión de cartera, de infraestructura crítica de exportación) y vínculo externo directo (COFCO es SOE bajo SASAC). Sin inducción ni abuso de poder conferido documentados. 'Entorno de dependencia fuerte' / ALTA: el ejemplo más claro del dataset de captura de un 'strategic asset' por control operativo directo, sin que eso implique soborno.",
     "fuentes": []
   },
   {
@@ -208,6 +220,7 @@
     "score_efecto_estrategico": 0,
     "vinculo_externo": "sin_vinculo",
     "notas": "VECTOR CERRADO (activo=false): caso de salida/divestment, no de expansión — China se retiró del upstream de petróleo y gas en Argentina en 2026. Se mantiene en la tabla como línea de base histórica: útil para comparar contra los vectores activos (litio, nuclear, espacio) y ver si la desinversión petrolera es parte de una reasignación de la exposición china hacia otros sectores estratégicos en vez de una retirada general.",
+    "interpretacion_nest": "Los cuatro puntajes son cero y el vector está cerrado porque China se retiró del negocio en 2026 — un caso de salida, no de expansión. Se mantiene como línea de base histórica: sirve para comparar contra los vectores activos y ver si la desinversión petrolera es parte de una reasignación hacia otros sectores (litio, puertos, pesca) en vez de un repliegue general.",
     "activo": false,
     "fuentes": []
   },
@@ -225,7 +238,8 @@
     "score_abuso_autoridad": 0,
     "score_efecto_estrategico": 3,
     "vinculo_externo": "exogeno_directo",
-    "notas": "Uno de los complejos hidroeléctricos más grandes del país (Cepernic 46% de avance, Kirchner ~20%, jul-2026), con dependencia de financiamiento y construcción chinos por más de una década. Mismo patrón que Atucha III (Layer II infraestructura + préstamo externo, actor único con control operativo) pero de escala aún mayor. Sin evidencia de inducción o abuso de autoridad — la reactivación 2026 fue una renegociación contractual formal, no un caso de corrupción. A vigilar: los términos de la enmienda 2026 y el detalle del nuevo financiamiento no son del todo públicos.",
+    "notas": "Uno de los complejos hidroeléctricos más grandes del país (Cepernic 46% de avance, Kirchner ~20%, jul-2026), con dependencia de financiamiento y construcción chinos por más de una década. Mismo patrón que Atucha III (Layer II infraestructura + préstamo externo, actor único con control operativo) pero de escala aún mayor. Sin evidencia de inducción o abuso de poder conferido — la reactivación 2026 fue una renegociación contractual formal, no un caso de corrupción. A vigilar: los términos de la enmienda 2026 y el detalle del nuevo financiamiento no son del todo públicos.",
+    "interpretacion_nest": "Efecto estratégico máximo (3): uno de los complejos hidroeléctricos más grandes del país, con dependencia de financiamiento y construcción chinos por más de una década. Vínculo externo directo. Cero inducción y cero abuso de poder conferido porque la reactivación 2026 fue una renegociación contractual formal. 'Entorno de dependencia fuerte' / ALTA por la escala del activo, no por evidencia de corrupción.",
     "fuentes": []
   },
   {
@@ -243,6 +257,7 @@
     "score_efecto_estrategico": 2,
     "vinculo_externo": "exogeno_directo",
     "notas": "Caso con tensión activa poco común en la base: a la vez que sigue vigente una dependencia de financiamiento chino de escala considerable (USD 2.470M), el Gobierno privatiza el activo y frenó unilateralmente la obra insignia financiada por CMEC (circunvalación Santa Fe). Vale la pena trackear si la privatización termina reduciendo la exposición a CMEC o si el privatizado hereda la relación crediticia. CMEC sigue entregando material rodante (vagones) en paralelo.",
+    "interpretacion_nest": "Efecto estratégico 2 y vínculo externo directo, pero es el caso con más tensión del dataset: la dependencia financiera china sigue vigente (USD 2.470M) mientras el Gobierno privatizó el activo y frenó unilateralmente la obra insignia financiada por CMEC. Sin inducción ni abuso de poder conferido. 'Entorno de dependencia fuerte' / ALTA refleja la dependencia que sigue existiendo, no una corrupción confirmada.",
     "fuentes": []
   },
   {
@@ -260,6 +275,51 @@
     "score_efecto_estrategico": 2,
     "vinculo_externo": "exogeno_directo",
     "notas": "Caso operativo desde 2019, sin señales de corrupción — es la referencia de manual de infraestructura energética con dependencia financiera concentrada en una sola fuente externa (85% del capital), igual que el patrón de Atucha III y las represas de Santa Cruz pero a nivel provincial (Jujuy) en vez de nacional. La expansión +200 MW repite el mismo esquema, así que la dependencia crece en vez de diversificarse.",
+    "interpretacion_nest": "Efecto estratégico 2 por la concentración de 85% del financiamiento en una sola fuente externa (Eximbank China) para un activo energético provincial grande. Vínculo externo directo, cero inducción, cero abuso de poder conferido: caso operativo desde 2019 sin señales de corrupción — funciona como el caso de manual de dependencia financiera 'limpia'. 'Entorno de dependencia fuerte' / ALTA por escala y concentración, no por irregularidad.",
     "fuentes": []
+  },
+  {
+    "slug": "pesca-calamar-flota-china",
+    "sector": "pesca / recursos naturales marítimos",
+    "actor_extranjero": "Shanghai Fisheries Group, Zhejiang Ocean Family, Qingdao Haoyang Ocean Fishery, Dalian Huafeng Aquatic Products, CNFC (China National Fisheries Corporation)",
+    "pais_origen": "China",
+    "contraparte_argentina": "Flota potera con bandera argentina / Consejo Federal Pesquero",
+    "mecanismo": "Empresas chinas (incluida la estatal CNFC) controlan el 63,1% (53 de 84 buques) de la flota potera con bandera argentina que pesca calamar dentro de la ZEE; evaden aranceles e IVA declarando el producto como 'nacional' al ingresar a China bajo la norma aduanera china 260/2000, con una ventaja estimada del 21% (~USD 45M/año); usan banderas de conveniencia (Vanuatu, Camerún) para operar sin observadores cerca del límite de la ZEE",
+    "mecanismo_libro": "layer2_infrastructure_investments",
+    "regimen_legal": "Ley de Pesca 24.922 / registro bajo bandera argentina vía subsidiarias locales",
+    "score_induccion": 0,
+    "score_abuso_autoridad": 0,
+    "score_efecto_estrategico": 3,
+    "vinculo_externo": "exogeno_directo",
+    "notas": "Control económico directo de un activo estratégico (industria calamarera, uno de los principales rubros de exportación pesquera argentina) por capitales chinos, incluyendo una empresa estatal (CNFC). Sin evidencia de soborno a funcionarios argentinos hasta ahora — el patrón documentado es fraude fiscal/aduanero (evasión vía triangulación con normativa china) y uso de banderas de conveniencia para eludir el régimen de observadores, no inducción de decisiones públicas. A vigilar: si la laxitud regulatoria que permite operar sin observadores refleja captura regulatoria (abuso de poder conferido) en vez de solo debilidad de fiscalización.",
+    "interpretacion_nest": "Efecto estratégico máximo (3): control directo por capitales chinos (incluida una SOE, CNFC) de más del 60% de una industria exportadora estratégica. Vínculo externo directo. Cero inducción y cero abuso de poder conferido porque lo documentado es fraude fiscal/aduanero y banderas de conveniencia — evasión y elusión regulatoria, no soborno a un funcionario identificado. 'Entorno de dependencia fuerte' / ALTA: control económico a una escala mayor que casi cualquier otro vector, con una zona gris legal a vigilar bajo abuso de poder conferido en próximas corridas.",
+    "activo": true,
+    "fuentes": [
+      "https://www.infobae.com/economia/2026/06/21/expansion-fraude-y-pesca-ilegal-como-hizo-china-para-aduenarse-de-la-pesca-del-calamar-dentro-del-mar-argentino/",
+      "https://es.mercopress.com/2026/06/21/un-informe-afirma-que-empresas-chinas-controlan-casi-dos-tercios-de-la-flota-calamarera-del-mar-argentino",
+      "https://es.mongabay.com/2026/02/buques-argentinos-empresas-chinas-pesca-sin-observadores/"
+    ]
+  },
+  {
+    "slug": "rosatom-argentina-ruptura-2026",
+    "sector": "nuclear",
+    "actor_extranjero": "Rosatom (State Atomic Energy Corporation)",
+    "pais_origen": "Rusia",
+    "contraparte_argentina": "Nucleoeléctrica Argentina (NA-SA) / Poder Ejecutivo Nacional",
+    "mecanismo": "El gobierno de Milei derogó por decreto en 2026 el acuerdo estratégico de cooperación nuclear firmado en 2015 (gestión de Cristina Fernández de Kirchner) con Rosatom, dando de baja sus proyectos de inversión (incluida una central nuclear flotante propuesta) y alineando la política nuclear argentina con Occidente/EEUU",
+    "mecanismo_libro": "layer2_infrastructure_investments",
+    "mecanismo_libro_secundario": "layer2_external_loans_grants",
+    "regimen_legal": "Decreto de derogación del acuerdo estratégico 2015 (fecha y número exactos no confirmados en fuentes disponibles)",
+    "score_induccion": 0,
+    "score_abuso_autoridad": 0,
+    "score_efecto_estrategico": 0,
+    "vinculo_externo": "sin_vinculo",
+    "notas": "VECTOR CERRADO (activo=false): mismo patrón que el caso Sinopec — un vínculo con un actor estatal extranjero (acá Rusia/Rosatom) que se corta en vez de profundizarse. Se agrega como línea de base histórica de un caso de 'respuesta exitosa' del Estado argentino frente a una potencial dependencia (similar al precedente de San Juan citado en el vector espacial), en el marco del giro de la política exterior de Milei hacia EEUU. Pendiente: confirmar fecha y número de decreto exactos; las fuentes disponibles no los precisan.",
+    "interpretacion_nest": "Los cuatro puntajes son cero y el vector está cerrado porque el vínculo se cortó, no se profundizó: el gobierno de Milei derogó el acuerdo estratégico de 2015 con Rosatom. Es el espejo del caso Sinopec, en nuclear en vez de petróleo — ambos sirven de línea de base de 'respuesta exitosa' o desvinculación, para contrastar contra los vectores donde la dependencia crece en vez de cortarse.",
+    "activo": false,
+    "fuentes": [
+      "https://u-238.com.ar/ruptura-estrategica-argentina-y-rusia-ponen-fin-a-mas-de-una-decada-de-cooperacion-nuclear/",
+      "https://www.intellinews.com/russia-argentina-nuclear-cooperation-grinds-to-halt-as-milei-pivots-to-us-455147/"
+    ]
   }
 ]

@@ -2,8 +2,8 @@
 main.py — entrypoint FastAPI del módulo Vectores de Influencia Estatal
 Extranjera.
 
-Correr local:
-    pip install -r requirements.txt --break-system-packages
+Correr local (con el venv activado):
+    pip install -r requirements.txt
     uvicorn main:app --reload
 
 Docs interactivas: http://127.0.0.1:8000/docs
