@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vectores de Influencia Estatal Extranjera — Panel</title>
+<style>
+  :root{
+    --bg:#0f1420; --panel:#161d2e; --panel2:#1c2438; --border:#2a3350;
+    --text:#e6e9f0; --muted:#8b93a8; --accent:#4f8cff;
+    --critico:#e5484d; --alto:#f2994a; --medio:#e0c341; --bajo:#6fcf97; --vigilar:#8b93a8;
+    --confirmado:#e5484d; --dependencia:#f2994a; --gris:#e0c341; --fuera:#3d465e;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--text);font-family:-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;font-size:14px}
+  header{padding:24px 28px 16px;border-bottom:1px solid var(--border)}
+  header h1{margin:0 0 4px;font-size:20px}
+  header p{margin:0;color:var(--muted);font-size:13px;max-width:820px;line-height:1.5}
+  .banner{margin:14px 0 0;padding:10px 14px;background:#2a2410;border:1px solid #5a4a12;border-radius:6px;color:#f2d675;font-size:12.5px;line-height:1.5}
+  main{padding:20px 28px 60px;max-width:1300px;margin:0 auto}
+  .kpis{display:grid;grid-template-columns:repeat(6,1fr);gap:10px;margin-bottom:20px}
+  .kpi{background:var(--panel);border:1px solid var(--border);border-radius:8px;padding:12px 14px}
+  .kpi .n{font-size:22px;font-weight:600}
+  .kpi .l{color:var(--muted);font-size:11.5px;margin-top:2px}
+  .filters{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px}
+  .filters select, .filters input{background:var(--panel2);border:1px solid var(--border);color:var(--text);padding:7px 10px;border-radius:6px;font-size:13px}
+  .filters input{flex:1;min-width:200px}
+  table{width:100%;border-collapse:collapse;background:var(--panel);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+  th{text-align:left;padding:10px 12px;background:var(--panel2);color:var(--muted);font-size:11.5px;text-transform:uppercase;letter-spacing:.03em;border-bottom:1px solid var(--border)}
+  td{padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:top}
+  tr.row{cursor:pointer}
+  tr.row:hover{background:#1a2136}
+  .badge{display:inline-block;padding:2px 8px;border-radius:20px;font-size:11px;font-weight:600;color:#12141c}
+  .b-CRITICO{background:var(--critico);color:#fff}
+  .b-ALTO{background:var(--alto);color:#2a1a05}
+  .b-MEDIO{background:var(--medio);color:#2a2405}
+  .b-BAJO{background:var(--bajo);color:#052a12}
+  .b-VIGILAR{background:var(--vigilar);color:#fff}
+  .c-confirmado{background:var(--confirmado);color:#fff}
+  .c-entorno_dependencia_fuerte{background:var(--dependencia);color:#2a1a05}
+  .c-zona_gris{background:var(--gris);color:#2a2405}
+  .c-fuera_de_alcance{background:var(--fuera);color:#c3c9dc}
+  .muted{color:var(--muted)}
+  .sector-tag{color:var(--muted);font-size:12px}
+  .inactive{opacity:.5}
+  .detail{margin-top:16px;background:var(--panel);border:1px solid var(--border);border-radius:8px;padding:18px 20px;display:none}
+  .detail.open{display:block}
+  .detail h3{margin:0 0 6px;font-size:16px}
+  .detail .meta{color:var(--muted);font-size:12.5px;margin-bottom:12px}
+  .scores{display:flex;gap:16px;margin:12px 0;flex-wrap:wrap}
+  .score{background:var(--panel2);border:1px solid var(--border);border-radius:6px;padding:8px 12px;min-width:110px}
+  .score .v{font-size:18px;font-weight:700}
+  .score .l{color:var(--muted);font-size:11px}
+  .detail .notas{line-height:1.6;font-size:13px;margin-top:10px;white-space:pre-wrap}
+  .close-btn{float:right;background:none;border:1px solid var(--border);color:var(--muted);border-radius:6px;padding:4px 10px;cursor:pointer}
+  section.block{margin-top:34px}
+  section.block h2{font-size:16px;margin-bottom:4px}
+  section.block .sub{color:var(--muted);font-size:12.5px;margin-bottom:12px;line-height:1.5}
+  .enabler-card{background:var(--panel);border:1px solid var(--border);border-radius:8px;padding:14px 16px;margin-bottom:10px}
+  .enabler-card .top{display:flex;justify-content:space-between;align-items:center}
+  .enabler-card .name{font-weight:600}
+  .conf{font-size:11px;padding:2px 8px;border-radius:20px;text-transform:uppercase}
+  .conf-confirmado{background:var(--bajo);color:#052a12}
+  .conf-reportado{background:var(--medio);color:#2a2405}
+  .conf-inferido{background:var(--vigilar);color:#fff}
+  .pend{color:var(--muted);font-size:12.5px;line-height:1.6;padding:10px 0;border-top:1px dashed var(--border);margin-top:10px}
+  footer{color:var(--muted);font-size:12px;padding:20px 28px 40px;border-top:1px solid var(--border);margin-top:30px;line-height:1.7}
+  a{color:var(--accent)}
+
+  .tabs{display:flex;gap:4px;padding:0 28px;border-bottom:1px solid var(--border);background:var(--panel)}
+  .tab-btn{background:none;border:none;color:var(--muted);padding:12px 16px;font-size:13.5px;cursor:pointer;border-bottom:2px solid transparent;font-family:inherit}
+  .tab-btn:hover{color:var(--text)}
+  .tab-btn.active{color:var(--text);border-bottom-color:var(--accent)}
+  .tabcontent{display:none}
+  .tabcontent.active{display:block}
+  .manual{padding:24px 28px 60px;max-width:900px;margin:0 auto;line-height:1.65}
+  .manual h2{font-size:17px;margin:30px 0 8px}
+  .manual h2:first-child{margin-top:6px}
+  .manual p{margin:0 0 10px;font-size:13.5px}
+  .manual ul{margin:0 0 10px;padding-left:20px;font-size:13.5px}
+  .manual li{margin-bottom:6px}
+  .manual .legend-row{display:flex;align-items:center;gap:10px;margin-bottom:6px;font-size:13px}
+  .manual .legend-row .badge{min-width:70px;text-align:center}
+  .manual table{width:100%;border-collapse:collapse;margin:10px 0 18px;font-size:13px}
+  .manual table th, .manual table td{text-align:left;padding:6px 10px;border-bottom:1px solid var(--border)}
+  .manual table th{color:var(--muted);font-weight:600}
+  .manual .callout{background:var(--panel);border:1px solid var(--border);border-left:3px solid var(--accent);border-radius:0 6px 6px 0;padding:12px 14px;margin:14px 0;font-size:13px}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Vectores de Influencia Estatal Extranjera</h1>
+  <p>Módulo satélite de Mapa_Transparencia — clasificación de casos bajo el framework NEST de corrupción estratégica. Datos: 16 vectores investigados, 15 activos.</p>
+  <div class="banner">
+    Esta vista lee <code>seed_vectores.json</code> / <code>seed_enablers.json</code> directamente y calcula la clasificación en el navegador con la misma lógica de <code>scoring.py</code>. No está conectada a una base de datos en vivo: el sandbox de ejecución no pudo levantarse durante todo este desarrollo (falta de espacio en disco), así que el Postgres/SQLite de <code>vectores_api/</code> nunca llegó a correr de punta a punta. Para tener esto con datos vivos: correr <code>uvicorn main:app --reload</code> (ver README) y apuntar este panel a <code>/api/vectores</code> en vez de al JSON embebido — es un cambio de una función, marcado abajo en el código.
+  </div>
+</header>
+
+<nav class="tabs">
+  <button class="tab-btn active" data-tab="panel">Panel</button>
+  <button class="tab-btn" data-tab="manual">Manual de uso</button>
+</nav>
+
+<div id="tab-panel" class="tabcontent active">
+<main>
+  <div class="kpis" id="kpis"></div>
+
+  <div class="filters">
+    <input id="search" placeholder="Buscar por actor, sector, slug..." />
+    <select id="f-sector"><option value="">Sector: todos</option></select>
+    <select id="f-clas"><option value="">Clasificación: todas</option></select>
+    <select id="f-alerta"><option value="">Alerta: todas</option></select>
+    <select id="f-activo">
+      <option value="activos">Solo activos</option>
+      <option value="todos">Incluir cerrados</option>
+    </select>
+  </div>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Vector</th><th>Sector</th><th>Actor / País</th><th>Mecanismo (libro)</th>
+        <th>Clasificación</th><th>Alerta</th>
+      </tr>
+    </thead>
+    <tbody id="tbody"></tbody>
+  </table>
+
+  <div class="detail" id="detail"></div>
+
+  <section class="block">
+    <h2>Ecosistema de enablers</h2>
+    <div class="sub">Abogados, auditoras y bancos vinculados a los actores del padrón (Tabla 3 / p.16 del libro). <code>nivel_confianza</code> distingue vínculo confirmado con fuente primaria de vínculo solo reportado o inferido — ver <code>schema_enablers_ecosistema.sql</code>.</div>
+    <div id="enablers"></div>
+    <div class="pend" id="pendientes"></div>
+  </section>
+
+  <section class="block">
+    <h2>Marco legal-institucional</h2>
+    <div class="sub">
+      Argentina está alineada en UNCAC (ratificada 2006), GAFI/GAFILAT (4ª ronda aprobada oct-2024) y OCDE Working Group on Bribery (miembro desde 2000), pero <strong>no tiene mecanismo de screening de IED por seguridad nacional</strong>: la Ley 21.382 no filtra origen de capital, el RIGI está diseñado para atraer inversión no para filtrarla, y el único proyecto que restringe compras estatales extranjeras (Ley de Tierras, en debate jul-2026) cubre solo tierras rurales — no litio, nuclear, telecom ni puertos. Detalle completo en <code>anexo_marco_legal_argentina.md</code>.
+    </div>
+  </section>
+</main>
+
+<footer>
+  Archivos fuente de este panel: <code>seed_vectores.json</code>, <code>seed_enablers.json</code>. Lógica de clasificación replicada de <code>vectores_api/scoring.py</code>. Ver <code>README.md</code> para el resto del módulo (schema SQL, API FastAPI, matcher CUIT, scrapers, narrative module).
+</footer>
+</div>
+
+<div id="tab-manual" class="tabcontent">
+<div class="manual">
+
+  <h2>Qué es esto</h2>
+  <p>Esta plataforma junta los casos detectados donde un estado extranjero — hoy, China y Rusia — usa inversión, financiamiento o infraestructura como palanca sobre una decisión pública argentina. Cada caso se llama <strong>vector</strong>. A cada vector se le aplica una rúbrica fija (el "classification test" del framework NEST) para que la prioridad de seguimiento no dependa de una impresión subjetiva sino de evidencia puntuada.</p>
+  <p>No es una herramienta de acusación: es un sistema de triage, para saber qué mirar primero.</p>
+
+  <h2>Cómo leer la pestaña Panel</h2>
+  <p>Arriba hay seis números (KPIs): cuántos vectores están activos y cuántos caen en cada nivel de alerta. Debajo, la tabla lista todos los vectores; hacé click en cualquier fila para ver el detalle completo (scores, mecanismo, notas y fuentes).</p>
+
+  <h2>Mecanismo vs. Clasificación: son dos preguntas distintas</h2>
+  <p>Es la parte que más se presta a confusión, así que va aparte antes de explicar cada una:</p>
+  <ul>
+    <li><strong>Mecanismo</strong> contesta "¿por qué canal actúa la influencia?". Es una de las 10 categorías con nombre propio del libro NEST (manipulación legislativa, inversión en infraestructura, puertas giratorias, etc. — ver glosario). <em>Se carga a mano</em> al analizar el caso, leyendo la evidencia. El sistema no lo calcula ni lo infiere.</li>
+    <li><strong>Clasificación</strong> contesta "¿qué tan grave es lo que está probado hasta ahora?". <em>Sale sola</em>, automáticamente, de cuatro puntajes (inducción, abuso de autoridad, efecto estratégico, vínculo externo) — no depende de qué mecanismo sea.</li>
+  </ul>
+  <p>Por eso el mecanismo no determina la clasificación, ni al revés. Dos vectores con el mismo mecanismo pueden terminar en clasificaciones distintas, y dos con mecanismos distintos pueden terminar en la misma. Ejemplos reales de esta base:</p>
+  <table>
+    <tr><th>Vector</th><th>Mecanismo</th><th>Clasificación</th></tr>
+    <tr><td>atucha-iii-cnnc</td><td>Infraestructura (Layer II)</td><td><span class="badge c-entorno_dependencia_fuerte">Entorno de dependencia fuerte</span></td></tr>
+    <tr><td>litio-tolillar-rosatom-uranium-one</td><td>Infraestructura (Layer II) — <em>mismo</em> mecanismo</td><td><span class="badge c-zona_gris">Zona gris</span> — <em>distinta</em> clasificación</td></tr>
+    <tr><td>litio-rigi-zijin-ganfeng</td><td>Manipulación legislativa (Layer I)</td><td><span class="badge c-entorno_dependencia_fuerte">Entorno de dependencia fuerte</span></td></tr>
+    <tr><td>banca-icbc-argentina</td><td>Préstamos externos (Layer II) — <em>distinto</em> mecanismo</td><td><span class="badge c-entorno_dependencia_fuerte">Entorno de dependencia fuerte</span> — <em>misma</em> clasificación</td></tr>
+  </table>
+  <p>En la tabla del Panel: la columna "Mecanismo (libro)" es la etiqueta fija que alguien asignó al cargar el vector. Las columnas "Clasificación" y "Alerta" son las que recalcula el sistema solo, cada vez que cambia alguno de los cuatro puntajes.</p>
+
+  <h2>Los cuatro niveles de clasificación</h2>
+  <p>Cada vector se clasifica automáticamente según cuatro puntajes (0 a 3): inducción, abuso de autoridad, efecto estratégico y vínculo con el estado extranjero. La combinación de esos cuatro números determina la clasificación:</p>
+  <table>
+    <tr><th>Clasificación</th><th>Qué significa</th></tr>
+    <tr><td><span class="badge c-confirmado">Confirmado</span></td><td>Los cuatro elementos están presentes con fuerza moderada o mayor. Es el caso más grave: hay indicio de inducción, abuso de autoridad, efecto estratégico y vínculo externo simultáneamente.</td></tr>
+    <tr><td><span class="badge c-entorno_dependencia_fuerte">Entorno de dependencia fuerte</span></td><td>El efecto estratégico y el vínculo externo son claros, pero todavía no hay evidencia de inducción o abuso de autoridad. Es dependencia estructural, no necesariamente corrupción.</td></tr>
+    <tr><td><span class="badge c-zona_gris">Zona gris</span></td><td>Hay alineamiento legal o político con un actor externo, pero sin evidencia de incentivo transaccional ni abuso de autoridad. Amerita seguimiento, no alarma.</td></tr>
+    <tr><td><span class="badge c-fuera_de_alcance">Fuera de alcance</span></td><td>No hay dimensión geopolítica sostenida ni vínculo relevante con un actor externo. Se mantiene en la base como referencia, no como caso activo.</td></tr>
+  </table>
+
+  <h2>Los cinco niveles de alerta</h2>
+  <p>Es una segunda capa, más operativa, que traduce la clasificación en urgencia de revisión:</p>
+  <div class="legend-row"><span class="badge b-CRITICO">CRITICO</span> caso confirmado — máxima prioridad.</div>
+  <div class="legend-row"><span class="badge b-ALTO">ALTO</span> entorno de dependencia fuerte, con efecto o vínculo en su punto máximo.</div>
+  <div class="legend-row"><span class="badge b-MEDIO">MEDIO</span> entorno de dependencia moderado, o zona gris con ambos factores presentes.</div>
+  <div class="legend-row"><span class="badge b-BAJO">BAJO</span> zona gris débil — un solo factor presente.</div>
+  <div class="legend-row"><span class="badge b-VIGILAR">VIGILAR</span> fuera de alcance por ahora, pero con un mecanismo potencial identificado — se revisa en cada corrida.</div>
+
+  <h2>Cómo filtrar y buscar</h2>
+  <ul>
+    <li><strong>Buscar:</strong> escribí cualquier palabra (actor, sector, país, nombre del vector) y la tabla se filtra en el momento.</li>
+    <li><strong>Sector / Clasificación / Alerta:</strong> tres desplegables para acotar la lista a lo que te interesa revisar.</li>
+    <li><strong>Solo activos / Incluir cerrados:</strong> por default no se muestran los vectores cerrados (como el caso Sinopec, que fue una desinversión). Cambiá el filtro si necesitás verlos.</li>
+  </ul>
+
+  <h2>Sección Ecosistema de enablers</h2>
+  <p>Lista estudios jurídicos, auditoras y bancos vinculados a las empresas del padrón. Cada entrada tiene un nivel de confianza porque, a diferencia de los vectores, la representación legal de una empresa casi nunca es pública:</p>
+  <ul>
+    <li><span class="conf conf-confirmado" style="display:inline-block">confirmado</span> — hay una fuente pública directa (nota periodística con el dato, expediente judicial, registro societario).</li>
+    <li><span class="conf conf-reportado" style="display:inline-block">reportado</span> — lo dice un tercero (prensa, informe), sin documento primario a la vista.</li>
+    <li><span class="conf conf-inferido" style="display:inline-block">inferido</span> — coincidencia de sector o tiempo, sin vínculo declarado. Se trata como hipótesis, no como hallazgo.</li>
+  </ul>
+  <p>Abajo de esa lista aparecen los "pendientes de verificar": lo que se buscó y no se encontró, con el próximo paso sugerido para cerrarlo (típicamente, consultar directamente el registro societario en IGJ).</p>
+
+  <h2>Sección Marco legal-institucional</h2>
+  <p>Resume si Argentina tiene las herramientas legales para contener este tipo de influencia: adhesión a los tratados internacionales de anticorrupción (sí, están todos) y un mecanismo de filtro de inversión extranjera por seguridad nacional (no existe todavía, más allá de un proyecto de ley acotado a tierras rurales en debate). El detalle completo, con las fuentes, está en <code>anexo_marco_legal_argentina.md</code>.</p>
+
+  <div class="callout">
+    <strong>Sobre los datos:</strong> este panel lee un archivo fijo (<code>seed_vectores.json</code>) y calcula la clasificación en el momento, en tu navegador — no hay una base de datos corriendo detrás todavía. Cuando se conecte a la base de datos real, esta pantalla no cambia de uso: se sigue leyendo, filtrando y haciendo click igual, solo que los números se actualizan solos con cada corrida semanal en vez de quedar fijos en la fecha en que se generó este archivo.
+  </div>
+
+  <h2>Marco legal de esta publicación (¿es legal publicar esto así?)</h2>
+  <div class="callout">Esto no es asesoramiento legal — es un resumen del marco normativo aplicable para que lo revise un abogado antes de publicar el panel de forma pública. Escrito por un asistente, no por un profesional matriculado.</div>
+  <p>Hay cuatro cuerpos normativos/doctrinarios relevantes, y en conjunto dan un marco razonablemente favorable a este tipo de publicación — siempre que se mantengan las prácticas que ya sigue el módulo (atribución de fuente, lenguaje condicional, distinción explícita entre confirmado/reportado/inferido):</p>
+  <ul>
+    <li><strong>Ley 27.275 (Acceso a la Información Pública).</strong> Obliga al Estado a publicar proactivamente ("transparencia activa", art. 32) estructura, presupuesto, contrataciones y actos de gobierno. No regula qué puede publicar un tercero, pero refuerza el principio de que resoluciones de RIGI, contratos y decisiones de funcionarios en ejercicio de su cargo son, por naturaleza, información pública — no confidencial. La mayoría de lo que carga este módulo (BORA, resoluciones ministeriales, RIGI) ya es información que el Estado publicó él mismo.</li>
+    <li><strong>Ley 25.326 (Protección de Datos Personales / habeas data).</strong> La ley expresamente aclara que "en ningún caso se podrán afectar la base de datos ni las fuentes de información periodísticas", y exceptúa del consentimiento a los datos de "fuentes de acceso público irrestricto" (art. 5). El CUIT y la razón social de una empresa (padrón de SOEs) son datos de registro público, no datos personales. El nombre de un funcionario actuando en ejercicio de su cargo público, tomado de notas de prensa ya publicadas, cae también dentro de esa lógica.</li>
+    <li><strong>Doctrina Campillay (CSJN, 1986).</strong> Exime de responsabilidad a quien reproduce información de un tercero si: atribuye la información a una fuente identificada, usa modo condicional/potencial ("sostiene", "denuncia", "según"), o reserva la identidad del imputado. Las notas de este módulo ya se escriben así — "una denuncia penal sostiene que...", "sin vínculo documentado" — y conviene mantenerlo estricto en cada carga nueva.</li>
+    <li><strong>Doctrina de la real malicia (CSJN, siguiendo el estándar de interés público).</strong> Para funcionarios públicos y asuntos de interés público, la responsabilidad por una inexactitud solo procede si se prueba que quien publicó sabía que era falso o actuó con notorio desinterés por verificarlo — no por el solo hecho de equivocarse de buena fe con fuente citada.</li>
+  </ul>
+  <p>El punto de mayor exposición del módulo es la sección de <strong>puertas giratorias / enablers</strong>, porque nombra a una persona real (Luis Lucero) junto a una denuncia penal en trámite — no una condena. Se mitigó dejando explícito en cada entrada que es una denuncia (no un hecho probado), citando la fuente primaria, y usando el campo <code>excusacion_efectiva: null</code> en vez de afirmar que la excusación falló. Antes de publicar el panel fuera de este entorno de trabajo, esa sección en particular amerita una revisión legal puntual.</p>
+
+  <h2>Glosario rápido</h2>
+  <table>
+    <tr><td><strong>Vector</strong></td><td>Un caso concreto de posible influencia estatal extranjera sobre una decisión argentina.</td></tr>
+    <tr><td><strong>RIGI</strong></td><td>Régimen de Incentivo para Grandes Inversiones (Ley 27.742) — el esquema que agiliza la entrada de inversiones extranjeras grandes en Argentina.</td></tr>
+    <tr><td><strong>VPU</strong></td><td>Vehículo de Proyecto Único — la sociedad que se inscribe para acogerse al RIGI.</td></tr>
+    <tr><td><strong>SOE</strong></td><td>State-Owned Enterprise — empresa de propiedad o control estatal (ej. CNNC, COFCO, ICBC).</td></tr>
+    <tr><td><strong>Mecanismo Layer I / Layer II</strong></td><td>Clasificación del libro NEST: Layer I son mecanismos directos de corrupción (soborno, manipulación legislativa o de licitaciones, puertas giratorias); Layer II es el entorno habilitante (infraestructura, soft power, medios, deuda).</td></tr>
+    <tr><td><strong>Puerta giratoria</strong></td><td>Un funcionario que pasa del sector privado al público (o viceversa) y decide sobre asuntos vinculados a sus antiguos clientes o empleadores.</td></tr>
+  </table>
+
+</div>
+</div>
+
+<script>
+const VECTORES = [
+{"slug":"atucha-iii-cnnc","sector":"nuclear","actor_extranjero":"CNNC (China National Nuclear Corporation)","pais_origen":"China","contraparte_argentina":"NA-SA (Nucleoeléctrica Argentina)","mecanismo":"Financiamiento e infraestructura nuclear interestatal, 8 años de dependencia tecnológica","mecanismo_libro":"layer2_infrastructure_investments","mecanismo_libro_secundario":"layer2_external_loans_grants","regimen_legal":"Acuerdo interestatal / contrato NA-SA-CNNC","score_induccion":0,"score_abuso_autoridad":0,"score_efecto_estrategico":3,"vinculo_externo":"exogeno_directo","notas":"Canal institucional formal. Términos de financiamiento no del todo públicos.","activo":true},
+{"slug":"litio-rigi-zijin-ganfeng","sector":"litio/minería","actor_extranjero":"Zijin Mining, Ganfeng Lithium","pais_origen":"China","contraparte_argentina":"Provincias mineras / RIGI (AFIP)","mecanismo":"Eliminación del piso de 20% de contenido local en Súper RIGI justo al abrirse uranio/litio como sectores elegibles","mecanismo_libro":"layer1_legislative_manipulation","mecanismo_libro_secundario":"layer2_infrastructure_investments","regimen_legal":"RIGI1 / SuperRIGI","score_induccion":0,"score_abuso_autoridad":1,"score_efecto_estrategico":2,"vinculo_externo":"proxy_hibrido","notas":"Alineación temporal entre cambio legislativo y beneficio a actor identificable (mecanismo II del libro: 'temporal alignment between private inducements and legislative amendments'). ACTUALIZACIÓN jul-2026: el Comité Evaluador RIGI rechazó a Ganfeng (proyecto Mariana) en jul-2025 por incumplir mínimos de inversión, mientras Galán Lithium (australiana, sin relación con Ganfeng) fue aprobada; Zijin sí accedió a incentivos RIGI. No hay favoritismo sistemático a China: mixto por caso. El secretario de Minería Luis Lucero (ex Marval O'Farrell Mairal) integra el comité que decide sobre litio chino; fue excusado de expedientes de mineras occidentales (Glencore, Rio Tinto, AngloGold, Vale, Newmont) y una denuncia penal (abr-2026) sostiene que esa excusación no fue efectiva. Sin vínculo documentado con Zijin/Ganfeng — nodo a vigilar bajo mecanismo IV (revolving doors).","activo":true},
+{"slug":"espacio-doble-uso-neuquen-rio-gallegos","sector":"espacio / doble uso","actor_extranjero":"CLTC (China Launch and Tracking Control), Emposat","pais_origen":"China","contraparte_argentina":"CONAE (Neuquén), Ascentio Technologies (Río Gallegos)","mecanismo":"Acuerdo de Neuquén (2014) nunca tramitado como tratado con debate legislativo pleno; cesión operativa 50 años sin inspección propia","mecanismo_libro":"layer1_legislative_manipulation","mecanismo_libro_secundario":"layer2_infrastructure_investments","regimen_legal":"Acuerdo bilateral no ratificado como tratado","score_induccion":0,"score_abuso_autoridad":2,"score_efecto_estrategico":3,"vinculo_externo":"exogeno_directo","notas":"CLTC/Emposat ligadas a la Fuerza Aeroespacial del EPL. San Juan: caso de respuesta exitosa (Estado bloqueó proyecto análogo por riesgo de doble uso). El no tramitar como tratado calza con el indicador 3 del mecanismo II del libro: 'suppression of oversight provisions'.","activo":true},
+{"slug":"5g-enacom-huawei","sector":"telecomunicaciones","actor_extranjero":"Huawei","pais_origen":"China","contraparte_argentina":"ENACOM","mecanismo":"Licitación 5G abierta bajo política de neutralidad tecnológica, sin resolver","mecanismo_libro":"vigilar_sin_mecanismo_confirmado","regimen_legal":null,"score_induccion":0,"score_abuso_autoridad":0,"score_efecto_estrategico":0,"vinculo_externo":"sin_vinculo","notas":"Ningún elemento materializado todavía. Vector a vigilar (paso 1-2 del proceso de 9 pasos del libro). Mecanismo potencial si madura: layer1_procurement_manipulation, si la licitación se cierra sin competencia real.","activo":true},
+{"slug":"swap-bcra-pboc-tesoro-eeuu","sector":"financiero / dependencia soberana","actor_extranjero":"PBOC (China), Tesoro de EEUU","pais_origen":"China / EEUU","contraparte_argentina":"BCRA","mecanismo":"Sustitución de dependencia: swap PBOC reducido de USD 19.000M a ~675M, reemplazado por swap con Tesoro EEUU hasta USD 20.000M","mecanismo_libro":"layer2_external_loans_grants","regimen_legal":null,"score_induccion":0,"score_abuso_autoridad":0,"score_efecto_estrategico":1,"vinculo_externo":"exogeno_directo","notas":"No es un caso de corrupción estratégica; es Dependency Metrics en tiempo real, encaja con el enabler V del libro ('concessional loans from a single foreign source forming high sectoral exposure'). Vale trackear la sustitución de fuente, no una reducción real de dependencia.","activo":true},
+{"slug":"institutos-confucio-uba-unlp-unc-mendoza","sector":"académico / soft power","actor_extranjero":"Hanban (Ministerio de Educación chino)","pais_origen":"China","contraparte_argentina":"UBA, UNLP, UNC, Universidad de Congreso (Mendoza)","mecanismo":"Financiamiento y sedes de Institutos Confucio","mecanismo_libro":"layer2_soft_power_projects","regimen_legal":null,"score_induccion":0,"score_abuso_autoridad":0,"score_efecto_estrategico":1,"vinculo_externo":"exogeno_directo","notas":"Efecto es legitimación reputacional/narrativa, no institucional/regulatorio. Coincide con el enabler III del libro ('funding of academic chairs... without transparent reporting'). Se vuelve corrupción estratégica solo si se liga a trato preferencial (sin indicio de eso hoy).","activo":true},
+{"slug":"defensa-armamento-rusia-china","sector":"defensa / armamento","actor_extranjero":"Rosoboronexport (oferta MiG-35/Yak-130), sin contraparte china confirmada","pais_origen":"Rusia / China","contraparte_argentina":"Fuerzas Armadas Argentinas","mecanismo":"Rosoboronexport activo en la región (LAAD 2025), pero adquisiciones en curso 2025-2027 se orientan a proveedores occidentales/israelíes","mecanismo_libro":"vigilar_sin_mecanismo_confirmado","regimen_legal":null,"score_induccion":0,"score_abuso_autoridad":0,"score_efecto_estrategico":0,"vinculo_externo":"sin_vinculo","notas":"Sin caso concreto materializado a jul-2026. Excluye la disputa por el radar en Tierra del Fuego con Reino Unido (caso distinto). Mecanismo potencial si madura: layer1_political_bribery_elite_inducement.","activo":true},
+{"slug":"hidrovia-parana-paraguay-dragado","sector":"puertos / infraestructura logística","actor_extranjero":"Jan de Nul (Bélgica), DEME (Bélgica) — sin operador estatal chino o ruso","pais_origen":"Bélgica","contraparte_argentina":"ANPYN","mecanismo":"Licitación pública nacional e internacional para dragado; preadjudicada a Jan de Nul, operador histórico desde 1995","mecanismo_libro":"vigilar_sin_mecanismo_confirmado","regimen_legal":"Concesión de obra pública por peaje","score_induccion":0,"score_abuso_autoridad":0,"score_efecto_estrategico":0,"vinculo_externo":"sin_vinculo","notas":"Sector crítico (80% de exportaciones) pero sin actor estatal rival en el proceso 2026: ambos oferentes son privados belgas, aliados occidentales. Mecanismo potencial si aparece actor estatal rival: layer1_procurement_manipulation.","activo":true},
+{"slug":"medios-china-daily-china-watch","sector":"medios / narrativa","actor_extranjero":"China Daily (medio estatal PCCh)","pais_origen":"China","contraparte_argentina":"Grupo América (El Cronista, La Capital de Rosario)","mecanismo":"Suplemento pago 'China Watch' insertado quincenalmente desde 2016","mecanismo_libro":"layer2_media_narrative_capture","regimen_legal":null,"score_induccion":0,"score_abuso_autoridad":0,"score_efecto_estrategico":1,"vinculo_externo":"exogeno_directo","notas":"Primer caso concreto del Narrative Analysis Module con evidencia documentada en Argentina. Acuerdo comercial declarado, no encubierto. Efecto limitado a legitimación narrativa.","activo":true},
+{"slug":"litio-tolillar-rosatom-uranium-one","sector":"litio/minería","actor_extranjero":"Uranium One Holding N.V. (subsidiaria de Rosatom)","pais_origen":"Rusia","contraparte_argentina":"Alpha Lithium Argentina S.A. (hoy subsidiaria de Tecpetrol/Techint)","mecanismo":"Rosatom, vía Uranium One, tomó en 2021 un 15% de Alpha One Lithium B.V. con opción a subir a 50% por USD 185M","mecanismo_libro":"layer2_infrastructure_investments","regimen_legal":null,"score_induccion":0,"score_abuso_autoridad":0,"score_efecto_estrategico":1,"vinculo_externo":"exogeno_directo","notas":"Vector 'dormido': no confirmado si Uranium One retuvo el stake tras la compra de Alpha Lithium Corp por Tecpetrol (2023). Contraparte rusa al vector chino de litio/RIGI, mismo mecanismo (Layer II, litio como 'strategic asset').","activo":true},
+{"slug":"banca-icbc-argentina","sector":"financiero / banca","actor_extranjero":"ICBC (Industrial and Commercial Bank of China)","pais_origen":"China","contraparte_argentina":"ICBC Argentina S.A.U. (ex Standard Bank Argentina)","mecanismo":"ICBC compró en jun-2026 el 20% restante en manos de Standard Bank London y quedó dueño 100%; prefinanciación de exportaciones +234,6% interanual, 4,8% del sistema financiero","mecanismo_libro":"layer2_external_loans_grants","regimen_legal":null,"score_induccion":0,"score_abuso_autoridad":0,"score_efecto_estrategico":2,"vinculo_externo":"exogeno_directo","notas":"Canal financiero formal y en expansión rápida — infraestructura de dependencia financiera bilateral en RMB, mismo tipo de mecanismo que el swap BCRA-PBOC pero vía banca comercial.","activo":true},
+{"slug":"agro-cofco-terminal-timbues","sector":"agro / granos / puertos","actor_extranjero":"COFCO International (COFCO Group, SOE china bajo SASAC)","pais_origen":"China","contraparte_argentina":"COFCO International Argentina S.A.","mecanismo":"Empresa estatal china opera directamente la terminal portuaria de Timbúes (800.000 tn), primer embarque directo de trigo/maíz argentino a China en +15 años","mecanismo_libro":"layer2_infrastructure_investments","regimen_legal":null,"score_induccion":0,"score_abuso_autoridad":0,"score_efecto_estrategico":2,"vinculo_externo":"exogeno_directo","notas":"Control directo (no vía proxy) de infraestructura de exportación de alimentos, un 'strategic asset' en términos NEST — analogía funcional con Sri Lanka/Hambantota, aunque acá es propiedad operativa vía inversión, no deuda impaga.","activo":true},
+{"slug":"petroleo-sinopec-golfo-san-jorge-cerrado","sector":"petróleo y gas","actor_extranjero":"Sinopec (China Petroleum & Chemical Corporation)","pais_origen":"China","contraparte_argentina":"CGC (familia Eurnekian)","mecanismo":"Sinopec operó yacimientos en Golfo San Jorge y Cuyana desde 2010; vendió todo a CGC (capital argentino) en 2026 al vencer la concesión","mecanismo_libro":"layer2_infrastructure_investments","regimen_legal":null,"score_induccion":0,"score_abuso_autoridad":0,"score_efecto_estrategico":0,"vinculo_externo":"sin_vinculo","notas":"VECTOR CERRADO: caso de divestment, no de expansión. Se mantiene como línea de base histórica para comparar contra los vectores activos.","activo":false},
+{"slug":"represas-santa-cruz-gezhouba","sector":"energía / hidroeléctrica","actor_extranjero":"China Gezhouba Group Company","pais_origen":"China","contraparte_argentina":"ENARSA, UTE con Eling Energía e Hidrocuyo","mecanismo":"Represas Néstor Kirchner y Jorge Cepernic (río Santa Cruz): obra paralizada por años, reactivada en 2026 tras enmienda al contrato original con Gezhouba, financiamiento chino adicional necesario ~USD 5.000M para terminar","mecanismo_libro":"layer2_infrastructure_investments","mecanismo_libro_secundario":"layer2_external_loans_grants","regimen_legal":"Contrato UTE ENARSA-Gezhouba/Eling/Hidrocuyo, con enmiendas","score_induccion":0,"score_abuso_autoridad":0,"score_efecto_estrategico":3,"vinculo_externo":"exogeno_directo","notas":"Uno de los complejos hidroeléctricos más grandes del país (Cepernic 46% de avance, Kirchner ~20%, jul-2026), con dependencia de financiamiento y construcción chinos por más de una década. Mismo patrón que Atucha III pero de escala aún mayor. Sin evidencia de inducción o abuso de autoridad — la reactivación 2026 fue una renegociación contractual formal. A vigilar: los términos de la enmienda 2026 no son del todo públicos.","activo":true},
+{"slug":"belgrano-cargas-cmec","sector":"transporte / ferrocarriles","actor_extranjero":"CMEC (China Machinery Engineering Corporation)","pais_origen":"China","contraparte_argentina":"Trenes Argentinos Cargas / Belgrano Cargas y Logística","mecanismo":"Modernización de la línea Belgrano Cargas con crédito CMEC (~USD 2.470M acumulados); en 2025 el Gobierno inició la privatización de Trenes Argentinos Cargas (Decreto 67/2025) y frenó la circunvalación ferroviaria de Santa Fe financiada por China","mecanismo_libro":"layer2_infrastructure_investments","mecanismo_libro_secundario":"layer2_external_loans_grants","regimen_legal":"Convenio de crédito CMEC / Decreto 67/2025 (privatización)","score_induccion":0,"score_abuso_autoridad":0,"score_efecto_estrategico":2,"vinculo_externo":"exogeno_directo","notas":"Caso con tensión activa poco común: sigue vigente una dependencia de financiamiento chino considerable (USD 2.470M) mientras el Gobierno privatiza el activo y frenó unilateralmente la obra insignia financiada por CMEC. Vale trackear si la privatización reduce la exposición o si el privatizado hereda la relación crediticia.","activo":true},
+{"slug":"solar-cauchari-jujuy-powerchina","sector":"energía / renovables","actor_extranjero":"Eximbank (China), PowerChina, Shanghai Electric Power Construction","pais_origen":"China","contraparte_argentina":"JEMSE (Jujuy Energía y Minería Sociedad del Estado)","mecanismo":"Parque solar Cauchari (300 MW, el más grande de Sudamérica), financiado 85% por crédito concesional de Eximbank China (USD 331M, ~3% de interés); expansión de +200 MW en curso con el mismo esquema","mecanismo_libro":"layer2_infrastructure_investments","mecanismo_libro_secundario":"layer2_external_loans_grants","regimen_legal":"Crédito Eximbank China + bono verde provincial","score_induccion":0,"score_abuso_autoridad":0,"score_efecto_estrategico":2,"vinculo_externo":"exogeno_directo","notas":"Caso operativo desde 2019, sin señales de corrupción — referencia de manual de infraestructura energética con dependencia financiera concentrada en una sola fuente externa (85% del capital), mismo patrón que Atucha III y las represas de Santa Cruz pero a nivel provincial. La expansión +200 MW repite el esquema, así que la dependencia crece en vez de diversificarse.","activo":true}
+];
+
+const ENABLERS = [
+{"nombre":"Marval O'Farrell Mairal","tipo":"estudio_juridico","personas_clave":"Luis Lucero (socio hasta 2024, luego secretario de Minería de la Nación)","descripcion_rol":"Asesoría legal a mineras internacionales (M&A, activos mineros)","nivel_confianza":"confirmado","fuente_verificacion":"https://www.eldiarioar.com/politica/denuncian-penalmente-secretario-mineria-presunto-conflicto-intereses-ley-glaciares_1_13125406.html","notas":"Clientes reportados: Glencore, Rio Tinto, AngloGold Ashanti, Vale, Newmont. Ninguno es SOE china/rusa; se registra por ser el nodo profesional del funcionario que integra el Comité Evaluador RIGI que sí falla sobre litio chino."},
+{"nombre":"Beccar Varela","tipo":"estudio_juridico","personas_clave":"Roberto A. Fortunati (socio), Pedro Silvestri, María Inés Cappelletti, Andrés Schreiber","descripcion_rol":"Asesoría legal local a ICBC China en la compra del 20% restante de ICBC Argentina en manos de Standard Bank (cierre jun-2026, USD 180,7M)","nivel_confianza":"confirmado","fuente_verificacion":"https://beccarvarela.com/en/novedades/icbc-china-adquiere-participacion-de-standard-bank-en-icbc-argentina/","notas":"Primer enabler confirmado ligado directamente a un actor chino del padrón (no solo a un funcionario). Coasesoró junto con Clifford Chance (Beijing)."},
+{"nombre":"Clifford Chance (Beijing)","tipo":"estudio_juridico","personas_clave":null,"descripcion_rol":"Asesoría legal internacional a ICBC China en la misma operación","nivel_confianza":"confirmado","fuente_verificacion":"https://lexlatin.com/noticias/icbc-consolida-su-presencia-en-argentina","notas":"Mismo caso que Beccar Varela, reportado por múltiples fuentes."},
+{"nombre":"Huawei Tech Investment Co Ltd -- apoderado (registro vencido)","tipo":"otro","personas_clave":"Chen Shiqing (representante designado 2019-2021)","descripcion_rol":"Representante legal de la sucursal argentina de Huawei, según resolución BORA","nivel_confianza":"reportado","fuente_verificacion":"https://www.boletinoficial.gob.ar/pdf/linkQR/amhsSmJjRHJKQUIreFpJZ1U0d1UwZz09","notas":"Designación con vigencia vencida en 2021 -- no se confirmó el apoderado actual a 2026. Se deja registrado como precedente de que BORA sí publica estas designaciones."}
+];
+
+const PENDIENTES = [
+{"item":"Representación legal de Zijin/Liex, Ganfeng y COFCO en Argentina","estado":"Sin resultado en búsqueda de prensa especializada, incluso buscando la presentación RIGI de Ganfeng puntualmente. ICBC sí se resolvió esta corrida.","proximo_paso":"Ganfeng/Zijin: buscar comunicados de bolsa (cotizan en Shanghai/Hong Kong). COFCO: consultar IGJ por CUIT 33-50673744-9."},
+{"item":"Apoderado actual de Huawei Tech Investment Co Ltd","estado":"Registro BORA de 2019 encontrado, pero venció en 2021.","proximo_paso":"Buscar resoluciones BORA posteriores a 2021 o consultar IGJ directamente."},
+{"item":"Auditoras de estados contables de las empresas del padrón","estado":"No investigado esta corrida.","proximo_paso":"Balances depositados en IGJ/AFIP suelen identificar auditora externa."}
+];
+
+// --- lógica de clasificación, replicada de vectores_api/scoring.py ---
+const VINCULO_SCORE = {exogeno_directo:3, proxy_hibrido:2, endogeno_alineado:1, mimetico:0, sin_vinculo:0};
+
+function clasificar(i, a, e, vinculo){
+  const ext = VINCULO_SCORE[vinculo] ?? 0;
+  let clasificacion;
+  if(i>=2 && a>=2 && e>=2 && ext>=2) clasificacion="confirmado";
+  else if(e>=2 && ext>=2 && !(i>=2 && a>=2)) clasificacion="entorno_dependencia_fuerte";
+  else if((e>=1 || ext>=1) && i===0 && a===0) clasificacion="zona_gris";
+  else clasificacion="fuera_de_alcance";
+
+  let nivel;
+  if(clasificacion==="confirmado") nivel="CRITICO";
+  else if(clasificacion==="entorno_dependencia_fuerte") nivel=(e===3||ext===3)?"ALTO":"MEDIO";
+  else if(clasificacion==="zona_gris") nivel=(e>=1&&ext>=1)?"MEDIO":"BAJO";
+  else nivel="VIGILAR";
+
+  return {clasificacion, nivel, ext};
+}
+
+// pre-cómputo
+VECTORES.forEach(v=>{
+  const r = clasificar(v.score_induccion, v.score_abuso_autoridad, v.score_efecto_estrategico, v.vinculo_externo);
+  v._clasificacion = r.clasificacion;
+  v._alerta = r.nivel;
+});
+
+const LABEL_CLAS = {
+  confirmado:"Confirmado",
+  entorno_dependencia_fuerte:"Entorno de dependencia fuerte",
+  zona_gris:"Zona gris",
+  fuera_de_alcance:"Fuera de alcance"
+};
+
+// --- render ---
+function uniq(arr){ return [...new Set(arr)].sort(); }
+
+function fillSelect(id, values, labelFn){
+  const sel = document.getElementById(id);
+  values.forEach(v=>{
+    const o = document.createElement("option");
+    o.value = v; o.textContent = labelFn ? labelFn(v) : v;
+    sel.appendChild(o);
+  });
+}
+fillSelect("f-sector", uniq(VECTORES.map(v=>v.sector)));
+fillSelect("f-clas", ["confirmado","entorno_dependencia_fuerte","zona_gris","fuera_de_alcance"], v=>LABEL_CLAS[v]);
+fillSelect("f-alerta", ["CRITICO","ALTO","MEDIO","BAJO","VIGILAR"]);
+
+function renderKpis(list){
+  const activos = list.filter(v=>v.activo);
+  const counts = {CRITICO:0,ALTO:0,MEDIO:0,BAJO:0,VIGILAR:0};
+  activos.forEach(v=>counts[v._alerta]++);
+  const kpis = [
+    {n:activos.length, l:"vectores activos"},
+    {n:counts.CRITICO, l:"CRÍTICO"},
+    {n:counts.ALTO, l:"ALTO"},
+    {n:counts.MEDIO, l:"MEDIO"},
+    {n:counts.BAJO, l:"BAJO"},
+    {n:counts.VIGILAR, l:"a vigilar"},
+  ];
+  document.getElementById("kpis").innerHTML = kpis.map(k=>`<div class="kpi"><div class="n">${k.n}</div><div class="l">${k.l}</div></div>`).join("");
+}
+
+function renderTable(list){
+  const tbody = document.getElementById("tbody");
+  tbody.innerHTML = list.map((v,idx)=>`
+    <tr class="row ${v.activo?'':'inactive'}" data-slug="${v.slug}">
+      <td><strong>${v.slug}</strong>${v.activo?'':' <span class="muted">(cerrado)</span>'}</td>
+      <td class="sector-tag">${v.sector}</td>
+      <td>${v.actor_extranjero}<br><span class="muted">${v.pais_origen}</span></td>
+      <td class="muted">${v.mecanismo_libro.replace(/_/g," ")}</td>
+      <td><span class="badge c-${v._clasificacion}">${LABEL_CLAS[v._clasificacion]}</span></td>
+      <td><span class="badge b-${v._alerta}">${v._alerta}</span></td>
+    </tr>
+  `).join("");
+
+  tbody.querySelectorAll("tr.row").forEach(tr=>{
+    tr.addEventListener("click", ()=> openDetail(tr.dataset.slug));
+  });
+}
+
+function openDetail(slug){
+  const v = VECTORES.find(x=>x.slug===slug);
+  const el = document.getElementById("detail");
+  el.innerHTML = `
+    <button class="close-btn" onclick="document.getElementById('detail').classList.remove('open')">cerrar</button>
+    <h3>${v.slug}</h3>
+    <div class="meta">${v.sector} · ${v.actor_extranjero} (${v.pais_origen}) · contraparte: ${v.contraparte_argentina||"—"} · régimen legal: ${v.regimen_legal||"—"}</div>
+    <div><span class="badge c-${v._clasificacion}">${LABEL_CLAS[v._clasificacion]}</span> <span class="badge b-${v._alerta}">${v._alerta}</span></div>
+    <div class="scores">
+      <div class="score"><div class="v">${v.score_induccion}</div><div class="l">inducción</div></div>
+      <div class="score"><div class="v">${v.score_abuso_autoridad}</div><div class="l">abuso de autoridad</div></div>
+      <div class="score"><div class="v">${v.score_efecto_estrategico}</div><div class="l">efecto estratégico</div></div>
+      <div class="score"><div class="v">${VINCULO_SCORE[v.vinculo_externo]}</div><div class="l">vínculo externo (${v.vinculo_externo})</div></div>
+    </div>
+    <div class="muted">mecanismo (libro): ${v.mecanismo_libro.replace(/_/g," ")}${v.mecanismo_libro_secundario?" + "+v.mecanismo_libro_secundario.replace(/_/g," "):""}</div>
+    <div class="muted" style="margin-top:6px">${v.mecanismo}</div>
+    <div class="notas">${v.notas}</div>
+  `;
+  el.classList.add("open");
+  el.scrollIntoView({behavior:"smooth", block:"nearest"});
+}
+
+function applyFilters(){
+  const q = document.getElementById("search").value.toLowerCase();
+  const sector = document.getElementById("f-sector").value;
+  const clas = document.getElementById("f-clas").value;
+  const alerta = document.getElementById("f-alerta").value;
+  const activoMode = document.getElementById("f-activo").value;
+
+  let list = VECTORES.filter(v=>{
+    if(activoMode==="activos" && !v.activo) return false;
+    if(sector && v.sector!==sector) return false;
+    if(clas && v._clasificacion!==clas) return false;
+    if(alerta && v._alerta!==alerta) return false;
+    if(q){
+      const hay = `${v.slug} ${v.sector} ${v.actor_extranjero} ${v.pais_origen}`.toLowerCase();
+      if(!hay.includes(q)) return false;
+    }
+    return true;
+  });
+  renderKpis(list);
+  renderTable(list);
+}
+
+["search","f-sector","f-clas","f-alerta","f-activo"].forEach(id=>{
+  document.getElementById(id).addEventListener("input", applyFilters);
+  document.getElementById(id).addEventListener("change", applyFilters);
+});
+
+applyFilters();
+
+// enablers
+document.getElementById("enablers").innerHTML = ENABLERS.map(e=>`
+  <div class="enabler-card">
+    <div class="top">
+      <div class="name">${e.nombre} <span class="muted">— ${e.tipo.replace(/_/g," ")}</span></div>
+      <span class="conf conf-${e.nivel_confianza}">${e.nivel_confianza}</span>
+    </div>
+    <div class="muted" style="margin-top:6px">${e.descripcion_rol}</div>
+    <div style="margin-top:6px;font-size:12.5px">${e.notas}</div>
+    <div style="margin-top:6px"><a href="${e.fuente_verificacion}" target="_blank">fuente</a></div>
+  </div>
+`).join("");
+
+document.getElementById("pendientes").innerHTML = "<strong>Pendientes de verificar:</strong><br>" + PENDIENTES.map(p=>
+  `• ${p.item} — <span class="muted">${p.estado} ${p.proximo_paso}</span>`
+).join("<br>");
+
+// --- pestañas ---
+document.querySelectorAll(".tab-btn").forEach(btn=>{
+  btn.addEventListener("click", ()=>{
+    document.querySelectorAll(".tab-btn").forEach(b=>b.classList.remove("active"));
+    document.querySelectorAll(".tabcontent").forEach(c=>c.classList.remove("active"));
+    btn.classList.add("active");
+    document.getElementById("tab-"+btn.dataset.tab).classList.add("active");
+  });
+});
+</script>
+</body>
+</html>
