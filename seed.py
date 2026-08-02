@@ -14,7 +14,7 @@ from sqlalchemy.orm import Session
 import models
 from scoring import clasificar
 
-SEED_PATH = Path(__file__).parent.parent / "seed_vectores.json"
+SEED_PATH = Path(__file__).parent / "seed_vectores.json"
 
 
 def cargar_seed(db: Session, forzar: bool = False) -> int:

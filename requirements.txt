@@ -2,5 +2,5 @@ fastapi>=0.110
 uvicorn[standard]>=0.29
 sqlalchemy>=2.0
 pydantic>=2.0
-# Descomentar para Postgres en producción (mismo motor que el resto del ecosistema):
-# psycopg2-binary>=2.9
+# Driver de Postgres (mismo motor que el resto del ecosistema en producción):
+psycopg2-binary>=2.9
