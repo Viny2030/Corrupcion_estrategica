@@ -52,11 +52,25 @@ app.include_router(vectores.router)
 app.include_router(alertas.router)
 
 
-@app.get("/", tags=["health"])
+@app.get("/", tags=["dashboard"])
 def root():
+    return FileResponse(STATIC_DIR / "index.html")
+
+
+@app.get("/health", tags=["health"])
+def health():
     return {"status": "ok", "modulo": "vectores-influencia-estatal-extranjera"}
 
 
 @app.get("/dashboard", tags=["dashboard"])
 def dashboard():
     return FileResponse(STATIC_DIR / "index.html")
+
+
+@app.get("/libro", tags=["dashboard"])
+def libro():
+    return FileResponse(
+        STATIC_DIR / "strategic_corruption.pdf",
+        media_type="application/pdf",
+        filename="static/strategic_corruption.pdf",
+    )
