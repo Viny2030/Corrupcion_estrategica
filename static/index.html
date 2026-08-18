@@ -492,6 +492,7 @@ const ENABLERS = [
 {"nombre":"Marval O'Farrell Mairal","tipo":"estudio_juridico","personas_clave":"Luis Lucero (socio hasta 2024, luego secretario de Minería de la Nación)","descripcion_rol":"Asesoría legal a mineras internacionales (M&A, activos mineros)","nivel_confianza":"confirmado","fuente_verificacion":"https://www.eldiarioar.com/politica/denuncian-penalmente-secretario-mineria-presunto-conflicto-intereses-ley-glaciares_1_13125406.html","notas":"Clientes reportados: Glencore, Rio Tinto, AngloGold Ashanti, Vale, Newmont. Ninguno es SOE china/rusa; se registra por ser el nodo profesional del funcionario que integra el Comité Evaluador RIGI que sí falla sobre litio chino."},
 {"nombre":"Beccar Varela","tipo":"estudio_juridico","personas_clave":"Roberto A. Fortunati (socio), Pedro Silvestri, María Inés Cappelletti, Andrés Schreiber","descripcion_rol":"Asesoría legal local a ICBC China en la compra del 20% restante en ICBC Argentina en manos de Standard Bank (cierre jun-2026, USD 180,7M)","nivel_confianza":"confirmado","fuente_verificacion":"https://beccarvarela.com/en/novedades/icbc-china-adquiere-participacion-de-standard-bank-en-icbc-argentina/","notas":"Primer enabler confirmado ligado directamente a un actor chino del padrón (no solo a un funcionario). Coasesoró junto con Clifford Chance (Beijing)."},
 {"nombre":"Clifford Chance (Beijing)","tipo":"estudio_juridico","personas_clave":null,"descripcion_rol":"Asesoría legal internacional a ICBC China en la misma operación","nivel_confianza":"confirmado","fuente_verificacion":"https://lexlatin.com/noticias/icbc-consolida-su-presencia-en-argentina","notas":"Mismo caso que Beccar Varela, reportado por múltiples fuentes."},
+{"nombre":"Bruchou, Fernández Madero & Lombardi","tipo":"estudio_juridico","personas_clave":"Estanislao Olmos (socio), Florencia Angelico, Juan José Romano Blanco","descripcion_rol":"Asesoría legal local a Standard Bank (vendedor) en la venta de su 20% de ICBC Argentina","nivel_confianza":"confirmado","fuente_verificacion":"https://bruchoufunes.com/en/icbc-china-acquires-standard-banks-stake-in-icbc-argentina/","notas":"Asesora al vendedor (Standard Bank), no al actor chino del padrón -- se registra por completar el cuadro de la operación, no como enabler de ICBC."},
 {"nombre":"Huawei Tech Investment Co Ltd -- apoderado (registro vencido)","tipo":"otro","personas_clave":"Chen Shiqing (representante designado 2019-2021)","descripcion_rol":"Representante legal de la sucursal argentina de Huawei, según resolución BORA","nivel_confianza":"reportado","fuente_verificacion":"https://www.boletinoficial.gob.ar/pdf/linkQR/amhsSmJjRHJKQUIreFpJZ1U0d1UwZz09","notas":"Designación con vigencia vencida en 2021 -- no se confirmó el apoderado actual a 2026. Se deja registrado como precedente de que BORA sí publica estas designaciones."}
 ];
 
@@ -696,6 +697,7 @@ const ENABLER_LINKS = [
   {enabler:"Marval O'Farrell Mairal", vectorSlug:"litio-rigi-zijin-ganfeng", persona:"Luis Lucero"},
   {enabler:"Beccar Varela", vectorSlug:"banca-icbc-argentina"},
   {enabler:"Clifford Chance (Beijing)", vectorSlug:"banca-icbc-argentina"},
+  {enabler:"Bruchou, Fernández Madero & Lombardi", vectorSlug:"banca-icbc-argentina"},
   {enabler:"Huawei Tech Investment Co Ltd -- apoderado (registro vencido)", vectorSlug:"5g-enacom-huawei"},
 ];
 
@@ -1081,6 +1083,7 @@ const ENABLER_EN_SUMMARY = {
 "Marval O'Farrell Mairal":"Legal counsel to international mining companies (M&A, mining assets). Reported clients: Glencore, Rio Tinto, AngloGold Ashanti, Vale, Newmont — none are Chinese/Russian SOEs; flagged because it's the professional home of the official who sits on the committee ruling on Chinese lithium.",
 "Beccar Varela":"Local legal counsel to China's ICBC in its acquisition of the remaining 20% of ICBC Argentina from Standard Bank (closed Jun-2026, USD 180.7M). The first confirmed enabler directly tied to a Chinese actor in the dataset, not just an official.",
 "Clifford Chance (Beijing)":"International legal counsel to ICBC China on the same transaction, reported by multiple sources.",
+"Bruchou, Fernández Madero & Lombardi":"Local legal counsel to Standard Bank (the seller) in the sale of its remaining 20% stake in ICBC Argentina. Advises the seller, not the Chinese actor in the dataset — included to complete the picture of the deal, not as an ICBC enabler.",
 "Huawei Tech Investment Co Ltd -- apoderado (registro vencido)":"Huawei's Argentine branch's legal representative per an official registry filing — the registered term expired in 2021 and the current representative is unconfirmed as of 2026."
 };
 
