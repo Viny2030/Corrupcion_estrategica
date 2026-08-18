@@ -1,0 +1,24 @@
+name: Robot semanal — Vectores de Influencia Estatal Extranjera
+
+on:
+  schedule:
+    - cron: "0 11 * * 1"
+  workflow_dispatch: {}
+
+jobs:
+  actualizar-vectores:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Instalar dependencias
+        run: pip install requests beautifulsoup4 lxml
+
+      - name: Correr robot de ingesta (--apply)
+        run: python robot_diario.py --apply

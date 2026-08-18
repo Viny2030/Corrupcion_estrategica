@@ -220,12 +220,17 @@ Pendientes concretos, en orden de lo más al menos bloqueado:
   vector ICBC (Beccar Varela / Clifford Chance). Sigue pendiente para Zijin, Ganfeng,
   COFCO y el apoderado actual de Huawei — ver `pendientes_de_verificar` en
   `seed_enablers.json` para el detalle de qué se buscó y qué falta.
-- **Robot diario**: código funcional (`robot_diario.py`), pero **no se dejó corriendo
-  automáticamente todavía** — la decisión de si la corrida programada debe usar
-  `--apply` (publica novedades solas, sin revisión humana previa, en la base pública que
-  alimenta el dashboard) o quedarse en modo reporte/dry-run (junta hallazgos, un humano
-  los aplica) queda pendiente de decisión de Vicente. Mientras tanto solo cubre BCRA;
-  BORA y RIGI se suman cuando se resuelvan los bloqueos de arriba.
+- **Robot semanal** (actualizado 18-ago-2026): `robot_diario.py` corre automáticamente
+  vía GitHub Actions — ver `.github/workflows/robot-semanal.yml`. Lunes 8am hora
+  Argentina (11:00 UTC), en modo `--apply` (aprobado por Vicente): postea novedad +
+  evidencia a vectores que ya existen, deduplicando contra lo ya registrado; nunca crea
+  vectores nuevos ni cambia scores/clasificación por su cuenta. También se puede disparar
+  a mano desde la pestaña Actions del repo ("Run workflow"). El nombre del archivo quedó
+  del diseño original (pensado para cadencia diaria) pero el script no asume ninguna
+  frecuencia — la cadencia la define el cron del workflow, no el código. Reemplaza a la
+  tarea programada que antes corría en Claude Code Remote (dada de baja el 18-ago-2026)
+  para que la automatización viva en el propio repo. Por ahora solo cubre BCRA; BORA y
+  RIGI se suman cuando se resuelvan los bloqueos de arriba.
 - **Novedades de esta corrida, pendientes de aplicar a la base en vivo**: se investigó y
   redactó (con fuentes citadas) actualizaciones para `swap-bcra-pboc-tesoro-eeuu`
   (extensión del swap BCRA-PBOC de 3 a 5 años, 5-ago-2026), `litio-rigi-zijin-ganfeng`
