@@ -108,6 +108,32 @@ def agregar_evidencia(slug: str, payload: schemas.EvidenciaCreate, db: Session =
     return evidencia
 
 
+@router.get("/{slug}/evidencia", response_model=list[schemas.EvidenciaOut])
+def listar_evidencia(slug: str, db: Session = Depends(get_db)):
+    """Usado por el robot diario para deduplicar: no repostear una URL
+    que ya quedó registrada como evidencia en una corrida anterior."""
+    v = db.query(models.VectorInfluencia).filter(models.VectorInfluencia.slug == slug).first()
+    if not v:
+        raise HTTPException(404, "Vector no encontrado")
+    return v.evidencias
+
+
+@router.get("/{slug}/actualizaciones", response_model=list[schemas.NovedadOut])
+def listar_actualizaciones(slug: str, db: Session = Depends(get_db)):
+    """Historial de novedades registradas para un vector (corridas del
+    robot diario/semanal). Usado también para deduplicar por URL antes
+    de postear una novedad nueva."""
+    v = db.query(models.VectorInfluencia).filter(models.VectorInfluencia.slug == slug).first()
+    if not v:
+        raise HTTPException(404, "Vector no encontrado")
+    return (
+        db.query(models.VectorActualizacion)
+        .filter(models.VectorActualizacion.vector_id == v.id)
+        .order_by(models.VectorActualizacion.fecha_corrida.desc())
+        .all()
+    )
+
+
 @router.post("/{slug}/actualizacion", status_code=201)
 def registrar_novedad(slug: str, novedad: schemas.NovedadIn, db: Session = Depends(get_db)):
     """

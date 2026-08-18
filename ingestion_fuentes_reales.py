@@ -9,34 +9,46 @@ solo se documentan las fuentes específicas de este módulo).
 
 Instalar:  pip install requests beautifulsoup4 lxml --break-system-packages
 
-IMPORTANTE — estado de cada fuente (verificado hoy vía fetch real):
+IMPORTANTE — estado de cada fuente (última verificación: 2026-08-18, vía
+fetch real desde el sandbox — no vía navegador, ver detalle por fuente):
 
   BORA (boletinoficial.gob.ar)
     Estructura confirmada: HTML server-rendered. Búsqueda avanzada en
     /busquedaAvanzada/all, avisos individuales en
     /detalleAviso/{seccion}/{id}/{fecha}. Scrapeable directo con
-    requests + BeautifulSoup.
+    requests + BeautifulSoup para avisos individuales conocidos.
+    La búsqueda por texto libre (BoraScraper.buscar) SIGUE bloqueada:
+    /busquedaAvanzada/all?texto=... devuelve HTTP 200 pero sin
+    resultados embebidos en el HTML (form con action="" — es un SPA
+    que arma la consulta vía JS). Sigue pendiente de inspección de
+    Network tab con Claude in Chrome/devtools.
 
   RIGI — panel de proyectos (argentina.gob.ar/economia/rigi)
-    Es un dashboard renderizado con JavaScript (todos los contadores
-    cargan en 0 en el HTML crudo, se llenan client-side vía fetch a una
-    API interna). NO se pudo confirmar el endpoint JSON real sin
-    inspeccionar el Network tab del navegador. Placeholder abajo con
-    TODO explícito — resolver con Claude in Chrome / devtools antes de
-    poner esto en producción.
+    Reconfirmado 2026-08-18: el HTML crudo no contiene ningún fetch()/
+    axios/XHR ni endpoint /api/*.json embebido — los únicos <script>
+    con datos son un `seriesData` de proyecciones de inversión
+    AGREGADAS por sector/año (no por proyecto individual), y los
+    contadores de "Proyectos aprobados"/"En evaluación" siguen en 0 en
+    el HTML estático (se llenan al elegir una provincia, vía AJAX no
+    capturable sin ejecutar JS real). Sigue bloqueado — requiere
+    Claude in Chrome conectado (Network tab) para capturar la llamada
+    real al elegir una provincia.
 
   RIGI — registro de VPU (arca.gob.ar/rigi/registros)
     También informativo/estático, sin listado público de VPU
     individuales en la página. Los VPU aprobados se publican como
     resoluciones del Ministerio de Economía en BORA — el camino
-    confiable es scrapear BORA filtrando por esas resoluciones, no
-    ARCA directamente.
+    confiable sigue siendo BoraScraper.filtrar_resoluciones_rigi()
+    sobre resoluciones ya conocidas, no un scrape genérico.
 
-  BCRA (bcra.gob.ar)
-    Los comunicados de política monetaria (swaps, etc.) se publican
-    como notas de prensa individuales bajo /politica-monetaria/. No se
-    pudo confirmar el listado/índice en este pase — requiere el mismo
-    tipo de verificación que RIGI.
+  BCRA (bcra.gob.ar) — DESBLOQUEADO 2026-08-18
+    El índice de noticias SÍ es scrapeable directo:
+    https://www.bcra.gob.ar/Noticias/ es HTML server-rendered con
+    enlaces <a href="https://www.bcra.gob.ar/noticias/{slug}/"> a cada
+    comunicado individual (confirmado por fetch real, no requiere JS).
+    BcraScraper.obtener_comunicados_swap() ya implementado abajo.
+    Limitación conocida: solo expone la página más reciente (~10-15
+    ítems); no se confirmó paginación/archivo histórico en este pase.
 """
 
 from __future__ import annotations
@@ -181,30 +193,110 @@ class ComunicadoBcra:
 
 class BcraScraper:
     """
-    TODO — mismo caso: no se confirmó el índice/listado de comunicados
-    de política monetaria en este pase (fetch a
-    PoliticaMonetariaComunicados.asp devolvió vacío, probablemente
-    también JS-rendered o requiere headers/cookies de sesión). Antes
-    de producción, inspeccionar con Claude in Chrome la sección de
-    comunicados en bcra.gob.ar/politica-monetaria/.
+    Índice confirmado 2026-08-18: https://www.bcra.gob.ar/Noticias/ es
+    HTML server-rendered con <a href="https://www.bcra.gob.ar/noticias/
+    {slug}/"> por cada comunicado. No hace falta JS ni headers
+    especiales — un GET con User-Agent de navegador alcanza (probado
+    con requests plano desde el sandbox, HTTP 200 y links presentes).
 
-    Búsqueda manual de referencia mientras tanto: los comunicados de
-    renovación del swap BCRA-PBOC aparecen indexados bajo
-    bcra.gob.ar/politica-monetaria/ con slugs del tipo
-    'el-bcra-y-el-pboc-renuevan-...' — confirmar patrón exacto.
+    Ejemplo real capturado en este pase (2026-08-18): el comunicado
+    'el-banco-central-de-la-republica-argentina-y-el-banco-de-la-
+    republica-popular-de-china-renuevan-su-acuerdo-de-swap-y-
+    extienden-el-plazo-de-3-a-5-anos' (5-ago-2026) — swap BCRA-PBOC
+    RMB 130.000M, tramo activo RMB 35.000M (~USD 5.000M desde inicios
+    de 2023), plazo extendido de 3 a 5 años. Relevante para el vector
+    `swap-bcra-pboc-tesoro-eeuu` — no cambia el mecanismo (sigue siendo
+    layer2_external_loans_grants) pero sí profundiza el horizonte de
+    dependencia del tramo activo.
+
+    Limitación conocida: la página índice solo trae los ítems más
+    recientes (no se confirmó archivo histórico paginado en este pase);
+    para comunicados más viejos que la ventana visible, usar el motor
+    de búsqueda propio de bcra.gob.ar (no automatizado acá todavía).
     """
 
-    def obtener_comunicados_swap(self, palabra_clave: str = "swap") -> list[ComunicadoBcra]:
-        raise NotImplementedError(
-            "Índice de comunicados BCRA no confirmado — ver docstring de la clase."
+    BASE = "https://www.bcra.gob.ar"
+    INDICE = f"{BASE}/Noticias/"
+
+    def __init__(self, session: Optional[requests.Session] = None):
+        self.session = session or requests.Session()
+        self.session.headers.update(HEADERS)
+
+    def _listar_urls_noticias(self) -> list[str]:
+        resp = self.session.get(self.INDICE, timeout=20)
+        resp.raise_for_status()
+        soup = BeautifulSoup(resp.text, "lxml")
+        urls = []
+        for a in soup.find_all("a", href=True):
+            href = a["href"]
+            if "/noticias/" in href and href.rstrip("/") != f"{self.BASE}/noticias":
+                if href not in urls:
+                    urls.append(href)
+        return urls
+
+    def _parsear_comunicado(self, url: str) -> Optional[ComunicadoBcra]:
+        resp = self.session.get(url, timeout=20)
+        resp.raise_for_status()
+        soup = BeautifulSoup(resp.text, "lxml")
+
+        titulo_tag = soup.find("h1") or soup.find("title")
+        titulo = titulo_tag.get_text(strip=True) if titulo_tag else ""
+
+        cuerpo = soup.find("article") or soup.find("main") or soup.body
+        texto = cuerpo.get_text(" ", strip=True) if cuerpo else soup.get_text(" ", strip=True)
+
+        fecha_tag = soup.find("time")
+        fecha = None
+        if fecha_tag and fecha_tag.get("datetime"):
+            try:
+                fecha = datetime.fromisoformat(fecha_tag["datetime"][:10]).date()
+            except ValueError:
+                fecha = None
+
+        monto = None
+        match_monto = re.search(r"USD\s?([\d.,]+)\s?(millones|mill)", texto, re.I)
+        if match_monto:
+            try:
+                monto = float(match_monto.group(1).replace(".", "").replace(",", "."))
+            except ValueError:
+                monto = None
+
+        return ComunicadoBcra(
+            fecha=fecha or date.today(), titulo=titulo, url=url, texto=texto,
+            monto_usd_millones=monto,
         )
+
+    def obtener_comunicados_swap(self, palabra_clave: str = "swap") -> list[ComunicadoBcra]:
+        """Filtra el índice de noticias por palabra clave (default 'swap',
+        también matchea 'china'/'pboc' en el slug de la URL) y devuelve
+        los comunicados parseados."""
+        candidatos = [
+            u for u in self._listar_urls_noticias()
+            if re.search(palabra_clave, u, re.I) or re.search(r"china|pboc|banco-central", u, re.I)
+        ]
+        resultados = []
+        for url in candidatos:
+            try:
+                c = self._parsear_comunicado(url)
+                if c:
+                    resultados.append(c)
+            except requests.RequestException:
+                continue
+        return resultados
 
 
 if __name__ == "__main__":
-    # Único caso end-to-end confirmado funcional en este pase: BORA.
-    scraper = BoraScraper()
-    print(
-        "BoraScraper listo (estructura de URL confirmada). "
-        "RigiScraper y BcraScraper requieren inspección de red antes "
-        "de poder ejecutarse — ver TODOs en el código."
-    )
+    # BoraScraper: estructura de URL confirmada, pero buscar() sigue
+    # bloqueada (ver docstring del módulo). BcraScraper: end-to-end
+    # funcional desde 2026-08-18, se ejecuta acá como smoke test real.
+    print("BoraScraper listo (estructura de URL confirmada; buscar() sigue bloqueada).")
+    print("RigiScraper sigue bloqueado — ver TODO en el código.\n")
+
+    print("BcraScraper — corriendo obtener_comunicados_swap() contra bcra.gob.ar...")
+    try:
+        comunicados = BcraScraper().obtener_comunicados_swap()
+        print(f"{len(comunicados)} comunicado(s) encontrados:")
+        for c in comunicados:
+            print(f"  - [{c.fecha}] {c.titulo}\n    {c.url}")
+    except requests.RequestException as exc:
+        print(f"  Fallo de red al consultar BCRA: {exc}")

@@ -82,6 +82,22 @@ class NovedadIn(BaseModel):
     fuentes: list[dict] = []
 
 
+class NovedadOut(BaseModel):
+    """Salida de GET /api/vectores/{slug}/actualizaciones — usado por el
+    robot diario para deduplicar (no volver a postear una novedad cuya
+    fuente ya fue registrada)."""
+
+    model_config = ConfigDict(from_attributes=True)
+
+    id: int
+    vector_id: Optional[int]
+    es_vector_nuevo: bool
+    resumen: str
+    cambio_clasificacion: bool
+    fuentes_json: Optional[list] = None
+    fecha_corrida: date
+
+
 class AlertaOut(BaseModel):
     slug: str
     sector: str

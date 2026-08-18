@@ -79,10 +79,24 @@ documentada, con fuente citada en `notas`.
 ### 4. Ingesta
 
 - **`ingestion_fuentes_reales.py`** — scrapers para BORA (confirmado: HTML
-  server-rendered, scrapeable directo), y placeholders documentados con TODO explícito
-  para el panel RIGI (JavaScript client-side, requiere inspección de Network tab antes
-  de producción) y BCRA (índice de comunicados no confirmado en este pase). No inventa
-  endpoints que no verificó.
+  server-rendered, scrapeable directo para avisos individuales; la búsqueda por texto
+  libre sigue bloqueada, ver abajo), BCRA (**desbloqueado 18-ago-2026**: el índice de
+  noticias en `bcra.gob.ar/Noticias/` es HTML server-rendered y `BcraScraper.
+  obtener_comunicados_swap()` ya funciona end-to-end), y RIGI (sigue bloqueado: el panel
+  público solo trae proyecciones agregadas por sector/año en un `<script>` inline, sin
+  ningún endpoint `/api/*` ni fetch() visible en el HTML crudo — los contadores de
+  "Proyectos aprobados" se llenan recién al elegir una provincia, vía AJAX que no se
+  puede capturar sin ejecutar JS real). No inventa endpoints que no verificó.
+- **`robot_diario.py`** — robot de ingesta diaria, nuevo (18-ago-2026). Trae los
+  vectores activos desde la API en vivo, corre `BcraScraper` contra los comunicados más
+  recientes, matchea por palabras clave específicas de `actor_extranjero`/
+  `contraparte_argentina` (no de `sector`/`pais_origen`, que dan demasiados falsos
+  positivos — "China" solo matchea 16/16 vectores), deduplica contra evidencia/
+  novedades ya registradas (`GET /api/vectores/{slug}/evidencia` y `/actualizaciones`,
+  nuevos endpoints agregados para esto) y postea novedad + evidencia. **Corre en
+  dry-run por default** — necesita `--apply` para escribir de verdad en la API pública;
+  ver "Estado y próximos pasos" para la política de cuándo usar `--apply` en la corrida
+  programada.
 - **`narrative_analysis_module.py`** — Módulo E del framework (Análisis Narrativo).
   Detecta repetición de talking points entre voceros/medios en ventanas de tiempo
   cortas, cambios súbitos de encuadre, y campañas de descalificación/litigios
@@ -107,8 +121,9 @@ Paquete FastAPI real (no skeleton), con DB vía SQLAlchemy:
   `vigilar_sin_mecanismo_confirmado` si algún valor no matchea el enum.
 - `routers/vectores.py` — CRUD (`GET/POST /api/vectores`, `GET/PATCH /api/vectores/{slug}`,
   recalcula clasificación automáticamente al actualizar scores), evidencia
-  (`POST /api/vectores/{slug}/evidencia`), novedades de la corrida semanal
-  (`POST /api/vectores/{slug}/actualizacion`).
+  (`POST` + `GET /api/vectores/{slug}/evidencia`), novedades de la corrida diaria/semanal
+  (`POST` + `GET /api/vectores/{slug}/actualizacion(es)` — los GET son nuevos,
+  18-ago-2026, para que `robot_diario.py` pueda deduplicar por URL antes de postear).
 - `routers/alertas.py` — `GET /api/alertas?plataforma=X&nivel_minimo=Y`, el endpoint de
   integración que consumen el resto de los monitores (mismo patrón que MEACI).
 
@@ -131,7 +146,7 @@ por `vectores_api/`, se conserva como artefacto histórico.
 - **`arquitectura_modulo_vectores_influencia.svg`** — flujo de 8 capas: Fuentes →
   Ingesta → Padrón/Matcher → Tabla madre → Motor de Scoring → Clasificación → API →
   Consumo (los 9 monitores + IRI).
-- **`index.html`** — panel visual, autocontenido (abrí el archivo directo en el
+- **`static/index.html`** — panel visual, autocontenido (abrí el archivo directo en el
   navegador, no necesita servidor). Tiene dos pestañas:
   - **Panel**: KPIs por nivel de alerta, tabla filtrable (sector/clasificación/alerta/
     búsqueda libre), detalle de cada vector al hacer click, sección de enablers y
@@ -181,20 +196,42 @@ por `vectores_api/`, se conserva como artefacto histórico.
 
 ## Estado y próximos pasos
 
-Todo el código de este pase es correcto por trazado manual (revisión línea por línea de
-la lógica de scoring, del matcher y de los endpoints) — el sandbox de ejecución sigue
-indisponible por falta de espacio en disco (se reintentó varias veces a lo largo del
-desarrollo), así que nada se corrió de punta a punta con un intérprete real. Antes de
-producción: correr `pytest`/`uvicorn` de verdad.
+**Actualización 18-ago-2026** — esta corrida sí tuvo sandbox de ejecución real (a
+diferencia del pase anterior, bloqueado por espacio en disco): se instalaron las
+dependencias, se corrió `uvicorn` de verdad contra SQLite local, se probaron los
+endpoints nuevos (`GET .../evidencia`, `GET .../actualizaciones`) con curl, y se corrió
+`robot_diario.py` en dry-run y en `--apply` contra el servidor local (incluida una
+segunda corrida para confirmar que el dedup funciona: 0 hallazgos reposteados). También
+se corrió `python scoring_engine.py` contra el `seed_vectores.json` actualizado (18
+entradas, clasifica sin errores). Lo que sigue sin poder probarse de punta a punta es
+`ingestion_fuentes_reales.py::BoraScraper.buscar()` y `RigiScraper` (ver abajo — ambos
+necesitan un navegador real, no alcanza con requests).
 
 Pendientes concretos, en orden de lo más al menos bloqueado:
-- **Scrapers de `ingestion_fuentes_reales.py`** (endpoint RIGI vía devtools, índice de
-  comunicados BCRA): bloqueado — requiere la extensión Claude in Chrome conectada para
-  inspeccionar el Network tab; no hay ningún navegador conectado a esta cuenta hoy.
+- **`BoraScraper.buscar()` y `RigiScraper`**: siguen bloqueados. Confirmado de nuevo hoy
+  con fetch real (sin navegador): `/busquedaAvanzada/all?texto=...` devuelve HTTP 200
+  sin resultados embebidos (arma la consulta vía JS), y el panel RIGI no expone ningún
+  endpoint `/api/*` en el HTML crudo. Requieren la extensión Claude in Chrome conectada
+  para inspeccionar el Network tab — no hay ningún navegador conectado a esta cuenta
+  todavía.
+- **BCRA**: desbloqueado esta corrida — ver `ingestion_fuentes_reales.py` y
+  `robot_diario.py` arriba.
 - **Enablers vía IGJ**: parcialmente resuelto. Se confirmó representación legal para el
   vector ICBC (Beccar Varela / Clifford Chance). Sigue pendiente para Zijin, Ganfeng,
   COFCO y el apoderado actual de Huawei — ver `pendientes_de_verificar` en
   `seed_enablers.json` para el detalle de qué se buscó y qué falta.
-- **Scheduled task semanal** (ya configurado para correr los lunes 8am): sigue apuntando
-  al placeholder, pendiente de decisión de Vicente para conectarlo a los scrapers reales
-  una vez que estén resueltos.
+- **Robot diario**: código funcional (`robot_diario.py`), pero **no se dejó corriendo
+  automáticamente todavía** — la decisión de si la corrida programada debe usar
+  `--apply` (publica novedades solas, sin revisión humana previa, en la base pública que
+  alimenta el dashboard) o quedarse en modo reporte/dry-run (junta hallazgos, un humano
+  los aplica) queda pendiente de decisión de Vicente. Mientras tanto solo cubre BCRA;
+  BORA y RIGI se suman cuando se resuelvan los bloqueos de arriba.
+- **Novedades de esta corrida, pendientes de aplicar a la base en vivo**: se investigó y
+  redactó (con fuentes citadas) actualizaciones para `swap-bcra-pboc-tesoro-eeuu`
+  (extensión del swap BCRA-PBOC de 3 a 5 años, 5-ago-2026), `litio-rigi-zijin-ganfeng`
+  (nueva solicitud RIGI de Ganfeng por USD 3.000M vía Lithea/Lithium Argentina, y dato de
+  Bloomberg Línea de que ~70% de la capacidad de litio en RIGI es de capital chino) y
+  `hidrovia-parana-paraguay-dragado` (denuncia cruzada, no confirmada, sobre presunto
+  capital chino oculto en el operador preadjudicado Jan de Nul vía su subcontratista
+  Servimagnus). Están en `seed_vectores.json` (campo `notas`) pero **no se postearon
+  todavía a la API en vivo** — falta decisión de Vicente sobre aplicarlas.
