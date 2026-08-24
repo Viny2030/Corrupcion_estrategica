@@ -231,12 +231,23 @@ Pendientes concretos, en orden de lo más al menos bloqueado:
   tarea programada que antes corría en Claude Code Remote (dada de baja el 18-ago-2026)
   para que la automatización viva en el propio repo. Por ahora solo cubre BCRA; BORA y
   RIGI se suman cuando se resuelvan los bloqueos de arriba.
-- **Novedades de esta corrida, pendientes de aplicar a la base en vivo**: se investigó y
+- **Actualización 24-ago-2026** — se aplicaron a la API en vivo (Railway) las tres
+  novedades que habían quedado redactadas pero sin postear: `swap-bcra-pboc-tesoro-eeuu`
+  (la posteó sola el robot semanal el 24-ago), `litio-rigi-zijin-ganfeng` (novedad +
+  2 evidencias — Infobae 2-mar-2026 sobre la solicitud RIGI de Ganfeng/Lithea por
+  USD 3.000M, y Bloomberg Línea sobre el ~70% de capacidad de litio con capital chino en
+  el RIGI — más decisión explícita de Vicente de subir `score_efecto_estrategico` de 2 a
+  3, que recalculó `nivel_alerta` a ALTO) y `hidrovia-parana-paraguay-dragado` (novedad +
+  evidencia — La Nación 15-abr-2026 sobre la denuncia cruzada sobre Jan de
+  Nul/Servimagnus; no se tocó ningún score, la denuncia sigue sin confirmar).
+  `seed_vectores.json` quedó sincronizado con estos cambios para que un reseed futuro no
+  pise la base en vivo con datos viejos.
+- **Novedades de la corrida anterior, ya aplicadas** (dejado como registro): se investigó y
   redactó (con fuentes citadas) actualizaciones para `swap-bcra-pboc-tesoro-eeuu`
   (extensión del swap BCRA-PBOC de 3 a 5 años, 5-ago-2026), `litio-rigi-zijin-ganfeng`
   (nueva solicitud RIGI de Ganfeng por USD 3.000M vía Lithea/Lithium Argentina, y dato de
   Bloomberg Línea de que ~70% de la capacidad de litio en RIGI es de capital chino) y
   `hidrovia-parana-paraguay-dragado` (denuncia cruzada, no confirmada, sobre presunto
   capital chino oculto en el operador preadjudicado Jan de Nul vía su subcontratista
-  Servimagnus). Están en `seed_vectores.json` (campo `notas`) pero **no se postearon
-  todavía a la API en vivo** — falta decisión de Vicente sobre aplicarlas.
+  Servimagnus). **Actualización 24-ago-2026: ya se postearon a la API en vivo**, ver
+  entrada de arriba.
