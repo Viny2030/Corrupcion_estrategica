@@ -4,6 +4,8 @@ from datetime import date
 from typing import Optional
 
 from fastapi import APIRouter, Depends, HTTPException
+
+from auth import requiere_token
 from sqlalchemy.orm import Session
 
 import models
@@ -37,7 +39,7 @@ def obtener_vector(slug: str, db: Session = Depends(get_db)):
     return v
 
 
-@router.post("", response_model=schemas.VectorOut, status_code=201)
+@router.post("", response_model=schemas.VectorOut, status_code=201, dependencies=[Depends(requiere_token)])
 def crear_vector(payload: schemas.VectorCreate, db: Session = Depends(get_db)):
     existente = db.query(models.VectorInfluencia).filter(models.VectorInfluencia.slug == payload.slug).first()
     if existente:
@@ -61,7 +63,7 @@ def crear_vector(payload: schemas.VectorCreate, db: Session = Depends(get_db)):
     return vector
 
 
-@router.patch("/{slug}", response_model=schemas.VectorOut)
+@router.patch("/{slug}", response_model=schemas.VectorOut, dependencies=[Depends(requiere_token)])
 def actualizar_scores(slug: str, payload: schemas.VectorUpdateScore, db: Session = Depends(get_db)):
     """Actualiza uno o más scores y recalcula clasificación automáticamente."""
     v = db.query(models.VectorInfluencia).filter(models.VectorInfluencia.slug == slug).first()
@@ -96,7 +98,7 @@ def recalcular_score(slug: str, db: Session = Depends(get_db)):
     }
 
 
-@router.post("/{slug}/evidencia", response_model=schemas.EvidenciaOut, status_code=201)
+@router.post("/{slug}/evidencia", response_model=schemas.EvidenciaOut, status_code=201, dependencies=[Depends(requiere_token)])
 def agregar_evidencia(slug: str, payload: schemas.EvidenciaCreate, db: Session = Depends(get_db)):
     v = db.query(models.VectorInfluencia).filter(models.VectorInfluencia.slug == slug).first()
     if not v:
@@ -134,7 +136,7 @@ def listar_actualizaciones(slug: str, db: Session = Depends(get_db)):
     )
 
 
-@router.post("/{slug}/actualizacion", status_code=201)
+@router.post("/{slug}/actualizacion", status_code=201, dependencies=[Depends(requiere_token)])
 def registrar_novedad(slug: str, novedad: schemas.NovedadIn, db: Session = Depends(get_db)):
     """
     Usado por la tarea semanal programada (búsqueda automatizada) para

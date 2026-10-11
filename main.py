@@ -11,6 +11,7 @@ Docs interactivas: http://127.0.0.1:8000/docs
 Para apuntar a Postgres en vez de SQLite local:
     export DATABASE_URL=postgresql://usuario:pass@host:5432/mapa_transparencia
 """
+import os
 from pathlib import Path
 from contextlib import asynccontextmanager
 
@@ -59,7 +60,13 @@ def root():
 
 @app.get("/health", tags=["health"])
 def health():
-    return {"status": "ok", "modulo": "vectores-influencia-estatal-extranjera"}
+    from database import DATABASE_URL
+    return {
+        "status": "ok",
+        "modulo": "vectores-influencia-estatal-extranjera",
+        "base": "postgres" if DATABASE_URL.startswith("postgres") else "sqlite (se borra en cada deploy)",
+        "escritura_habilitada": bool(os.getenv("ROBOT_TOKEN")),
+    }
 
 
 @app.get("/dashboard", tags=["dashboard"])

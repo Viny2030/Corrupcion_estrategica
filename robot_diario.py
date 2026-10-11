@@ -56,8 +56,13 @@ import requests
 
 from ingestion_fuentes_reales import BcraScraper, ComunicadoBcra
 
+import os
+
 API_BASE_DEFAULT = "https://corrupcionestrategica-production.up.railway.app"
 TIMEOUT = 20
+# Las escrituras en la API piden el header X-Robot-Token (ver auth.py).
+# En GitHub Actions viene del secret ROBOT_TOKEN.
+HEADERS_ESCRITURA = {"X-Robot-Token": os.getenv("ROBOT_TOKEN", "")}
 
 # Términos genéricos que NO deben usarse como keyword de match: son tan
 # comunes en cualquier noticia sobre inversión extranjera en Argentina
@@ -162,8 +167,10 @@ def postear_hallazgo(api_base: str, h: Hallazgo, apply: bool) -> None:
         print(f"            {c.url}")
         return
 
-    r1 = requests.post(f"{api_base}/api/vectores/{h.slug}/actualizacion", json=payload_novedad, timeout=TIMEOUT)
-    r2 = requests.post(f"{api_base}/api/vectores/{h.slug}/evidencia", json=payload_evidencia, timeout=TIMEOUT)
+    r1 = requests.post(f"{api_base}/api/vectores/{h.slug}/actualizacion", json=payload_novedad,
+                       headers=HEADERS_ESCRITURA, timeout=TIMEOUT)
+    r2 = requests.post(f"{api_base}/api/vectores/{h.slug}/evidencia", json=payload_evidencia,
+                       headers=HEADERS_ESCRITURA, timeout=TIMEOUT)
     ok = r1.status_code == 201 and r2.status_code == 201
     estado = "OK" if ok else f"ERROR (novedad={r1.status_code}, evidencia={r2.status_code})"
     print(f"  [{estado}] '{h.slug}' <- {c.titulo}")
