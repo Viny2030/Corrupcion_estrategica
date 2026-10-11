@@ -15,8 +15,13 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import declarative_base, sessionmaker
 
 DATABASE_URL = os.getenv("DATABASE_URL") or "sqlite:///./vectores.db"
-if DATABASE_URL.startswith("postgres://"):  # formato que entrega Railway/Heroku
-    DATABASE_URL = DATABASE_URL.replace("postgres://", "postgresql://", 1)
+# Railway entrega "postgres://" o "postgresql://". SQLAlchemy 2.1 usa por
+# defecto el driver psycopg (v3), que no está en requirements: se fuerza
+# psycopg2 (psycopg2-binary) explícitamente. Sin esto la app no arranca.
+for _pref in ("postgres://", "postgresql://"):
+    if DATABASE_URL.startswith(_pref):
+        DATABASE_URL = "postgresql+psycopg2://" + DATABASE_URL[len(_pref):]
+        break
 
 connect_args = {"check_same_thread": False} if DATABASE_URL.startswith("sqlite") else {}
 
