@@ -17,6 +17,8 @@ fetch real desde el sandbox — no vía navegador, ver detalle por fuente):
     /busquedaAvanzada/all, avisos individuales en
     /detalleAviso/{seccion}/{id}/{fecha}. Scrapeable directo con
     requests + BeautifulSoup para avisos individuales conocidos.
+    DESBLOQUEADO PARCIAL 2026-10-11: el índice diario por sección
+    (/seccion/primera/YYYYMMDD) es HTML server-rendered → listar_dia().
     La búsqueda por texto libre (BoraScraper.buscar) SIGUE bloqueada:
     /busquedaAvanzada/all?texto=... devuelve HTTP 200 pero sin
     resultados embebidos en el HTML (form con action="" — es un SPA
@@ -130,6 +132,33 @@ class BoraScraper:
             id_aviso=id_aviso, seccion=seccion, fecha=fecha,
             titulo=titulo, url=url, texto=texto,
         )
+
+    def listar_dia(self, fecha: date, seccion: str = "primera") -> list[tuple[str, str]]:
+        """Índice diario de una sección: /seccion/{seccion}/{YYYYMMDD}.
+        Verificado 2026-10-11: HTML server-rendered, un <a href="/detalleAviso/...">
+        por aviso con el organismo y el título en el texto del enlace.
+        Devuelve [(url, texto_del_listado)] sin duplicados (los anexos repiten URL)."""
+        url = f"{self.BASE}/seccion/{seccion}/{fecha.strftime('%Y%m%d')}"
+        resp = self.session.get(url, timeout=30)
+        resp.raise_for_status()
+        soup = BeautifulSoup(resp.text, "lxml")
+        vistos, salida = set(), []
+        for a in soup.select('a[href*="/detalleAviso/"]'):
+            href = a["href"].split("?")[0]
+            if f"/{fecha.strftime('%Y%m%d')}" not in href:
+                continue
+            texto = a.get_text(" ", strip=True)
+            if not texto or href in vistos:
+                continue
+            vistos.add(href)
+            salida.append((self.BASE + href if href.startswith("/") else href, texto))
+        return salida
+
+    def obtener_aviso_url(self, url: str) -> AvisoBora:
+        """Como obtener_aviso() pero a partir de la URL del listado."""
+        partes = url.rstrip("/").split("/")
+        seccion, id_aviso, f = partes[-3], partes[-2], partes[-1]
+        return self.obtener_aviso(seccion, id_aviso, datetime.strptime(f, "%Y%m%d").date())
 
     def filtrar_resoluciones_rigi(self, avisos: list[AvisoBora]) -> list[AvisoBora]:
         """Filtra avisos que correspondan a resoluciones de aprobación de VPU bajo RIGI."""
@@ -265,6 +294,19 @@ class BcraScraper:
             fecha=fecha or date.today(), titulo=titulo, url=url, texto=texto,
             monto_usd_millones=monto,
         )
+
+    def obtener_comunicados(self, limite: int = 30) -> list[ComunicadoBcra]:
+        """Todos los comunicados del índice (no sólo los de swap/China); el
+        robot decide después cuáles tocan algún vector."""
+        resultados = []
+        for url in self._listar_urls_noticias()[:limite]:
+            try:
+                c = self._parsear_comunicado(url)
+                if c:
+                    resultados.append(c)
+            except requests.RequestException:
+                continue
+        return resultados
 
     def obtener_comunicados_swap(self, palabra_clave: str = "swap") -> list[ComunicadoBcra]:
         """Filtra el índice de noticias por palabra clave (default 'swap',
