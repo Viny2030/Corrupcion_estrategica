@@ -113,10 +113,11 @@
 
 <div id="tab-panel" class="tabcontent active">
 <main>
+  <div class="muted" id="fuente-datos" style="font-size:12px;margin:4px 0 8px">Cargando datos…</div>
   <div class="kpis" id="kpis"></div>
 
   <div class="filters">
-    <input id="search" placeholder="Buscar por actor, sector, slug..." />
+    <input id="search" placeholder="Buscar en actores, contrapartes, mecanismos, notas… (con o sin tildes)" />
     <select id="f-sector"><option value="">Sector: todos</option></select>
     <select id="f-clas"><option value="">Clasificación: todas</option></select>
     <select id="f-alerta"><option value="">Alerta: todas</option></select>
@@ -148,7 +149,7 @@
   <section class="block">
     <h2>Marco legal-institucional</h2>
     <div class="sub">
-      Argentina está alineada en UNCAC (ratificada 2006), GAFI/GAFILAT (4ª ronda aprobada oct-2024) y OCDE Working Group on Bribery (miembro desde 2000), pero <strong>no tiene mecanismo de screening de IED por seguridad nacional</strong>: la Ley 21.382 no filtra origen de capital, el RIGI está diseñado para atraer inversión no para filtrarla, y el único proyecto que restringe compras estatales extranjeras (Ley de Tierras) cubre solo tierras rurales — no litio, nuclear, telecom ni puertos. Actualización jul-2026: ya hay ~13 millones de hectáreas en manos extranjeras (36 departamentos superan el límite vigente); el Senado vuelve a votar el proyecto el 6 de agosto tras cuatro intentos fallidos. El propio proyecto introduce límites más estrictos para compras de extranjeros ligados a estados (foco declarado en China) en zonas de frontera, pero a la vez delega a las provincias la facultad de regular ventas rurales y elimina el tope nacional del 15% — un giro con lecturas encontradas sobre si refuerza o debilita el control. Detalle completo en <code>anexo_marco_legal_argentina.md</code>.
+      Argentina está alineada en UNCAC (ratificada 2006), GAFI/GAFILAT (4ª ronda aprobada oct-2024) y OCDE Working Group on Bribery (miembro desde 2000), pero <strong>no tiene mecanismo de screening de IED por seguridad nacional</strong>: la Ley 21.382 no filtra origen de capital, el RIGI está diseñado para atraer inversión no para filtrarla, y el único proyecto que restringe compras estatales extranjeras (Ley de Tierras) cubre solo tierras rurales — no litio, nuclear, telecom ni puertos. Actualización jul-2026: ya hay ~13 millones de hectáreas en manos extranjeras (36 departamentos superan el límite vigente); Actualización ago-2026: el oficialismo retiró el 5 de agosto el capítulo de reforma de la Ley de Tierras (proponía, entre otros cambios, subir el tope de propiedad extranjera de 15% a 25% y delegar la regulación a las provincias) por falta de votos en el Senado; sigue vigente la Ley 26.737 con el límite nacional de 15%. Los aliados acordaron tratar el tema por separado más adelante. Detalle completo en <code>anexo_marco_legal_argentina.md</code>.
     </div>
   </section>
 </main>
@@ -539,7 +540,7 @@ const LABEL_CLAS = {
 // --- interpretación NEST por vector: por qué esos 4 puntajes producen esa clasificación ---
 const INTERPRETACION_NEST = {
 "atucha-iii-cnnc":"Efecto estratégico máximo (3) por dependencia tecnológica a 8 años en un activo nuclear crítico, con vínculo externo directo (Estado chino vía CNNC). Cero inducción y cero abuso de poder conferido: es un canal formal, no un caso de soborno o manipulación de un funcionario. Por eso clasifica como 'entorno de dependencia fuerte' y no 'confirmado': hay dependencia estructural sobre un activo estratégico, pero no evidencia de que se haya obtenido corrompiendo el proceso de decisión.",
-"litio-rigi-zijin-ganfeng":"El abuso de poder conferido puntúa 1 (no 0) por la alineación temporal entre la eliminación del piso de contenido local en el Súper RIGI y la apertura de litio/uranio como sectores elegibles — un indicio, no una prueba. Vínculo 'proxy híbrido' (no directo) porque son empresas privadas alineadas con la política industrial china, no el Estado operando directamente. La combinación da 'entorno de dependencia fuerte' con alerta MEDIA: una señal a seguir, no un caso cerrado.",
+"litio-rigi-zijin-ganfeng":"El abuso de poder conferido puntúa 1 (no 0) por la alineación temporal entre la eliminación del piso de contenido local en el Súper RIGI y la apertura de litio/uranio como sectores elegibles — un indicio, no una prueba. Vínculo 'proxy híbrido' (no directo) porque son empresas privadas alineadas con la política industrial china, no el Estado operando directamente. Desde el 24-ago-2026 el efecto estratégico es 3 (antes 2) por la concentración de capital chino en el litio RIGI (~70% de la capacidad), y con eso la alerta pasa a ALTA. Sigue siendo 'entorno de dependencia fuerte': una señal fuerte a seguir, no un caso cerrado.",
 "espacio-doble-uso-neuquen-rio-gallegos":"Abuso de autoridad en 2 — el más alto entre los vectores no confirmados — porque el Acuerdo de Neuquén nunca se tramitó como tratado con debate legislativo pleno: evitar ese control es, en términos del libro, 'supresión de mecanismos de supervisión'. Efecto estratégico máximo (3) por la cesión operativa de 50 años sin inspección propia. Sin inducción documentada, por eso queda en 'entorno de dependencia fuerte' y no en 'confirmado' — pero es de los patrones más cercanos a manipulación institucional deliberada del dataset.",
 "5g-enacom-huawei":"Los cuatro puntajes están en cero porque ningún elemento se materializó todavía: no hay licitación cerrada, trato preferencial ni vínculo formalizado. Clasifica 'fuera de alcance' / VIGILAR — el proceso NEST de 9 pasos está en la etapa 1-2 (reconocimiento de elementos). Se revisa en cada corrida por si la licitación se cierra sin competencia real.",
 "swap-bcra-pboc-tesoro-eeuu":"Vínculo externo directo (3) por ser un canal formal entre bancos centrales, pero efecto estratégico bajo (1) porque el swap con China se redujo drásticamente y fue sustituido por uno con EEUU — el patrón opuesto a una dependencia creciente. Sin inducción ni abuso de poder conferido. 'Zona gris' / MEDIA: alineamiento con un actor externo sin incentivo transaccional documentado — métrica de dependencia soberana, no corrupción estratégica en sentido estricto.",
@@ -625,13 +626,21 @@ function openDetail(slug){
     <div class="muted" style="margin-top:6px">${v.mecanismo}</div>
     <div class="notas">${v.notas}</div>
     <div class="notas" style="margin-top:14px;padding-top:12px;border-top:1px dashed var(--border)"><strong>Interpretación NEST:</strong> ${INTERPRETACION_NEST[v.slug] || "—"}</div>
+    <div class="notas" id="det-fuentes" style="margin-top:14px;padding-top:12px;border-top:1px dashed var(--border)"><span class="muted">Cargando evidencias y novedades…</span></div>
   `;
   el.classList.add("open");
+  cargarFuentesVector(slug);
   el.scrollIntoView({behavior:"smooth", block:"nearest"});
 }
 
+function _norm(t){ return String(t||"").normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase(); }
+function _textoBusqueda(v){
+  return _norm([v.slug, v.sector, v.actor_extranjero, v.pais_origen, v.contraparte_argentina, v.mecanismo,
+    v.mecanismo_libro, v.mecanismo_libro_secundario, v.regimen_legal, v.notas, INTERPRETACION_NEST[v.slug]].join(" "));
+}
+
 function applyFilters(){
-  const q = document.getElementById("search").value.toLowerCase();
+  const q = _norm(document.getElementById("search").value.trim());
   const sector = document.getElementById("f-sector").value;
   const clas = document.getElementById("f-clas").value;
   const alerta = document.getElementById("f-alerta").value;
@@ -642,10 +651,7 @@ function applyFilters(){
     if(sector && v.sector!==sector) return false;
     if(clas && v._clasificacion!==clas) return false;
     if(alerta && v._alerta!==alerta) return false;
-    if(q){
-      const hay = `${v.slug} ${v.sector} ${v.actor_extranjero} ${v.pais_origen}`.toLowerCase();
-      if(!hay.includes(q)) return false;
-    }
+    if(q && !_textoBusqueda(v).includes(q)) return false;
     return true;
   });
   renderKpis(list);
@@ -1060,7 +1066,7 @@ function mecLibroEN(token){ return MECANISMO_EN[token] || token.replace(/_/g," "
 
 const VECTOR_EN_SUMMARY = {
 "atucha-iii-cnnc":"Formal interstate financing and infrastructure deal for the Atucha III nuclear plant with China's CNNC, creating roughly 8 years of technological dependency. No bribery or abuse-of-authority evidence — a public, formal channel. Classifies as 'Strong dependency environment' / HIGH due to maximum strategic effect (a critical nuclear asset), not proven corruption.",
-"litio-rigi-zijin-ganfeng":"Argentina removed the 20% local-content floor in the 'Super RIGI' right as lithium/uranium became eligible sectors — a timing pattern NEST flags as a soft indicator (abuse-of-authority score of 1, not 0). Zijin and Ganfeng are private firms aligned with Chinese industrial policy, not the state acting directly (hybrid-proxy link). Mining Secretary Luis Lucero, a former Marval O'Farrell Mairal lawyer who sits on the RIGI evaluation committee, recused himself from Western mining cases, but a criminal complaint (Apr-2026) alleges the recusal was ineffective — no documented tie to Zijin/Ganfeng, but a node to watch under the 'revolving doors' mechanism. Classifies 'Strong dependency environment' / MEDIUM. Update 18-Aug-2026: Ganfeng re-entered RIGI via Lithea Inc./Lithium Argentina with a USD 3bn bid (Pozuelos-Pastos Grandes); per Bloomberg Línea, ~70% of RIGI lithium capacity now involves Chinese capital, amid US concerns over critical-mineral dependence — a candidate to revisit the strategic-effect score, no change applied yet.",
+"litio-rigi-zijin-ganfeng":"Argentina removed the 20% local-content floor in the 'Super RIGI' right as lithium/uranium became eligible sectors — a timing pattern NEST flags as a soft indicator (abuse-of-authority score of 1, not 0). Zijin and Ganfeng are private firms aligned with Chinese industrial policy, not the state acting directly (hybrid-proxy link). Mining Secretary Luis Lucero, a former Marval O'Farrell Mairal lawyer who sits on the RIGI evaluation committee, recused himself from Western mining cases, but a criminal complaint (Apr-2026) alleges the recusal was ineffective — no documented tie to Zijin/Ganfeng, but a node to watch under the 'revolving doors' mechanism. Classifies 'Strong dependency environment' / HIGH (strategic effect raised from 2 to 3 on 24-Aug-2026). Update 18-Aug-2026: Ganfeng re-entered RIGI via Lithea Inc./Lithium Argentina with a USD 3bn bid (Pozuelos-Pastos Grandes); per Bloomberg Línea, ~70% of RIGI lithium capacity now involves Chinese capital, amid US concerns over critical-mineral dependence — the strategic-effect score was raised from 2 to 3 on 24-Aug-2026 because of this sector concentration.",
 "espacio-doble-uso-neuquen-rio-gallegos":"The 2014 Neuquén space-station agreement with China's CLTC was never processed as a treaty with full legislative debate, and grants a 50-year operational concession without independent Argentine inspection — the highest abuse-of-authority score (2) among the non-confirmed vectors, matching the book's 'suppression of oversight provisions' indicator. Maximum strategic effect (3) given the dual-use military links of CLTC/Emposat to China's PLA Aerospace Force. No bribery evidence, so it stays at 'Strong dependency environment' / HIGH rather than 'Confirmed'.",
 "5g-enacom-huawei":"Argentina's 5G tender remains open under a declared technology-neutrality policy; nothing has materialized yet — no closed tender, no preferential treatment, no formalized link. All four scores are zero. Classifies 'Out of scope' / WATCH: still at step 1-2 of the NEST 9-step process (element recognition).",
 "swap-bcra-pboc-tesoro-eeuu":"A formal central-bank swap channel (external-link score of 3), but low strategic effect (1) because the PBOC swap was sharply reduced and replaced with a US Treasury facility — the opposite of growing dependency. No bribery or conferred power abuse. 'Gray zone' / MEDIUM: a real-time dependency metric, not strategic corruption in the strict sense. Update 5-Aug-2026: BCRA and PBOC renewed the swap and extended its term from 3 to 5 years, deepening the formal channel's time horizon even as the active tranche stays reduced.",
@@ -1093,7 +1099,7 @@ const PENDIENTES_EN = [
 {item:"Auditors of the listed companies' financial statements", estado:"Not investigated this run.", proximo_paso:"Financial statements filed with IGJ/AFIP usually name the external auditor."}
 ];
 
-const MARCO_LEGAL_EN = "Argentina is a party to all relevant anti-corruption treaties (UNCAC since 2006, FATF/GAFILAT's 4th round approved Oct-2024, OECD Working Group on Bribery since 2000), but has no national-security foreign-investment screening mechanism: Law 21.382 doesn't filter capital origin, the RIGI investment regime is designed to attract investment rather than screen it, and the only bill restricting foreign state-linked land purchases (the 'Ley de Tierras') covers only rural land — not lithium, nuclear, telecom, or ports. Update Jul-2026: roughly 13 million hectares are already foreign-owned; the Senate revotes the bill on August 6 after four failed attempts. The bill tightens limits on land purchases by state-linked foreign buyers (explicitly aimed at China) in border security zones, while also devolving rural land-sale regulation to the provinces and removing the national 15% cap — a shift with mixed readings on whether it strengthens or weakens oversight overall.";
+const MARCO_LEGAL_EN = "Argentina is a party to all relevant anti-corruption treaties (UNCAC since 2006, FATF/GAFILAT's 4th round approved Oct-2024, OECD Working Group on Bribery since 2000), but has no national-security foreign-investment screening mechanism: Law 21.382 doesn't filter capital origin, the RIGI investment regime is designed to attract investment rather than screen it, and the only bill restricting foreign state-linked land purchases (the 'Ley de Tierras') covers only rural land — not lithium, nuclear, telecom, or ports. Update Jul-2026: roughly 13 million hectares are already foreign-owned; Update Aug-2026: on August 5 the ruling party withdrew the Ley de Tierras reform chapter (which would, among other changes, have raised the foreign-ownership cap from 15% to 25% and devolved regulation to the provinces) for lack of Senate votes; Law 26.737 and its national 15% cap remain in force.";
 
 function renderKpisEN(list){
   const activos = list.filter(v=>v.activo);
@@ -1150,7 +1156,7 @@ function openDetailEN(slug){
 }
 
 function applyFiltersEN(){
-  const q = document.getElementById("search-en").value.toLowerCase();
+  const q = _norm(document.getElementById("search-en").value.trim());
   const sector = document.getElementById("f-sector-en").value;
   const clas = document.getElementById("f-clas-en").value;
   const alerta = document.getElementById("f-alerta-en").value;
@@ -1161,10 +1167,7 @@ function applyFiltersEN(){
     if(sector && v.sector!==sector) return false;
     if(clas && v._clasificacion!==clas) return false;
     if(alerta && v._alerta!==alerta) return false;
-    if(q){
-      const hay = `${v.slug} ${v.sector} ${v.actor_extranjero} ${v.pais_origen}`.toLowerCase();
-      if(!hay.includes(q)) return false;
-    }
+    if(q && !_textoBusqueda(v).includes(q)) return false;
     return true;
   });
   renderKpisEN(list);
@@ -1198,6 +1201,58 @@ document.getElementById("pendientes-en").innerHTML = "<strong>Pending verificati
 ).join("<br>");
 
 document.getElementById("marco-legal-en").innerHTML = MARCO_LEGAL_EN;
+
+// --- datos en vivo: la API es la fuente única; lo de arriba queda como respaldo ---
+function _esc(t){ return String(t??"").replace(/[&<>"]/g, c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c])); }
+
+async function cargarFuentesVector(slug){
+  const box = document.getElementById("det-fuentes");
+  if(!box) return;
+  try{
+    const [re, ra] = await Promise.all([fetch(`/api/vectores/${slug}/evidencia`), fetch(`/api/vectores/${slug}/actualizaciones`)]);
+    const ev = re.ok ? await re.json() : [];
+    const ac = ra.ok ? await ra.json() : [];
+    if(!ev.length && !ac.length){ box.innerHTML = '<span class="muted">Sin evidencias ni novedades registradas por el robot para este vector.</span>'; return; }
+    let html = "";
+    if(ev.length) html += "<strong>Evidencias registradas:</strong><br>" + ev.map(e =>
+      `• ${_esc(e.fecha_publicacion||"")} <a href="${_esc(e.url)}" target="_blank" rel="noopener">${_esc(e.titulo||e.url)}</a> <span class="muted">(${_esc(e.tipo_fuente||"")})</span>`).join("<br>");
+    if(ac.length) html += (html?"<br><br>":"") + "<strong>Novedades:</strong><br>" + ac.map(a =>
+      `• ${_esc(a.fecha_corrida||"")} — ${_esc(a.resumen)}`).join("<br>");
+    box.innerHTML = html;
+  }catch(e){ box.innerHTML = '<span class="muted">No se pudieron consultar las evidencias (API no disponible).</span>'; }
+}
+
+function _rellenarSelect(id, valores, labelFn){
+  const sel = document.getElementById(id); if(!sel) return;
+  const actual = sel.value;
+  while(sel.options.length > 1) sel.remove(1);
+  fillSelect(id, valores, labelFn);
+  sel.value = valores.includes(actual) ? actual : "";
+}
+
+(async function cargarDesdeAPI(){
+  const aviso = document.getElementById("fuente-datos");
+  try{
+    const [ra, ri] = await Promise.all([fetch("/api/vectores?activo=true"), fetch("/api/vectores?activo=false")]);
+    if(!ra.ok || !ri.ok) throw new Error("HTTP");
+    const vivos = [...await ra.json(), ...await ri.json()];
+    if(!vivos.length) throw new Error("vacío");
+    vivos.forEach(v=>{
+      const r = clasificar(v.score_induccion, v.score_abuso_autoridad, v.score_efecto_estrategico, v.vinculo_externo);
+      v._clasificacion = r.clasificacion; v._alerta = r.nivel;
+    });
+    VECTORES.splice(0, VECTORES.length, ...vivos);
+    const sectores = uniq(VECTORES.map(v=>v.sector));
+    _rellenarSelect("f-sector", sectores);
+    _rellenarSelect("gf-sector", sectores);
+    _rellenarSelect("f-sector-en", sectores, v=>SECTOR_EN[v]||v);
+    applyFilters(); applyFiltersEN();
+    if(document.getElementById("tab-grafo")?.classList.contains("active")) renderGraph();
+    if(aviso) aviso.textContent = `Datos en vivo de la API (${VECTORES.length} vectores, ${VECTORES.filter(v=>v.activo).length} activos).`;
+  }catch(e){
+    if(aviso) aviso.textContent = "API no disponible: se muestran los datos incrustados en la página (pueden estar desactualizados).";
+  }
+})();
 </script>
 </body>
 </html>
