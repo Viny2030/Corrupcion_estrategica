@@ -64,9 +64,19 @@ import os
 
 API_BASE_DEFAULT = "https://estrategica.ecosistematransparencia.com.ar"
 TIMEOUT = 20
+
+# Encabezados base con User-Agent estándar para evitar bloqueos WAF / 403 Forbidden
+HEADERS_LECTURA = {
+    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+    "Accept": "application/json",
+}
+
 # Las escrituras en la API piden el header X-Robot-Token (ver auth.py).
 # En GitHub Actions viene del secret ROBOT_TOKEN.
-HEADERS_ESCRITURA = {"X-Robot-Token": os.getenv("ROBOT_TOKEN", "")}
+HEADERS_ESCRITURA = {
+    **HEADERS_LECTURA,
+    "X-Robot-Token": os.getenv("ROBOT_TOKEN", ""),
+}
 
 # Términos genéricos que NO deben usarse como keyword de match: son tan
 # comunes en cualquier noticia sobre inversión extranjera en Argentina
@@ -138,7 +148,8 @@ class Hallazgo:
 
 
 def obtener_vectores_activos(api_base: str) -> list[dict]:
-    resp = requests.get(f"{api_base}/api/vectores", params={"activo": True}, timeout=TIMEOUT)
+    headers = {**HEADERS_LECTURA, **HEADERS_ESCRITURA}
+    resp = requests.get(f"{api_base}/api/vectores", params={"activo": True}, headers=headers, timeout=TIMEOUT)
     resp.raise_for_status()
     return resp.json()
 
@@ -181,8 +192,9 @@ def matchear(comunicado, index: dict[str, list[str]]) -> list[tuple[str, str]]:
 def ya_registrado(api_base: str, slug: str, url: str) -> bool:
     """Chequea evidencia + actualizaciones ya registradas para ese vector,
     para no volver a postear la misma fuente en corridas sucesivas."""
+    headers = {**HEADERS_LECTURA, **HEADERS_ESCRITURA}
     for endpoint in ("evidencia", "actualizaciones"):
-        resp = requests.get(f"{api_base}/api/vectores/{slug}/{endpoint}", timeout=TIMEOUT)
+        resp = requests.get(f"{api_base}/api/vectores/{slug}/{endpoint}", headers=headers, timeout=TIMEOUT)
         if resp.status_code != 200:
             continue
         for item in resp.json():
