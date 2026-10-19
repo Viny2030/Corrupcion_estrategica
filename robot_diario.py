@@ -62,7 +62,7 @@ from ingestion_fuentes_reales import BcraScraper, BoraScraper, ComunicadoBcra
 
 import os
 
-API_BASE_DEFAULT = "https://corrupcionestrategica-production.up.railway.app"
+API_BASE_DEFAULT = "https://estrategica.ecosistematransparencia.com.ar"
 TIMEOUT = 20
 # Las escrituras en la API piden el header X-Robot-Token (ver auth.py).
 # En GitHub Actions viene del secret ROBOT_TOKEN.
