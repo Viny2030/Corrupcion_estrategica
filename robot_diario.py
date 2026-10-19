@@ -48,31 +48,29 @@ Uso
 from __future__ import annotations
 
 import argparse
+import os
 import re
 import sys
+import time
+import unicodedata
 from dataclasses import dataclass
+from datetime import date, timedelta
 
 import requests
 
-import time
-import unicodedata
-from datetime import date, timedelta
-
 from ingestion_fuentes_reales import BcraScraper, BoraScraper, ComunicadoBcra
 
-import os
-
-API_BASE_DEFAULT = "https://estrategica.ecosistematransparencia.com.ar"
+# Dominio directo de Railway
+API_BASE_DEFAULT = os.getenv("API_BASE_URL", "https://corrupcionestrategica-production.up.railway.app")
 TIMEOUT = 20
 
-# Encabezados base con User-Agent estándar para evitar bloqueos WAF / 403 Forbidden
+# Encabezados base estándar
 HEADERS_LECTURA = {
     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
     "Accept": "application/json",
 }
 
 # Las escrituras en la API piden el header X-Robot-Token (ver auth.py).
-# En GitHub Actions viene del secret ROBOT_TOKEN.
 HEADERS_ESCRITURA = {
     **HEADERS_LECTURA,
     "X-Robot-Token": os.getenv("ROBOT_TOKEN", ""),
@@ -95,7 +93,6 @@ STOPWORDS_KEYWORD = {
     "commercial", "bank", "holding", "internacional", "international",
     "provincias", "provincia", "mineras", "afip", "poder", "ejecutivo",
 }
-
 
 # Palabras clave propias de cada vector (nombres de empresas, organismos y
 # proyectos). Se usan en vez de partir actor_extranjero/contraparte en
