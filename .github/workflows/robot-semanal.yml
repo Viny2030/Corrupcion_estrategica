@@ -23,4 +23,5 @@ jobs:
       - name: Correr robot de ingesta (--apply)
         env:
           ROBOT_TOKEN: ${{ secrets.ROBOT_TOKEN }}
+          API_BASE_URL: https://estrategica.ecosistematransparencia.com.ar
         run: python robot_diario.py --apply
