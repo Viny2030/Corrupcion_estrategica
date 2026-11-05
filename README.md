@@ -9,8 +9,11 @@ Strategic Corruption* del NEST Institute para detectar y clasificar casos en los
 estados extranjeros — primero China y Rusia — usan inversión, financiamiento o
 infraestructura como palanca sobre decisiones públicas argentinas.
 
-Alimenta la dimensión `R_Internacional` del IRI vía `/api/alertas?plataforma=iri`, con
-el mismo patrón de integración que ya usa MEACI.
+Expone sus alertas en `/api/alertas?plataforma=iri`, pensado para alimentar una
+dimensión `R_Internacional` del IRI. **Estado (nov-2026): integración planificada,
+todavía no conectada** — el Monitor IRI calcula hoy sólo cuatro componentes
+(financiero, contratación, operativo y datos) y no consume este endpoint ni el de MEACI.
+Ver el [manual del ecosistema](https://mapa.ecosistematransparencia.com.ar/manual#conexiones).
 
 ## Qué es esto y qué no es
 
@@ -145,7 +148,7 @@ por `vectores_api/`, se conserva como artefacto histórico.
 
 - **`arquitectura_modulo_vectores_influencia.svg`** — flujo de 8 capas: Fuentes →
   Ingesta → Padrón/Matcher → Tabla madre → Motor de Scoring → Clasificación → API →
-  Consumo (los 9 monitores + IRI).
+  Consumo (los 9 monitores + IRI; el consumo por el IRI está planificado, no conectado).
 - **`static/index.html`** — panel visual, autocontenido (abrí el archivo directo en el
   navegador, no necesita servidor). Tiene dos pestañas:
   - **Panel**: KPIs por nivel de alerta, tabla filtrable (sector/clasificación/alerta/
