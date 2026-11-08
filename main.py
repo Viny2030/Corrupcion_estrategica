@@ -69,6 +69,35 @@ def health():
     }
 
 
+@app.get("/frescura.js", include_in_schema=False)
+def frescura_js():
+    return FileResponse(STATIC_DIR / "frescura.js", media_type="application/javascript")
+
+
+@app.get("/api/frescura", tags=["health"])
+def frescura():
+    """Ficha de frescura (formato común del ecosistema, ver frescura.py): de
+    dónde sale cada dato, qué período cubre, cuándo se cargó y si está atrasado."""
+    from sqlalchemy import func
+    from frescura import evaluar
+    from models import VectorActualizacion, VectorInfluencia
+
+    db = SessionLocal()
+    try:
+        vectores = db.query(func.count(VectorInfluencia.id)).scalar() or 0
+        ultima = db.query(func.max(VectorActualizacion.fecha_corrida)).scalar()
+    finally:
+        db.close()
+    return evaluar("corrupcion", [
+        {"id": "vectores", "dato": "Vectores de influencia estatal extranjera", "fuente": "Relevamiento propio sobre fuentes públicas",
+         "periodo": f"{vectores} vectores", "ultima_carga": None, "frecuencia": "manual"},
+        {"id": "novedades", "dato": "Novedades detectadas por el robot", "fuente": "BCRA · Boletín Oficial",
+         "periodo": f"última registrada el {ultima}" if ultima else "sin novedades registradas", "ultima_carga": ultima,
+         "frecuencia": "semanal",
+         "nota": "Una corrida sin novedades no deja registro: por eso no tiene plazo y no detecta si el robot dejó de correr."},
+    ])
+
+
 @app.get("/dashboard", tags=["dashboard"])
 def dashboard():
     return FileResponse(STATIC_DIR / "index.html")
