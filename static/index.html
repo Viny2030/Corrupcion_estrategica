@@ -88,7 +88,7 @@
 
   .graph-legend{display:flex;flex-wrap:wrap;gap:14px;font-size:12px;color:var(--muted);margin-bottom:10px;align-items:center}
   .graph-legend .dot{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:5px;vertical-align:middle}
-  #network{position:relative;height:600px;background:var(--panel);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+  #network{position:relative;height:680px;background:var(--panel);border:1px solid var(--border);border-radius:8px;overflow:hidden}
   #network canvas{width:100%;height:100%;display:block;cursor:grab}
   #network canvas.dragging{cursor:grabbing}
   .graph-tooltip{position:fixed;display:none;z-index:50;background:var(--panel2);color:var(--text);border:1px solid var(--border);border-radius:6px;font-size:12px;padding:8px 10px;white-space:pre-line;max-width:300px;pointer-events:none;line-height:1.5}
@@ -164,25 +164,26 @@
 <main>
   <div class="filters">
     <input id="gsearch" placeholder="Buscar nodo: actor, país, contraparte, enabler, persona..." />
-    <select id="gf-sector"><option value="">Sector: todos</option></select>
-    <select id="gf-alerta"><option value="">Alerta: todas</option></select>
+    <select id="gf-sector"><option value="" id="g-op-sector">Sector: todos</option></select>
+    <select id="gf-alerta"><option value="" id="g-op-alerta">Alerta: todas</option></select>
     <select id="gf-activo">
-      <option value="activos">Solo activos</option>
-      <option value="todos">Incluir cerrados</option>
+      <option value="activos" id="g-op-activos">Solo activos</option>
+      <option value="todos" id="g-op-todos">Incluir cerrados</option>
     </select>
+    <button type="button" id="g-idioma" style="background:var(--panel2);border:1px solid var(--border);color:var(--text);padding:7px 12px;border-radius:6px;cursor:pointer;font:inherit">English</button>
   </div>
 
   <div class="graph-legend">
-    <span><span class="dot" style="background:#8ab4ff"></span>país de origen</span>
-    <span><span class="dot" style="background:#4f8cff"></span>actor extranjero</span>
-    <span><span class="dot" style="background:#e0c341"></span>contraparte argentina</span>
-    <span><span class="dot" style="background:#c792ea"></span>enabler (estudio/banco)</span>
-    <span><span class="dot" style="background:#f2994a"></span>persona</span>
-    <span style="margin-left:auto">línea sólida = vector (color = nivel de alerta) · línea punteada gris = vínculo de enabler</span>
+    <span><span class="dot" style="background:#8ab4ff"></span><span id="g-l-pais">país de origen</span></span>
+    <span><span class="dot" style="background:#4f8cff"></span><span id="g-l-actor">actor extranjero</span></span>
+    <span><span class="dot" style="background:#e0c341"></span><span id="g-l-contra">contraparte argentina</span></span>
+    <span><span class="dot" style="background:#c792ea"></span><span id="g-l-enabler">enabler (estudio/banco)</span></span>
+    <span><span class="dot" style="background:#f2994a"></span><span id="g-l-persona">persona</span></span>
+    <span style="margin-left:auto" id="g-l-lineas">línea sólida = vector (color = nivel de alerta) · línea punteada gris = vínculo de enabler</span>
   </div>
 
   <div id="network"></div>
-  <div class="pend">Click en un nodo de actor/contraparte, o en una línea de vector, para abrir el detalle completo en la pestaña Panel. El buscador atenúa los nodos que no matchean.</div>
+  <div class="pend" id="g-ayuda">Click en un nodo de actor/contraparte, o en una línea de vector, para abrir el detalle completo en la pestaña Panel. El buscador atenúa los nodos que no matchean.</div>
 </main>
 </div>
 
@@ -198,6 +199,13 @@
 
   <h2>Cómo leer la pestaña Grafo</h2>
   <p>Es la misma información del Panel, pero como red: cada vector conecta un <strong>país de origen</strong> → un <strong>actor extranjero</strong> → una <strong>contraparte argentina</strong>, y los <strong>enablers</strong> (estudios jurídicos, bancos) y <strong>personas</strong> con incumbencia cuelgan del actor correspondiente cuando el vínculo está documentado. El color y grosor de la línea del vector reflejan el nivel de alerta (mismo criterio que la columna "Alerta" del Panel), no un dato nuevo — es la misma clasificación, en otra forma. Sirve para ver de un vistazo qué países concentran más vectores, qué actor aparece repetido en distintos casos, y dónde un enabler conecta a un funcionario con un vector activo.</p>
+
+  <p>El botón <strong>English</strong> de la pestaña cambia los textos del grafo a inglés. Todos los nodos llevan su nombre; si es muy largo, se ve entero al pasar el mouse.</p>
+
+  <h2>Cómo funciona este sitio</h2>
+  <p>Grafo de funcionamiento: de qué fuentes toma los datos, qué procesos los transforman, dónde se guardan y qué publica. Cada nodo lleva su nombre; hacé clic en uno para ver de dónde recibe datos y a qué alimenta.</p>
+  <iframe class="grafo-func" src="https://mapa.ecosistematransparencia.com.ar/funcionamiento?sitio=corrupcion&amp;embed=1" title="Cómo funciona este sitio" loading="lazy" style="width:100%;height:640px;border:1px solid #cbd5e1;border-radius:10px;background:#fff"></iframe>
+  <p><a href="https://mapa.ecosistematransparencia.com.ar/funcionamiento?sitio=corrupcion" target="_blank" rel="noopener">Abrir en pantalla completa ↗</a></p>
 
   <h2>Mecanismo vs. Clasificación: son dos preguntas distintas</h2>
   <p>Es la parte que más se presta a confusión, así que va aparte antes de explicar cada una:</p>
@@ -307,6 +315,7 @@
 
 <div id="tab-en" class="tabcontent">
 <main>
+  <p style="margin:0 0 12px;font-size:13.5px"><a href="#" onclick="abrirGrafoEn();return false">🕸️ Open the network graph in English</a></p>
   <div class="banner" style="margin-bottom:16px">
     English tab: same underlying data as the Panel (same scores, same automatic classification), with translated labels and a condensed English summary per vector instead of the full sourced Spanish notes. For full sourced detail, citations and the interpretation methodology, see the Spanish "Panel" and "Manual de uso" tabs.
   </div>
@@ -361,6 +370,13 @@
 
   <h2>How to read the Graph tab</h2>
   <p>Same information as the Panel, but as a network: each vector links a <strong>country of origin</strong> → a <strong>foreign actor</strong> → an <strong>Argentine counterpart</strong>, and <strong>enablers</strong> (law firms, banks) and <strong>persons of interest</strong> hang off the relevant actor when the link is documented. Line color and thickness reflect the alert level (same criterion as the "Alert" column), not new data. Useful to see at a glance which countries concentrate the most vectors, which actor repeats across cases, and where an enabler connects an official to an active vector.</p>
+
+  <p>The Graph tab has an <strong>English</strong> button that switches the graph texts to English: <a href="#" onclick="abrirGrafoEn();return false">open the graph in English</a>. Every node carries its name; a very long one shows in full on hover.</p>
+
+  <h2>How this site works</h2>
+  <p>Workflow graph: where the site gets its data, which processes transform it, where it is stored and what it publishes. Every node carries its name; click one to see where it gets data from and what it feeds.</p>
+  <iframe class="grafo-func" src="https://mapa.ecosistematransparencia.com.ar/funcionamiento?sitio=corrupcion&amp;embed=1&amp;lang=en" title="How this site works" loading="lazy" style="width:100%;height:640px;border:1px solid #cbd5e1;border-radius:10px;background:#fff"></iframe>
+  <p><a href="https://mapa.ecosistematransparencia.com.ar/funcionamiento?sitio=corrupcion&amp;lang=en" target="_blank" rel="noopener">Open full screen ↗</a></p>
 
   <h2>Mechanism vs. Classification: two different questions</h2>
   <p>This is the part most prone to confusion, so it gets its own explanation before defining each one:</p>
@@ -710,20 +726,47 @@ const ENABLER_LINKS = [
 
 function gNodeId(type, name){ return type+":"+name; }
 
+// Idioma de la pestaña Grafo. Los nombres de actores y contrapartes van como los publica la fuente.
+let GLANG = "es";
+const G_PAIS_EN = {"China":"China", "Rusia":"Russia", "Bélgica":"Belgium", "EEUU":"United States"};
+const gPais = p => GLANG === "en" ? p.split(" / ").map(x => G_PAIS_EN[x] || x).join(" / ") : p;
+const G_TX = {
+  es: {boton:"English", buscar:"Buscar nodo: actor, país, contraparte, enabler, persona...", sector:"Sector: todos", alerta:"Alerta: todas",
+    activos:"Solo activos", todos:"Incluir cerrados", pais:"país de origen", actor:"actor extranjero", contra:"contraparte argentina",
+    enabler:"enabler (estudio/banco)", persona:"persona", lineas:"línea sólida = vector (color = nivel de alerta) · línea punteada gris = vínculo de enabler",
+    ayuda:"Click en un nodo de actor/contraparte, o en una línea de vector, para abrir el detalle completo en la pestaña Panel. El buscador atenúa los nodos que no matchean.",
+    tpais:"país de origen", tsocio:"ex-socio / vínculo profesional", tfunc:"funcionario con incumbencia sobre el vector", tlegal:"asesoría legal documentada", cerrado:" (cerrado)"},
+  en: {boton:"Español", buscar:"Search node: actor, country, counterpart, enabler, person...", sector:"Sector: all", alerta:"Alert: all",
+    activos:"Active only", todos:"Include closed", pais:"country of origin", actor:"foreign actor", contra:"Argentine counterpart",
+    enabler:"enabler (firm/bank)", persona:"person", lineas:"solid line = vector (color = alert level) · dashed gray line = enabler link",
+    ayuda:"Click an actor or counterpart node, or a vector line, to open the full detail in the Panel tab (in Spanish). The search box dims the nodes that do not match. Actor, counterpart and sector names are shown as published.",
+    tpais:"country of origin", tsocio:"former partner / professional link", tfunc:"official with authority over the vector", tlegal:"documented legal advice", cerrado:" (closed)"},
+};
+function aplicarIdiomaGrafo(lang){
+  GLANG = lang;
+  const x = G_TX[lang];
+  document.getElementById("g-idioma").textContent = x.boton;
+  document.getElementById("gsearch").placeholder = x.buscar;
+  const poner = {"g-op-sector":x.sector, "g-op-alerta":x.alerta, "g-op-activos":x.activos, "g-op-todos":x.todos, "g-l-pais":x.pais, "g-l-actor":x.actor,
+    "g-l-contra":x.contra, "g-l-enabler":x.enabler, "g-l-persona":x.persona, "g-l-lineas":x.lineas, "g-ayuda":x.ayuda};
+  Object.keys(poner).forEach(id => { document.getElementById(id).textContent = poner[id]; });
+}
+
 function buildGraphData(list){
+  const X = G_TX[GLANG];
   const nodesMap = new Map();
   const edges = [];
 
   function addNode(type, name){
     const id = gNodeId(type, name);
-    if(!nodesMap.has(id)) nodesMap.set(id, {id, label:name, group:type, r:GROUP_RADIUS[type]||12});
+    if(!nodesMap.has(id)) nodesMap.set(id, {id, label: type==="pais" ? gPais(name) : name, group:type, r:GROUP_RADIUS[type]||12});
     return nodesMap.get(id);
   }
 
   list.forEach(v=>{
     const paisN = addNode("pais", v.pais_origen);
     const actorN = addNode("actor", v.actor_extranjero);
-    edges.push({from:paisN.id, to:actorN.id, color:"#3d465e", width:1, dashed:false, title:"país de origen"});
+    edges.push({from:paisN.id, to:actorN.id, color:"#3d465e", width:1, dashed:false, title:X.tpais});
 
     if(v.contraparte_argentina){
       const contraN = addNode("contraparte", v.contraparte_argentina);
@@ -732,7 +775,7 @@ function buildGraphData(list){
         color: ALERTA_COLOR[v._alerta] || "#8b93a8",
         width: v._alerta==="CRITICO" ? 3.5 : v._alerta==="ALTO" ? 2.8 : v._alerta==="MEDIO" ? 2 : 1.3,
         dashed: !v.activo,
-        title: `${v.slug} — ${v.mecanismo_libro.replace(/_/g," ")}\n${LABEL_CLAS[v._clasificacion]} / ${v._alerta}${v.activo?"":" (cerrado)"}`,
+        title: `${v.slug} — ${v.mecanismo_libro.replace(/_/g," ")}\n${(GLANG==="en" ? LABEL_CLAS_EN : LABEL_CLAS)[v._clasificacion]} / ${v._alerta}${v.activo?"":X.cerrado}`,
         vectorSlug: v.slug
       });
     }
@@ -746,10 +789,10 @@ function buildGraphData(list){
     const enablerN = addNode("enabler", link.enabler);
     if(link.persona){
       const personaN = addNode("persona", link.persona);
-      edges.push({from:enablerN.id, to:personaN.id, color:"#8b93a8", width:1.2, dashed:true, title:"ex-socio / vínculo profesional"});
-      edges.push({from:personaN.id, to:actorId, color:"#8b93a8", width:1.2, dashed:true, title:"funcionario con incumbencia sobre el vector"});
+      edges.push({from:enablerN.id, to:personaN.id, color:"#8b93a8", width:1.2, dashed:true, title:X.tsocio});
+      edges.push({from:personaN.id, to:actorId, color:"#8b93a8", width:1.2, dashed:true, title:X.tfunc});
     } else {
-      edges.push({from:enablerN.id, to:actorId, color:"#8b93a8", width:1.2, dashed:true, title:"asesoría legal documentada"});
+      edges.push({from:enablerN.id, to:actorId, color:"#8b93a8", width:1.2, dashed:true, title:X.tlegal});
     }
   });
 
@@ -840,7 +883,7 @@ const Graph = (function(){
         let dx=a.x-b.x, dy=a.y-b.y;
         let d2 = dx*dx+dy*dy; if(d2<1) d2=1;
         const d = Math.sqrt(d2);
-        const force = 2200/d2;
+        const force = 9000/d2;
         const fx = dx/d*force, fy = dy/d*force;
         if(a!==dragNode){ a.vx+=fx; a.vy+=fy; }
         if(b!==dragNode){ b.vx-=fx; b.vy-=fy; }
@@ -849,7 +892,7 @@ const Graph = (function(){
     edges.forEach(e=>{
       const dx=e.b.x-e.a.x, dy=e.b.y-e.a.y;
       const d=Math.hypot(dx,dy)||0.01;
-      const rest=100, k=0.02;
+      const rest=140, k=0.02;
       const force=(d-rest)*k;
       const fx=dx/d*force, fy=dy/d*force;
       if(e.a!==dragNode){ e.a.vx+=fx; e.a.vy+=fy; }
@@ -857,14 +900,26 @@ const Graph = (function(){
     });
     nodes.forEach(n=>{
       if(n===dragNode) return;
-      n.vx += (w/2 - n.x)*0.0015;
-      n.vy += (h/2 - n.y)*0.0015;
+      n.vx += (w/2 - n.x)*0.0012;
+      n.vy += (h/2 - n.y)*0.0024;
       n.vx *= 0.82; n.vy *= 0.82;
       n.x += n.vx; n.y += n.vy;
       const m = n.r+8;
       n.x = Math.min(w-m, Math.max(m, n.x));
       n.y = Math.min(h-m, Math.max(m, n.y));
     });
+  }
+
+  // Reparte el nombre en hasta 3 líneas de 28 caracteres; el nombre entero se ve al pasar el mouse.
+  function lineasEtiqueta(texto){
+    const lineas = [];
+    let actual = "";
+    String(texto).split(" ").forEach(p=>{
+      if(actual && (actual+" "+p).length > 28){ lineas.push(actual); actual = p; }
+      else actual = actual ? actual+" "+p : p;
+    });
+    if(actual) lineas.push(actual);
+    return lineas.length > 3 ? [lineas[0], lineas[1], lineas[2]+"…"] : lineas;
   }
 
   function drawNodeShape(n){
@@ -918,8 +973,12 @@ const Graph = (function(){
       ctx.fillStyle = dim ? "#565f75" : "#e6e9f0";
       ctx.font = "11px -apple-system,Segoe UI,Roboto,Arial,sans-serif";
       ctx.textAlign = "center";
-      const label = n.label.length>28 ? n.label.slice(0,26)+"…" : n.label;
-      ctx.fillText(label, n.x, n.y + n.r + 13);
+      ctx.lineWidth = 3;
+      ctx.strokeStyle = "#0f1420";
+      lineasEtiqueta(n.label).forEach((linea,i)=>{
+        ctx.strokeText(linea, n.x, n.y + n.r + 13 + i*13);
+        ctx.fillText(linea, n.x, n.y + n.r + 13 + i*13);
+      });
       ctx.globalAlpha = 1;
     });
   }
@@ -1024,6 +1083,22 @@ fillSelect("gf-alerta", ["CRITICO","ALTO","MEDIO","BAJO","VIGILAR"]);
 
 document.querySelector('.tab-btn[data-tab="grafo"]').addEventListener("click", ()=>{
   renderGraph();
+});
+document.getElementById("g-idioma").addEventListener("click", ()=>{
+  aplicarIdiomaGrafo(GLANG === "en" ? "es" : "en");
+  renderGraph();
+});
+function abrirGrafoEn(){
+  aplicarIdiomaGrafo("en");
+  document.querySelector('.tab-btn[data-tab="grafo"]').click();
+  window.scrollTo(0, 0);
+}
+// Ajusta el alto de los grafos de funcionamiento incrustados (los informa el Mapa).
+window.addEventListener("message", e=>{
+  if(e.origin !== "https://mapa.ecosistematransparencia.com.ar" || !e.data || !e.data.grafoAltura) return;
+  document.querySelectorAll("iframe.grafo-func").forEach(f=>{
+    if(f.contentWindow === e.source) f.style.height = (e.data.grafoAltura + 4) + "px";
+  });
 });
 
 // --- pestaña English: mismos datos, etiquetas traducidas + resumen condensado por vector ---
